@@ -8,7 +8,7 @@ var fs = require('fs'),
     log = require('loglevel');
 
 args
-    .version('0.0.2')
+    .version('0.0.3')
     // .option('-h', '--help', 'show help')
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
