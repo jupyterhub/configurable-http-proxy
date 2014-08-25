@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
@@ -14,9 +14,9 @@
   },
   "files": [
     "lib/configproxy.js",
-    "lib/main.js"
+    "bin/configurable-http-proxy"
   ],
   "bin": {
-    "configurable-http-proxy": "lib/main.js"
+    "configurable-http-proxy": "bin/configurable-http-proxy"
   }
 }

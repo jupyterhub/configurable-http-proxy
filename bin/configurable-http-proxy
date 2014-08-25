@@ -8,7 +8,7 @@ var fs = require('fs'),
     log = require('loglevel');
 
 args
-    .version('0.0.1')
+    .version('0.0.2')
     // .option('-h', '--help', 'show help')
     .option('--key <keyfile>', 'SSL key to use, if any')
     .option('--cert <certfile>', 'SSL certificate to use, if any')
@@ -23,7 +23,7 @@ args
 args.parse(process.argv);
 log.setLevel(args.logLevel);
 
-var ConfigurableProxy = require('./configproxy.js').ConfigurableProxy;
+var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 
 var options = {};
 if (args.key) {
