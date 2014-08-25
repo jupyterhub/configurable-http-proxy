@@ -1,6 +1,6 @@
-# The Jupyter multi-user notebook server licensing terms
+# Modified License
 
-Jupyter multi-user notebook server is licensed under the terms of the Modified BSD License
+configurable-http-proxy is licensed under the terms of the Modified BSD License
 (also known as New or Revised or 3-Clause BSD), as follows:
 
 - Copyright (c) 2014-, Jupyter Development Team
@@ -55,5 +55,5 @@ change to one of the Jupyter repositories.
 With this in mind, the following banner should be used in any source code file
 to indicate the copyright and license terms:
 
-    # Copyright (c) Jupyter Development Team.
-    # Distributed under the terms of the Modified BSD License.
+    // Copyright (c) Jupyter Development Team.
+    // Distributed under the terms of the Modified BSD License.

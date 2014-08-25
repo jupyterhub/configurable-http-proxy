@@ -1,6 +1,0 @@
-ipython[notebook]
-tornado>=3.2
-jinja2
-simplepam
-sqlalchemy
-requests
