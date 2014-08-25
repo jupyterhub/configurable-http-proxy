@@ -10,8 +10,10 @@ var fs = require('fs'),
 args
     .version('0.0.2')
     // .option('-h', '--help', 'show help')
-    .option('--key <keyfile>', 'SSL key to use, if any')
-    .option('--cert <certfile>', 'SSL certificate to use, if any')
+    .option('--ssl-key <keyfile>', 'SSL key to use, if any')
+    .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
+    .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
+    .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--ip <n>', 'Public-facing IP of the proxy', 'localhost')
     .option('--port <n>', 'Public-facing port of the proxy', parseInt)
     .option('--upstream-ip <ip>', 'IP address of the default proxy target', 'localhost')
@@ -26,12 +28,27 @@ log.setLevel(args.logLevel);
 var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 
 var options = {};
-if (args.key) {
-    options.key = fs.readFileSync(args.key);
+
+// ssl options
+if (args.sslKey || args.sslCert) {
+    options.ssl = {};
+    if (args.sslKey) {
+        options.ssl.key = fs.readFileSync(args.sslKey);
+    }
+    if (args.sslCert) {
+        options.ssl.cert = fs.readFileSync(args.sslCert);
+    }
 }
 
-if (args.cert) {
-    options.cert = fs.readFileSync(args.cert);
+// ssl options for the API interface
+if (args.apiSslKey || args.apiSslCert) {
+    options.api_ssl = {};
+    if (args.apiSslKey) {
+        options.api_ssl.key = fs.readFileSync(args.apiSslKey);
+    }
+    if (args.apiSslCert) {
+        options.api_ssl.cert = fs.readFileSync(args.apiSslCert);
+    }
 }
 
 // because camelCase is the js way!
