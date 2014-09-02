@@ -8,9 +8,9 @@
       "url": "https://github.com/jupyter/configurable-http-proxy"
     },
   "dependencies": {
-    "commander": "~2.2",
-    "http-proxy": "~1.1",
-    "loglevel": "~1.0"
+    "commander": "~2",
+    "http-proxy": "~1",
+    "loglevel": "~1"
   },
   "files": [
     "lib/configproxy.js",
