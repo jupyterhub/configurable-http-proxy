@@ -3,14 +3,18 @@
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/jupyter/configurable-http-proxy"
-    },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jupyter/configurable-http-proxy"
+  },
   "dependencies": {
     "commander": "~2",
     "http-proxy": "~1",
     "loglevel": "~1"
+  },
+  "devDependencies": {
+  "nodeunit": "~0.9",
+  "ws": "~0.4"
   },
   "files": [
     "lib/configproxy.js",
@@ -18,5 +22,8 @@
   ],
   "bin": {
     "configurable-http-proxy": "bin/configurable-http-proxy"
+  },
+  "scripts": {
+    "test": "nodeunit"
   }
 }
