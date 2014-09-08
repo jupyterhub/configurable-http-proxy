@@ -10,16 +10,15 @@ var fs = require('fs'),
 args
     .version('0.0.3')
     // .option('-h', '--help', 'show help')
+    .option('--ip <n>', 'Public-facing IP of the proxy')
+    .option('--port <n>', 'Public-facing port of the proxy', parseInt)
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
+    .option('--api-ip <ip>', 'Inward-facing IP for API requests', 'localhost')
+    .option('--api-port <n>', 'Inward-facing port for API requests', parseInt)
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
-    .option('--ip <n>', 'Public-facing IP of the proxy', 'localhost')
-    .option('--port <n>', 'Public-facing port of the proxy', parseInt)
-    .option('--upstream-ip <ip>', 'IP address of the default proxy target', 'localhost')
-    .option('--upstream-port <n>', 'Port of the default proxy target', parseInt)
-    .option('--api-ip <ip>', 'Inward-facing IP for API request', 'localhost')
-    .option('--api-port <n>', 'Inward-facing port for API request', parseInt)
+    .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
 args.parse(process.argv);
@@ -52,9 +51,12 @@ if (args.apiSslKey || args.apiSslCert) {
 }
 
 // because camelCase is the js way!
-options.upstream_ip = args.upstreamIp;
-options.upstream_port = args.upstreamPort;
+options.default_target = args.defaultTarget;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
+
+if (!options.auth_token) {
+    log.warn("REST API is not authenticated.");
+}
 
 var proxy = new ConfigurableProxy(options);
 
@@ -67,8 +69,8 @@ listen.api_port = args.apiPort || listen.port + 1;
 proxy.proxy_server.listen(listen.port, listen.ip);
 proxy.api_server.listen(listen.api_port, listen.api_ip);
 
-log.info("Proxying %s:%s to %s:%s", (listen.ip || '*'), listen.port,
-    proxy.upstream_ip, proxy.upstream_port
+log.info("Proxying %s:%s to %s", (listen.ip || '*'), listen.port,
+    proxy.default_target || "(no default)"
 );
 log.info("Proxy API at %s:%s/api/routes", (listen.api_ip || '*'), listen.api_port);
 
