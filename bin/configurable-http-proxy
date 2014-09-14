@@ -22,7 +22,7 @@ args
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
 args.parse(process.argv);
-log.setLevel(args.logLevel);
+log.setLevel(args.logLevel.toLowerCase());
 
 var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 
