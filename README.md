@@ -8,7 +8,7 @@ The proxy is developed as a part of the [Jupyter Hub][] multi-user server.
 [Jupyter Hub]: https://github.com/jupyter/jupyterhub
 
 
-## Installation
+## Install
 
 To install `configurable-http-proxy` and all of its dependencies:
     
