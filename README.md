@@ -42,9 +42,11 @@ For example:
 
 ### Getting the current routing table
 
-    GET /api/routes
+    GET /api/routes[?inactive_since=ISO8601-timestamp]
 
 Returns a JSON dictionary of the current routing table. This *excludes* the default route.
+If the `inactive_since` URL parameter is given as an [ISO8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp,
+only routes whose `last_activity` is earlier than the timestamp will be returned.
 
 #### Response
 
