@@ -1,3 +1,6 @@
+// jshint node: true
+"use strict";
+
 var assert = require('assert');
 var http = require('http');
 var util = require('../lib/testutil');
@@ -42,13 +45,13 @@ exports.test_rest_post = function (test) {
         util.onfinish(res, function () {
             test.equal(res.statusCode, 201);
             test.equal(res.body, '');
-            route = proxy.routes['/user/foo'];
+            var route = proxy.routes['/user/foo'];
             test.equal(route.target, target);
             test.equal(typeof route.last_activity, 'object');
             test.done();
         });
     });
-    req.write(JSON.stringify({target: 'http://localhost:8002'}));
+    req.write(JSON.stringify({target: target}));
     req.end();
 };
 
@@ -68,7 +71,7 @@ exports.test_rest_delete = function (test) {
         util.onfinish(res, function () {
             test.equal(res.statusCode, 204);
             test.equal(res.body, '');
-            route = proxy.routes[path];
+            var route = proxy.routes[path];
             test.equal(route, undefined);
             test.done();
         });
@@ -83,7 +86,7 @@ exports.test_get_inactive_since = function (test) {
     util.add_target(proxy, '/yesterday', port);
     util.add_target(proxy, '/today', port+1);
     
-    now = new Date();
+    var now = new Date();
     var yesterday = new Date(now.getTime() - (24 * 3.6e6));
     var long_ago = new Date(1);
     var hour_ago = new Date(now.getTime() - 3.6e6);
