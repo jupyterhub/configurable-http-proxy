@@ -18,6 +18,7 @@
   },
   "files": [
     "lib/configproxy.js",
+    "lib/trie.js",
     "bin/configurable-http-proxy"
   ],
   "bin": {
