@@ -3,6 +3,7 @@
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
+  "license": "BSD",
   "repository": {
     "type": "git",
     "url": "https://github.com/jupyter/configurable-http-proxy"
@@ -16,7 +17,9 @@
   "nodeunit": "~0.9",
   "ws": "~0.4"
   },
+  "main": "index.js",
   "files": [
+    "index.js",
     "lib/configproxy.js",
     "lib/trie.js",
     "bin/configurable-http-proxy"
