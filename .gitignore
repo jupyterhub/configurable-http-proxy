@@ -2,3 +2,8 @@ node_modules
 *.py[co]
 *~
 .DS_Store
+/configurable-http-proxy
+bench/env
+bench/results
+bench/html
+
