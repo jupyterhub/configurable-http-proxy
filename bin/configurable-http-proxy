@@ -13,7 +13,7 @@ var fs = require('fs'),
     log = require('loglevel');
 
 args
-    .version('0.0.3')
+    .version('0.0.4-dev')
     // .option('-h', '--help', 'show help')
     .option('--ip <n>', 'Public-facing IP of the proxy')
     .option('--port <n>', 'Public-facing port of the proxy', parseInt)
