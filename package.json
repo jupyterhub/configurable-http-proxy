@@ -14,7 +14,8 @@
     "loglevel": "~1"
   },
   "devDependencies": {
-  "nodeunit": "~0.9",
+  "jasmine-node": "~2",
+  "request": "~2",
   "ws": "~0.4"
   },
   "main": "index.js",
@@ -28,6 +29,6 @@
     "configurable-http-proxy": "bin/configurable-http-proxy"
   },
   "scripts": {
-    "test": "nodeunit"
+    "test": "jasmine-node --captureExceptions test"
   }
 }
