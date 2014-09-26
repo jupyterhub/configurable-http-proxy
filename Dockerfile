@@ -8,4 +8,4 @@ RUN npm install -g
 
 USER nobody
 
-CMD ["configurable-http-proxy"]
+ENTRYPOINT ["configurable-http-proxy"]
