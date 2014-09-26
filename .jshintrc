@@ -1,0 +1,12 @@
+{
+  "globals"   : {
+    /* jasmine */
+    "describe"   : false,
+    "it"         : false,
+    "expect"     : false,
+    "before"     : false,
+    "beforeEach" : false,
+    "after"      : false,
+    "afterEach"  : false
+  }
+}
