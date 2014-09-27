@@ -26,7 +26,7 @@ describe("URLTrie", function () {
 
     it("trie_init", function (done) {
         var trie = new URLTrie();
-        expect(trie.prefix).toEqual('');
+        expect(trie.prefix).toEqual('/');
         expect(trie.size).toEqual(0);
         expect(trie.data).toBe(undefined);
         expect(trie.branches).toEqual({});
@@ -40,6 +40,26 @@ describe("URLTrie", function () {
         done();
     });
 
+    it("trie_root", function (done) {
+        var trie = new URLTrie();
+        trie.add('/', -1);
+        var node = trie.get('/1/etc/etc/');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        expect(node.data).toEqual(-1);
+
+        var node = trie.get('/');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        expect(node.data).toEqual(-1);
+
+        var node = trie.get('');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        expect(node.data).toEqual(-1);
+        done();
+    });
+    
     it("trie_add", function (done) {
         var trie = new URLTrie();
     
