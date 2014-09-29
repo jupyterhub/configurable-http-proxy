@@ -40,7 +40,7 @@ describe("API Tests", function () {
     });
     
     it("Default target is used for /any/random/url", function () {
-        var target = proxy.target_for_url('/any/random/url')
+        var target = proxy.target_for_url('/any/random/url');
         expect(target).toEqual({
             prefix: '/',
             target: "http://127.0.0.1:" + port + 2
@@ -48,7 +48,7 @@ describe("API Tests", function () {
     });
     
     it("Default target is used for /", function () {
-        var target = proxy.target_for_url('/')
+        var target = proxy.target_for_url('/');
         expect(target).toEqual({
             prefix: '/',
             target: "http://127.0.0.1:" + port + 2
@@ -58,7 +58,7 @@ describe("API Tests", function () {
     it("GET /api/routes fetches the routing table", function (done) {
         r(api_url, function (error, res, body) {
             expect(res.statusCode).toEqual(200);
-            var body = JSON.parse(res.body);
+            body = JSON.parse(res.body);
             var keys = Object.keys(body);
             expect(keys.length).toEqual(1);
             expect(keys).toContain('/');

@@ -48,12 +48,12 @@ describe("URLTrie", function () {
         expect(node.prefix).toEqual('/');
         expect(node.data).toEqual(-1);
 
-        var node = trie.get('/');
+        node = trie.get('/');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
         expect(node.data).toEqual(-1);
 
-        var node = trie.get('');
+        node = trie.get('');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
         expect(node.data).toEqual(-1);
