@@ -31,12 +31,12 @@ args.parse(process.argv);
 
 log.remove(log.transports.Console);
 log.add(log.transports.Console, {
-              level: args.logLevel.toLowerCase(),
-              colorize: true,
-              timestamp: function () {
-                  return strftime("%H:%M:%S.%L", new Date());
-              },
-              label: 'ConfigProxy',
+    colorize: (process.stdout.isTTY && process.stderr.isTTY),
+    level: args.logLevel.toLowerCase(),
+    timestamp: function () {
+      return strftime("%H:%M:%S.%L", new Date());
+    },
+    label: 'ConfigProxy',
 });
 
 var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
