@@ -11,12 +11,13 @@
   "dependencies": {
     "commander": "~2",
     "http-proxy": "~1",
-    "loglevel": "~1"
+    "winston": "~0.8",
+    "strftime": "~0.8"
   },
   "devDependencies": {
-  "jasmine-node": "~2",
-  "request": "~2",
-  "ws": "~0.4"
+    "jasmine-node": "~2",
+    "request": "~2",
+    "ws": "~0.4"
   },
   "main": "index.js",
   "files": [

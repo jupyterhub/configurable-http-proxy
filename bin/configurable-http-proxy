@@ -10,7 +10,8 @@
 
 var fs = require('fs'),
     args = require('commander'),
-    log = require('loglevel');
+    strftime = require('strftime'),
+    log = require('winston');
 
 args
     .version('0.0.4-dev')
@@ -27,7 +28,16 @@ args
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
 args.parse(process.argv);
-log.setLevel(args.logLevel.toLowerCase());
+
+log.remove(log.transports.Console);
+log.add(log.transports.Console, {
+              level: args.logLevel.toLowerCase(),
+              colorize: true,
+              timestamp: function () {
+                  return strftime("%H:%M:%S.%L", new Date());
+              },
+              label: 'ConfigProxy',
+});
 
 var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 

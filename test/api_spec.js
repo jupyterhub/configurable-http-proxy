@@ -4,6 +4,9 @@
 var util = require('../lib/testutil');
 var extend = require('util')._extend;
 var request = require('request');
+var log = require('winston');
+// disable logging during tests
+log.remove(log.transports.Console);
 
 describe("API Tests", function () {
     var port = 8902;
