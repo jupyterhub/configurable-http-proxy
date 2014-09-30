@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "commander": "~2",
-    "http-proxy": "~1.4",
+    "http-proxy": "~1.5.1",
     "winston": "~0.8",
     "strftime": "~0.8"
   },
