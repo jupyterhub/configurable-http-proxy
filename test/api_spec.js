@@ -35,7 +35,7 @@ describe("API Tests", function () {
         expect(proxy.default_target).toBe(undefined);
         expect(proxy.target_for_url('/')).toEqual({
             prefix: '/',
-            target: "http://127.0.0.1:" + port + 2
+            target: "http://127.0.0.1:" + (port + 2)
         });
     });
     
@@ -43,7 +43,7 @@ describe("API Tests", function () {
         var target = proxy.target_for_url('/any/random/url');
         expect(target).toEqual({
             prefix: '/',
-            target: "http://127.0.0.1:" + port + 2
+            target: "http://127.0.0.1:" + (port + 2)
         });
     });
     
@@ -51,7 +51,7 @@ describe("API Tests", function () {
         var target = proxy.target_for_url('/');
         expect(target).toEqual({
             prefix: '/',
-            target: "http://127.0.0.1:" + port + 2
+            target: "http://127.0.0.1:" + (port + 2)
         });
     });
     
