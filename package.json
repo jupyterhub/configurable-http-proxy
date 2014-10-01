@@ -1,12 +1,12 @@
 {
-  "version": "0.0.4-dev",
+  "version": "0.1.0",
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
   "license": "BSD",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jupyter/configurable-http-proxy"
+    "url": "https://github.com/jupyter/configurable-http-proxy.git"
   },
   "dependencies": {
     "commander": "~2",
