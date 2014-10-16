@@ -11,7 +11,12 @@
 var fs = require('fs'),
     args = require('commander'),
     strftime = require('strftime'),
-    log = require('winston');
+    log = require('winston'),
+    http = require('http'),
+    https = require('https');
+
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
 
 args
     .version('0.1.2-dev')
