@@ -76,7 +76,7 @@ options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 // passthrough for http-proxy options
 options.xfwd = args.noXHeaders ? false : true;
 if (args.insecure) options.secure = false;
-if (args.noPrependPath) options.prependPath = false;
+if (args.prependPath !== undefined) options.prependPath = args.prependPath;
 
 if (!options.auth_token) {
     log.warn("REST API is not authenticated.");
