@@ -27,8 +27,7 @@ args
     .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
-    .option('--no-prepend-path', "Proxy /prefix/foo to /foo instead of /prefix/foo instead." + 
-        "  Allows proxied application to be ignorant of proxy prefix.")
+    .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
     .option('--insecure', "Disable SSL cert verification")
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
@@ -77,7 +76,7 @@ options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 // passthrough for http-proxy options
 options.xfwd = args.noXHeaders ? false : true;
 if (args.insecure) options.secure = false;
-if (args.noPrependPath) options.prependPath = false;
+if (args.prependPath !== undefined) options.prependPath = args.prependPath;
 
 if (!options.auth_token) {
     log.warn("REST API is not authenticated.");

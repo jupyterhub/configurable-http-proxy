@@ -63,4 +63,33 @@ describe("Proxy Tests", function () {
             ws.send('hi');
         });
     });
+    
+    it("target path is prepended", function (done) {
+        util.add_target(proxy, '/bar', port + 10, false, '/foo');
+        r(proxy_url + '/bar', function (error, res, body) {
+            expect(res.statusCode).toEqual(200);
+            body = JSON.parse(body);
+            console.log(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/foo/bar'
+            }));
+            done();
+        });
+    });
+    
+    it("prependPath: false prevents target path from being prepended", function (done) {
+        proxy.proxy.options.prependPath = false;
+        util.add_target(proxy, '/bar', port + 10, false, '/foo');
+        r(proxy_url + '/bar', function (error, res, body) {
+            expect(res.statusCode).toEqual(200);
+            body = JSON.parse(body);
+            console.log(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/bar'
+            }));
+            done();
+        });
+    });
 });
