@@ -14,7 +14,7 @@ var fs = require('fs'),
     log = require('winston');
 
 args
-    .version('0.1.2-dev')
+    .version('0.2.0')
     // .option('-h', '--help', 'show help')
     .option('--ip <n>', 'Public-facing IP of the proxy')
     .option('--port <n>', 'Public-facing port of the proxy', parseInt)
