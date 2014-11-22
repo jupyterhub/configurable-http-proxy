@@ -153,4 +153,47 @@ describe("URLTrie", function () {
         done();
     });
 
+    it("trie_sub_paths", function (done) {
+        var trie = new URLTrie(), node;
+        trie.add('/', {
+            path: '/'
+        });
+        
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        
+        // add /prefix/sub/tree
+        trie.add('/prefix/sub/tree', {});
+        
+        // which shouldn't change the results for /prefix and /prefix/sub
+        node = trie.get('/prefix');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+        
+        node = trie.get('/prefix/sub/tree');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/prefix/sub/tree');
+        
+        // add /prefix, and run one more time
+        trie.add('/prefix', {});
+        
+        node = trie.get('/prefix');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/prefix');
+        
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/prefix');
+        
+        node = trie.get('/prefix/sub/tree');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/prefix/sub/tree');
+        
+        done();
+    });
 });
