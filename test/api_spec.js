@@ -82,6 +82,24 @@ describe("API Tests", function () {
         });
     });
     
+    it("POST /api/routes[/foo%20bar] handles URI escapes", function (done) {
+        var port = 8998;
+        var target = 'http://127.0.0.1:' + port;
+        r.post({
+            url: api_url + '/user/foo%40bar',
+            body: JSON.stringify({target: target}),
+        }, function (error, res, body) {
+            expect(res.statusCode).toEqual(201);
+            expect(res.body).toEqual('');
+            var route = proxy.routes['/user/foo@bar'];
+            expect(route.target).toEqual(target);
+            expect(typeof route.last_activity).toEqual('object');
+            route = proxy.target_for_req({url: '/user/foo@bar/path'});
+            expect(route.target).toEqual(target);
+            done();
+        });
+    });
+    
     it("POST /api/routes creates a new root route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
