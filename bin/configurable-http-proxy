@@ -30,6 +30,7 @@ args
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
     .option('--no-include-prefix', "Don't include the routing prefix in proxied requests")
     .option('--insecure', "Disable SSL cert verification")
+    .option('--host-routing', "Use host routing (host as first level of path)")
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
 args.parse(process.argv);
@@ -72,6 +73,7 @@ if (args.apiSslKey || args.apiSslCert) {
 
 // because camelCase is the js way!
 options.default_target = args.defaultTarget;
+options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 
 // passthrough for http-proxy options

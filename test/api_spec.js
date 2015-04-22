@@ -33,14 +33,14 @@ describe("API Tests", function () {
     it("Basic proxy constructor", function () {
         expect(proxy).toBeDefined();
         expect(proxy.default_target).toBe(undefined);
-        expect(proxy.target_for_url('/')).toEqual({
+        expect(proxy.target_for_req({url: '/'})).toEqual({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
         });
     });
     
     it("Default target is used for /any/random/url", function () {
-        var target = proxy.target_for_url('/any/random/url');
+        var target = proxy.target_for_req({url: '/any/random/url'});
         expect(target).toEqual({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
@@ -48,7 +48,7 @@ describe("API Tests", function () {
     });
     
     it("Default target is used for /", function () {
-        var target = proxy.target_for_url('/');
+        var target = proxy.target_for_req({url: '/'});
         expect(target).toEqual({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
