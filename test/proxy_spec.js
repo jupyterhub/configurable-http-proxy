@@ -78,6 +78,32 @@ describe("Proxy Tests", function () {
         });
     });
     
+    it("handle URI encoding", function (done) {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo');
+        r(proxy_url + '/b%40r/b%20r/rest/of/it', function (error, res, body) {
+            expect(res.statusCode).toEqual(200);
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/b@r/b r',
+                url: '/foo/b%40r/b%20r/rest/of/it'
+            }));
+            done();
+        });
+    });
+    
+    it("handle @ in URI same as %40", function (done) {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo');
+        r(proxy_url + '/b@r/b%20r/rest/of/it', function (error, res, body) {
+            expect(res.statusCode).toEqual(200);
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/b@r/b r',
+                url: '/foo/b@r/b%20r/rest/of/it'
+            }));
+            done();
+        });
+    });
+    
     it("prependPath: false prevents target path from being prepended", function (done) {
         proxy.proxy.options.prependPath = false;
         util.add_target(proxy, '/bar', test_port, false, '/foo');
