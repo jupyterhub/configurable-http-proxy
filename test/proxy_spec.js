@@ -1,4 +1,4 @@
-// jshint node: true
+// jshint jasmine: true
 "use strict";
 
 var util = require('../lib/testutil');
@@ -14,7 +14,7 @@ describe("Proxy Tests", function () {
     var host_url = "http://" + host_test + ":" + port;
 
     var r;
-    
+
     beforeEach(function (callback) {
         proxy = util.setup_proxy(port, callback);
         r = request.defaults({

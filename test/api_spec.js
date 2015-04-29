@@ -1,4 +1,4 @@
-// jshint node: true
+// jshint jasmine: true
 "use strict";
 
 var util = require('../lib/testutil');
@@ -180,17 +180,17 @@ describe("API Tests", function () {
                 var route_keys = Object.keys(routes);
                 var expected_keys = Object.keys(t.expected);
                 var key;
-                for (key in routes) {
+                Object.keys(routes).map(function (key) {
                     // check that all routes are expected
                     expect(expected_keys).toContain(key);
-                }
-                for (key in t.expected) {
+                });
+                Object.keys(t.expected).map(function (key) {
                     // check that all expected routes are found
                     expect(route_keys).toContain(key);
                     expect(routes[key].last_activity).toEqual(
                         proxy.routes[key].last_activity.toISOString()
                     );
-                }
+                });
                 seen += 1;
                 if (seen === tests.length) {
                     done();

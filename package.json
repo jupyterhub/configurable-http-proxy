@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "jasmine-node": "~2",
+    "jshint": "*",
     "request": "~2",
     "ws": "~0.4"
   },
@@ -30,6 +31,7 @@
     "configurable-http-proxy": "bin/configurable-http-proxy"
   },
   "scripts": {
+    "jshint": "jshint bin/ lib/ test/",
     "test": "jasmine-node --captureExceptions test"
   }
 }

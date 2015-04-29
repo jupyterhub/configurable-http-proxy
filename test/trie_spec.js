@@ -1,4 +1,4 @@
-// jshint node: true
+// jshint jasmine: true
 "use strict";
 
 var URLTrie = require('../lib/trie').URLTrie;
