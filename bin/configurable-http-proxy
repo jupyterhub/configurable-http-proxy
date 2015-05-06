@@ -25,7 +25,7 @@ args
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
-    .option('--upgrade-to-https', 'Upgrade to HTTPS from port 80 -> port')
+    .option('--redirect-to-https-from-port <redirect-port>', 'Redirects traffic from redirect port to the port')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
@@ -76,7 +76,7 @@ if (args.apiSslKey || args.apiSslCert) {
 options.default_target = args.defaultTarget;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
-options.upgrade_to_https = args.upgradeToHttps;
+options.redirectPort = args.redirectToHttpsFromPort;
 
 // passthrough for http-proxy options
 if (args.insecure) options.secure = false;
@@ -91,7 +91,7 @@ if (!options.auth_token) {
 var proxy = new ConfigurableProxy(options);
 
 var listen = {};
-listen.port = args.port || 8000;
+listen.port = parseInt(args.port) || 8000;
 listen.ip = args.ip;
 listen.api_ip = args.apiIp || 'localhost';
 listen.api_port = args.apiPort || listen.port + 1;
@@ -109,10 +109,17 @@ log.info("Proxy API at %s://%s:%s/api/routes",
     (listen.api_ip || '*'),
     listen.api_port);
 
-if (options.upgrade_to_https) {
+if (options.redirectPort) {
   var http = require('http');
+  
   http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    var host = req.headers['host'].split(':')[0];
+    
+    // Make sure that when we redirect, it's to the port the proxy is running on
+    if (listen.port !== 443 && listen.port !== 80) {
+        host = host + ':' + listen.port;
+    }
+    res.writeHead(301, { "Location": "https://" + host + req.url });
     res.end();
-  }).listen(80);
+  }).listen(options.redirectPort);
 }
