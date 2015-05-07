@@ -25,7 +25,7 @@ args
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
-    .option('--redirect-to-https-from-port <redirect-port>', 'Redirects traffic from redirect port to the port')
+    .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
@@ -76,7 +76,7 @@ if (args.apiSslKey || args.apiSslCert) {
 options.default_target = args.defaultTarget;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
-options.redirectPort = args.redirectToHttpsFromPort;
+options.redirectPort = args.redirectPort;
 
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {
