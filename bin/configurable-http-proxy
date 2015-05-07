@@ -78,6 +78,12 @@ options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectToHttpsFromPort;
 
+// certs need to be provided for https redirection
+if (!options.ssl && options.redirectPort) {
+    log.error("HTTPS redirection specified but certificates not provided.");
+    process.exit(2);
+}
+
 // passthrough for http-proxy options
 if (args.insecure) options.secure = false;
 options.xfwd = args.noXHeaders ? false : true;
@@ -109,14 +115,15 @@ log.info("Proxy API at %s://%s:%s/api/routes",
     (listen.api_ip || '*'),
     listen.api_port);
 
-if (options.redirectPort) {
+// Redirect HTTP to HTTPS on the proxy's port
+if (options.redirectPort && listen.port !== 80) {
   var http = require('http');
   
   http.createServer(function (req, res) {
     var host = req.headers['host'].split(':')[0];
     
     // Make sure that when we redirect, it's to the port the proxy is running on
-    if (listen.port !== 443 && listen.port !== 80) {
+    if (listen.port !== 443) {
         host = host + ':' + listen.port;
     }
     res.writeHead(301, { "Location": "https://" + host + req.url });
