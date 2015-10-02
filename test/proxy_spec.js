@@ -1,6 +1,7 @@
 // jshint jasmine: true
 "use strict";
 
+var path = require('path');
 var util = require('../lib/testutil');
 var request = require('request');
 var WebSocket = require('ws');
@@ -174,5 +175,43 @@ describe("Proxy Tests", function () {
         }, {
             error_target: 'http://127.0.0.1:55565'
         }, []);
+    });
+
+    it("custom error path", function (done) {
+        proxy.remove_route('/');
+        proxy.add_route('/missing', {
+            target: 'https://127.0.0.1:54321',
+        });
+        proxy.error_path = path.join(__dirname, 'error');
+        r(host_url + '/nope', function (error, res, body) {
+            expect(res.statusCode).toEqual(404);
+            expect(res.headers['content-type']).toEqual('text/html');
+            expect(body).toMatch(/404'D/);
+            r(host_url + '/missing/prefix', function (error, res, body) {
+                expect(res.statusCode).toEqual(503);
+                expect(res.headers['content-type']).toEqual('text/html');
+                expect(body).toMatch(/UNKNOWN/);
+                done();
+            });
+        });
+    });
+
+    it("default error html", function (done) {
+        proxy.remove_route('/');
+        proxy.add_route('/missing', {
+            target: 'https://127.0.0.1:54321',
+        });
+        
+        r(host_url + '/nope', function (error, res, body) {
+            expect(res.statusCode).toEqual(404);
+            expect(res.headers['content-type']).toEqual('text/html');
+            expect(body).toMatch(/404:/);
+            r(host_url + '/missing/prefix', function (error, res, body) {
+                expect(res.statusCode).toEqual(503);
+                expect(res.headers['content-type']).toEqual('text/html');
+                expect(body).toMatch(/503:/);
+                done();
+            });
+        });
     });
 });
