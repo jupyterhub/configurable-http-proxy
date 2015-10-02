@@ -36,6 +36,35 @@ in the proxy table:
 
     $ configurable-http-proxy --default-target=http://localhost:8888
 
+### Options
+
+```
+  Usage: configurable-http-proxy [options]
+
+  Options:
+
+    -h, --help                       output usage information
+    -V, --version                    output the version number
+    --ip <n>                         Public-facing IP of the proxy
+    --port <n>                       Public-facing port of the proxy
+    --ssl-key <keyfile>              SSL key to use, if any
+    --ssl-cert <certfile>            SSL certificate to use, if any
+    --api-ip <ip>                    Inward-facing IP for API requests
+    --api-port <n>                   Inward-facing port for API requests
+    --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
+    --api-ssl-cert <certfile>        SSL certificate to use, if any, for API requests
+    --default-target <host>          Default proxy target (proto://host[:port]
+    --error-target <host>            Alternate server for handling proxy errors (proto://host[:port]
+    --error-path <path>              Alternate server for handling proxy errors (proto://host[:port]
+    --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
+    --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
+    --no-prepend-path                Avoid prepending target paths to proxied requests
+    --no-include-prefix              Don't include the routing prefix in proxied requests
+    --insecure                       Disable SSL cert verification
+    --host-routing                   Use host routing (host as first level of path)
+    --log-level <loglevel>           Log level (debug, info, warn, error)
+```
+
 ## REST API
 
 The REST API is authenticated via a token in the `Authorization` header.
@@ -102,4 +131,45 @@ Any request to `/path/prefix` on the proxy's public interface will be proxied to
 
     status: 204 No Content
 
+## Custom error pages
 
+CHP 0.5 adds two ways to provide custom error pages when the proxy encounters an error,
+and has no proxy target to handle a request. There are two typical errors that CHP can hit:
+
+- 404: a client has requested a URL for which there is no routing target.
+  This is impossible if a default target has been specified.
+- 503: a route exists, but the upstream server isn't responding.
+  This is more common, and can be due to any number of reasons,
+  including the target service having died or not finished starting.
+
+### error-path
+
+If you specify `--error-path /usr/share/chp-errors`,
+then when a proxy error occurs, CHP will look in `/usr/share/chp-errors/CODE.html` for an html page to serve,
+e.g. `404.html` or `503.html`.
+If no file exists for the error code,  `error.html` file will be used.
+If you use this scheme, make sure you have at least `error.html`.
+
+### error-target
+
+If you specify `--error-target http://localhost:1234`,
+then when the proxy encounters an error, it will make a GET request to this server, with URL `/CODE`,
+and the URL of the failing request escaped in a URL parameter, e.g.:
+
+    GET /404?url=%2Fescaped%2Fpath
+
+
+## Host-based routing
+
+If `--host-routing` is given, the proxy will pick a target based on the host of the incoming request,
+instead of the URL prefix.
+The API when using host-based routes is the same as if the hostname were the first part of the URL path, e.g.
+
+```python
+{
+  "/example.com": "https://localhost:1234",
+  "/otherdomain.biz": "http://10.0.1.4:5555",
+}
+```
+
+etc.
