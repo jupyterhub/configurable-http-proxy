@@ -159,6 +159,20 @@ describe("Proxy Tests", function () {
             }));
             done();
         });
-
+    });
+    
+    it("custom error target", function (done) {
+        var port = 55555;
+        util.setup_proxy(port, function (proxy) {
+            var url = 'http://127.0.0.1:' + port + '/foo/bar';
+            r(url, function (error, res, body) {
+                expect(res.statusCode).toEqual(404);
+                expect(res.headers['content-type']).toEqual('text/plain');
+                expect(body).toEqual('/foo/bar');
+                done();
+            });
+        }, {
+            error_target: 'http://127.0.0.1:55565'
+        }, []);
     });
 });
