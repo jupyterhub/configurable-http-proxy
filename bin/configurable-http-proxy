@@ -26,6 +26,7 @@ args
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
     .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port]')
+    .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port]')
     .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
@@ -76,6 +77,7 @@ if (args.apiSslKey || args.apiSslCert) {
 // because camelCase is the js way!
 options.default_target = args.defaultTarget;
 options.error_target = args.errorTarget;
+options.error_path = args.errorPath;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
@@ -83,7 +85,12 @@ options.redirectPort = args.redirectPort;
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {
     log.error("HTTPS redirection specified but certificates not provided.");
-    process.exit(2);
+    process.exit(1);
+}
+
+if (options.error_target && options.error_path) {
+    log.error("Cannot specify both error-target and error-path. Pick one.");
+    process.exit(1);
 }
 
 // passthrough for http-proxy options
