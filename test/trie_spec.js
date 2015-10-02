@@ -149,6 +149,10 @@ describe("URLTrie", function () {
         trie.remove('/a/b/c/d');
         expect(b.size).toEqual(2);
         expect(b.branches.c).toBe(undefined);
+        
+        trie.remove('/');
+        node = trie.get('/');
+        expect(node).toBe(undefined);
 
         done();
     });
