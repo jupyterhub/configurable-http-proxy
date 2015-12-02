@@ -1,0 +1,70 @@
+swagger: '2.0'
+info:
+  title: Configurable HTTP Proxy (Jupyter requirements)
+  description: The REST API JupyterHub requires from a compatible Configurable HTTP Proxy implementation
+  version: 0.0.1
+schemes:
+  - https
+basePath: /api/routes
+produces:
+  - application/json
+paths:
+  /:
+    get:
+      summary: All routes
+      description: All routes currently in the proxy's routing table, excluding the default route
+      parameters:
+        - name: inactive_since
+          in: query
+          description: Only return routes with last_activity before this time
+          required: false
+          type: string
+          format: ISO8601 Timestamp
+      responses:
+        '200':
+          description: The routing table
+          schema:
+              $ref: '#/definitions/RoutingTable'
+  /{path_prefix}:
+    post:
+      summary: Create a new route
+      parameters:
+        - name: path_prefix
+          description: Path prefix to match to route to this target
+          in: path
+          required: true
+          type: string
+          format: Path
+      responses:
+        '201':
+          description: Successfully created
+    delete:
+      summary: Delete the given route
+      parameters:
+        - name: path_prefix
+          in: path
+          required: true
+          type: string
+          format: Path
+      responses:
+        '204':
+          description: Successfully deleted
+definitions:
+  RoutingTable:
+    type: object
+    description: Maps keys (route path prefixes) to their targets
+    additionalProperties:
+      $ref: '#/definitions/RouteTarget'
+  RouteTarget:
+    type: object
+    properties:
+      target:
+        type: string
+        format: URI
+        description: 'Fully qualified URL that will be the target of proxied
+          requests that match this route'
+      last_activity:
+        type: string
+        format: ISO8601 Timestamp
+        readOnly: true
+        description: ISO8601 Timestamp of when this route was last used to route a request
