@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Configurable HTTP Proxy (Jupyter requirements)
-  description: The REST API JupyterHub requires from a compatible Configurable HTTP Proxy implementation
+  title: Configurable HTTP Proxy
+  description: The REST API for configurable-http-proxy.
   version: 0.0.1
 schemes:
   - http
@@ -32,34 +32,40 @@ paths:
           description: The routing table
           schema:
               $ref: '#/definitions/RoutingTable'
-  /{path_prefix}:
+  /{route_spec}:
     post:
       summary: Create a new route
       parameters:
-        - name: path_prefix
-          description: Path prefix to match to route to this target
+        - name: route_spec
+          description: Route specification to create - a path prefix if the proxy is in path mode (default) or '/' followed by hostname if it is in host mode.
           in: path
           required: true
           type: string
           format: Path
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/RouteTarget'
+          required: true
       responses:
         '201':
           description: Successfully created
     delete:
       summary: Delete the given route
       parameters:
-        - name: path_prefix
+        - name: route_spec
           in: path
           required: true
           type: string
           format: Path
+          description: Route specification to create - a path prefix if the proxy is in path mode (default) or '/' followed by hostname if it is in host mode.
       responses:
         '204':
           description: Successfully deleted
 definitions:
   RoutingTable:
     type: object
-    description: Maps keys (route path prefixes) to their targets
+    description: Maps keys (route path prefixes / hostnames) to their targets
     additionalProperties:
       $ref: '#/definitions/RouteTarget'
   RouteTarget:
