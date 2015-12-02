@@ -4,7 +4,14 @@ info:
   description: The REST API JupyterHub requires from a compatible Configurable HTTP Proxy implementation
   version: 0.0.1
 schemes:
-  - https
+  - http
+securityDefinitions:
+  token:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - token: []
 basePath: /api/routes
 produces:
   - application/json
