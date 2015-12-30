@@ -45,17 +45,21 @@ in the proxy table:
 
     -h, --help                       output usage information
     -V, --version                    output the version number
-    --ip <n>                         Public-facing IP of the proxy
+    --ip <ip-address>                Public-facing IP of the proxy
     --port <n>                       Public-facing port of the proxy
     --ssl-key <keyfile>              SSL key to use, if any
     --ssl-cert <certfile>            SSL certificate to use, if any
+    --ssl-ca <ca-file>               SSL certificate authority, if any
+    --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
+    --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --api-ip <ip>                    Inward-facing IP for API requests
     --api-port <n>                   Inward-facing port for API requests
     --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
     --api-ssl-cert <certfile>        SSL certificate to use, if any, for API requests
-    --default-target <host>          Default proxy target (proto://host[:port]
-    --error-target <host>            Alternate server for handling proxy errors (proto://host[:port]
-    --error-path <path>              Alternate server for handling proxy errors (proto://host[:port]
+    --api-ssl-ca <ca-file>           SSL certificate authority, if any, for API requests
+    --default-target <host>          Default proxy target (proto://host[:port])
+    --error-target <host>            Alternate server for handling proxy errors (proto://host[:port])
+    --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
     --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
     --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
     --no-prepend-path                Avoid prepending target paths to proxied requests
@@ -63,6 +67,7 @@ in the proxy table:
     --insecure                       Disable SSL cert verification
     --host-routing                   Use host routing (host as first level of path)
     --log-level <loglevel>           Log level (debug, info, warn, error)
+
 ```
 
 ## REST API
