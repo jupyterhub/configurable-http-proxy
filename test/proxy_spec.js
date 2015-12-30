@@ -66,6 +66,28 @@ describe("Proxy Tests", function () {
         });
     });
     
+    it("proxy_request event can modify headers", function (done) {
+        var called = {};
+        proxy.on('proxy_request', function (req, res) {
+            req.headers.testing = 'Test Passed';
+            called.proxy_request = true;
+        });
+        
+        r(proxy_url, function (error, res, body) {
+            expect(res.statusCode).toEqual(200);
+            body = JSON.parse(body);
+            expect(called.proxy_request).toBe(true);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/',
+            }));
+            expect(body.headers).toEqual(jasmine.objectContaining({
+                testing: 'Test Passed',
+            }));
+            
+            done();
+        });
+    });
+    
     it("target path is prepended by default", function (done) {
         util.add_target(proxy, '/bar', test_port, false, '/foo');
         r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
