@@ -200,4 +200,31 @@ describe("URLTrie", function () {
         
         done();
     });
+
+    it("remove first leaf doesn't remove root", function (done) {
+        var trie = new URLTrie(), node;
+        trie.add('/', {
+            path: '/'
+        });
+        
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+
+        trie.add('/prefix', {
+            path: '/prefix'
+        });
+
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/prefix');
+
+        trie.remove('/prefix/');
+
+        node = trie.get('/prefix/sub');
+        expect(node).toBeTruthy();
+        expect(node.prefix).toEqual('/');
+
+        done();
+    });
 });
