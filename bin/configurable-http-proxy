@@ -12,22 +12,26 @@ var fs = require('fs'),
     pkg = require('../package.json'),
     args = require('commander'),
     strftime = require('strftime'),
+    tls = require('tls'),
     log = require('winston');
 
 args
     .version(pkg.version)
-    // .option('-h', '--help', 'show help')
-    .option('--ip <n>', 'Public-facing IP of the proxy')
+    .option('--ip <ip-address>', 'Public-facing IP of the proxy')
     .option('--port <n>', 'Public-facing port of the proxy', parseInt)
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
+    .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
+    .option('--ssl-ciphers <ciphers>', '`:`-separated ssl cipher list. Default excludes RC4')
+    .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
     .option('--api-ip <ip>', 'Inward-facing IP for API requests', 'localhost')
     .option('--api-port <n>', 'Inward-facing port for API requests', parseInt)
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
-    .option('--default-target <host>', 'Default proxy target (proto://host[:port]')
-    .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port]')
-    .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port]')
+    .option('--api-ssl-ca <ca-file>', 'SSL certificate authority, if any, for API requests')
+    .option('--default-target <host>', 'Default proxy target (proto://host[:port])')
+    .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port])')
+    .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port])')
     .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
@@ -53,6 +57,41 @@ var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 
 var options = {};
 
+var ssl_ciphers;
+if (args.sslCiphers) {
+    ssl_ciphers = args.sslCiphers;
+} else {
+    var rc4 = "!RC4"; // disable RC4 by default
+    if (args.sslAllowRc4) { // autoCamelCase is duMb
+        rc4 = "RC4";
+    }
+    // ref: https://iojs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite
+    ssl_ciphers = [
+        "ECDHE-RSA-AES128-GCM-SHA256",
+        "ECDHE-ECDSA-AES128-GCM-SHA256",
+        "ECDHE-RSA-AES256-GCM-SHA384",
+        "ECDHE-ECDSA-AES256-GCM-SHA384",
+        "DHE-RSA-AES128-GCM-SHA256",
+        "ECDHE-RSA-AES128-SHA256",
+        "DHE-RSA-AES128-SHA256",
+        "ECDHE-RSA-AES256-SHA384",
+        "DHE-RSA-AES256-SHA384",
+        "ECDHE-RSA-AES256-SHA256",
+        "DHE-RSA-AES256-SHA256",
+        "HIGH",
+        rc4,
+        "!aNULL",
+        "!eNULL",
+        "!EXPORT",
+        "!DES",
+        "!RC4",
+        "!MD5",
+        "!PSK",
+        "!SRP",
+        "!CAMELLIA",
+    ].join(':');
+}
+
 // ssl options
 if (args.sslKey || args.sslCert) {
     options.ssl = {};
@@ -62,6 +101,11 @@ if (args.sslKey || args.sslCert) {
     if (args.sslCert) {
         options.ssl.cert = fs.readFileSync(args.sslCert);
     }
+    if (args.sslCa) {
+        options.ssl.ca = fs.readFileSync(args.sslCa);
+    }
+    options.ssl.ciphers = ssl_ciphers;
+    options.ssl.honorCipherOrder = true;
 }
 
 // ssl options for the API interface
@@ -73,6 +117,11 @@ if (args.apiSslKey || args.apiSslCert) {
     if (args.apiSslCert) {
         options.api_ssl.cert = fs.readFileSync(args.apiSslCert);
     }
+    if (args.apiSslCa) {
+        options.api_ssl.ca = fs.readFileSync(args.apiSslCa);
+    }
+    options.api_ssl.ciphers = ssl_ciphers;
+    options.ssl.honorCipherOrder = true;
 }
 
 // because camelCase is the js way!
@@ -130,7 +179,7 @@ if (options.redirectPort && listen.port !== 80) {
   var http = require('http');
   
   http.createServer(function (req, res) {
-    var host = req.headers['host'].split(':')[0];
+    var host = req.headers.host.split(':')[0];
     
     // Make sure that when we redirect, it's to the port the proxy is running on
     if (listen.port !== 443) {
