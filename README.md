@@ -52,6 +52,7 @@ in the proxy table:
     --ssl-ca <ca-file>               SSL certificate authority, if any
     --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
+    --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
     --api-ip <ip>                    Inward-facing IP for API requests
     --api-port <n>                   Inward-facing port for API requests
     --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
