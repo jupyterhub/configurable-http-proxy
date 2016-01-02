@@ -24,6 +24,7 @@ args
     .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
     .option('--ssl-ciphers <ciphers>', '`:`-separated ssl cipher list. Default excludes RC4')
     .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
+    .option('--ssl-dhparam <dhparam-file>', 'SSL Diffie-Helman Parameters pem file, if any')
     .option('--api-ip <ip>', 'Inward-facing IP for API requests', 'localhost')
     .option('--api-port <n>', 'Inward-facing port for API requests', parseInt)
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
@@ -104,6 +105,9 @@ if (args.sslKey || args.sslCert) {
     if (args.sslCa) {
         options.ssl.ca = fs.readFileSync(args.sslCa);
     }
+    if (args.sslDhparam) {
+        options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
+    }
     options.ssl.ciphers = ssl_ciphers;
     options.ssl.honorCipherOrder = true;
 }
@@ -119,6 +123,9 @@ if (args.apiSslKey || args.apiSslCert) {
     }
     if (args.apiSslCa) {
         options.api_ssl.ca = fs.readFileSync(args.apiSslCa);
+    }
+    if (args.sslDhparam) {
+        options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
     }
     options.api_ssl.ciphers = ssl_ciphers;
     options.ssl.honorCipherOrder = true;
