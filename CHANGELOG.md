@@ -1,10 +1,15 @@
 # Changes in configurable-http-proxy
 
+## 1.1
+
+- add `--ssl-request-cert` args for certificate-based client authentication
+- fix some SSL parameters that were ignored for API requests
+
 ## 1.0
 
 - add `ConfigProxy.proxy_request` event, for customizing requests as the pass through the proxy.
 - add more ssl-related options for specifying options on the CLI.
-- Fix regression in 0.5 where deleting a top-level route would also delete the default route.
+- fix regression in 0.5 where deleting a top-level route would also delete the default route.
 
 ## 0.5
 
