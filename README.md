@@ -12,7 +12,7 @@ The proxy is developed as a part of the [Jupyter Hub][] multi-user server.
 
 To install `configurable-http-proxy`:
 
-    npm install -g jupyter/configurable-http-proxy
+    npm install -g configurable-http-proxy
 
 To install from the repo:
     
