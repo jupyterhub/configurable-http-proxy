@@ -22,6 +22,8 @@ args
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
     .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
+    .option('--ssl-request-cert', 'Request SSL certs to authenticate clients')
+    .option('--ssl-reject-unauthorized', 'Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)')
     .option('--ssl-ciphers <ciphers>', '`:`-separated ssl cipher list. Default excludes RC4')
     .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
     .option('--ssl-dhparam <dhparam-file>', 'SSL Diffie-Helman Parameters pem file, if any')
@@ -30,6 +32,8 @@ args
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--api-ssl-ca <ca-file>', 'SSL certificate authority, if any, for API requests')
+    .option('--api-ssl-request-cert', 'Request SSL certs to authenticate clients for API requests')
+    .option('--api-ssl-reject-unauthorized', 'Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)')
     .option('--default-target <host>', 'Default proxy target (proto://host[:port])')
     .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port])')
     .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port])')
@@ -110,6 +114,8 @@ if (args.sslKey || args.sslCert) {
     }
     options.ssl.ciphers = ssl_ciphers;
     options.ssl.honorCipherOrder = true;
+    options.ssl.requestCert = args.sslRequestCert;
+    options.ssl.rejectUnauthorized = args.sslRejectUnauthorized;
 }
 
 // ssl options for the API interface
@@ -129,6 +135,8 @@ if (args.apiSslKey || args.apiSslCert) {
     }
     options.api_ssl.ciphers = ssl_ciphers;
     options.api_ssl.honorCipherOrder = true;
+    options.api_ssl.requestCert = args.apiSslRequestCert;
+    options.api_ssl.rejectUnauthorized = args.apiSslRejectUnauthorized;
 }
 
 // because camelCase is the js way!
