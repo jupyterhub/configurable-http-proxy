@@ -50,6 +50,8 @@ in the proxy table:
     --ssl-key <keyfile>              SSL key to use, if any
     --ssl-cert <certfile>            SSL certificate to use, if any
     --ssl-ca <ca-file>               SSL certificate authority, if any
+    --ssl-request-cert               Request SSL certs to authenticate clients
+    --ssl-reject-unauthorized        Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
     --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
@@ -58,6 +60,8 @@ in the proxy table:
     --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
     --api-ssl-cert <certfile>        SSL certificate to use, if any, for API requests
     --api-ssl-ca <ca-file>           SSL certificate authority, if any, for API requests
+    --api-ssl-request-cert           Request SSL certs to authenticate clients for API requests
+    --api-ssl-reject-unauthorized    Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
     --default-target <host>          Default proxy target (proto://host[:port])
     --error-target <host>            Alternate server for handling proxy errors (proto://host[:port])
     --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
