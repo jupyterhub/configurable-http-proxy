@@ -125,10 +125,10 @@ if (args.apiSslKey || args.apiSslCert) {
         options.api_ssl.ca = fs.readFileSync(args.apiSslCa);
     }
     if (args.sslDhparam) {
-        options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
+        options.api_ssl.dhparam = fs.readFileSync(args.sslDhparam);
     }
     options.api_ssl.ciphers = ssl_ciphers;
-    options.ssl.honorCipherOrder = true;
+    options.api_ssl.honorCipherOrder = true;
 }
 
 // because camelCase is the js way!
