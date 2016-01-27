@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: Configurable HTTP Proxy
   description: The REST API for configurable-http-proxy.
-  version: 0.0.1
+  version: 1.1.0
 schemes:
   - http
 securityDefinitions:
@@ -12,11 +12,11 @@ securityDefinitions:
     in: header
 security:
   - token: []
-basePath: /api/routes
+basePath: /api/
 produces:
   - application/json
 paths:
-  /:
+  /routes/:
     get:
       summary: All routes
       description: All routes currently in the proxy's routing table, excluding the default route
@@ -32,7 +32,7 @@ paths:
           description: The routing table
           schema:
               $ref: '#/definitions/RoutingTable'
-  /{route_spec}:
+  /routes/{route_spec}:
     post:
       summary: Create a new route
       parameters:
