@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 //
 // cli entrypoint for starting a Configurable Proxy
-// 
+//
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 //
@@ -18,7 +18,7 @@ var fs = require('fs'),
 args
     .version(pkg.version)
     .option('--ip <ip-address>', 'Public-facing IP of the proxy')
-    .option('--port <n>', 'Public-facing port of the proxy', parseInt)
+    .option('--port <n> (defaults to 8000)', 'Public-facing port of the proxy', parseInt)
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
     .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
@@ -28,7 +28,7 @@ args
     .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
     .option('--ssl-dhparam <dhparam-file>', 'SSL Diffie-Helman Parameters pem file, if any')
     .option('--api-ip <ip>', 'Inward-facing IP for API requests', 'localhost')
-    .option('--api-port <n>', 'Inward-facing port for API requests', parseInt)
+    .option('--api-port <n>', 'Inward-facing port for API requests (defaults to --port=value+1)', parseInt)
     .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
     .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
     .option('--api-ssl-ca <ca-file>', 'SSL certificate authority, if any, for API requests')
@@ -192,10 +192,10 @@ log.info("Proxy API at %s://%s:%s/api/routes",
 // Redirect HTTP to HTTPS on the proxy's port
 if (options.redirectPort && listen.port !== 80) {
   var http = require('http');
-  
+
   http.createServer(function (req, res) {
     var host = req.headers.host.split(':')[0];
-    
+
     // Make sure that when we redirect, it's to the port the proxy is running on
     if (listen.port !== 443) {
         host = host + ':' + listen.port;
