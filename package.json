@@ -11,8 +11,9 @@
   "dependencies": {
     "commander": "~2",
     "http-proxy": "~1.11",
-    "winston": "~0.8",
-    "strftime": "~0.8"
+    "lynx": "^0.2.0",
+    "strftime": "~0.8",
+    "winston": "~0.8"
   },
   "devDependencies": {
     "jasmine-node": "~2",

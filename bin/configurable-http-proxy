@@ -44,6 +44,9 @@ args
     .option('--no-include-prefix', "Don't include the routing prefix in proxied requests")
     .option('--insecure', "Disable SSL cert verification")
     .option('--host-routing', "Use host routing (host as first level of path)")
+    .option('--statsd-host <host>', 'Host to send statsd statistics to')
+    .option('--statsd-port <port>', 'Port to send statsd statistics to', parseInt)
+    .option('--statsd-prefix <prefix>', 'Prefix to use for statsd statistics')
     .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
 
 args.parse(process.argv);
@@ -146,6 +149,29 @@ options.error_path = args.errorPath;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
+
+// statsd options
+if (args.statsdHost) {
+    var lynx = require('lynx');
+    options.statsd = new lynx(args.statsdHost, args.statsdPort || 8125, {
+        scope: args.statsdPrefix || 'chp',
+    });
+    log.info('Sending metrics to statsd at ' + args.statsdHost + ':' + args.statsdPort || 8125);
+} else {
+    // provide a dummy object with stubbed out methods
+    options.statsd = {
+        increment: function() {},
+        decrement: function() {},
+        timing: function() {},
+        gauge: function() {},
+        set: function() {},
+        createTimer: function() {
+            return {
+                stop: function() {}
+            }
+        }
+    };
+}
 
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {
