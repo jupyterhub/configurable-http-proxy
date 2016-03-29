@@ -17,13 +17,16 @@ describe("API Tests", function () {
     var r;
     
     beforeEach(function (callback) {
-        proxy = util.setup_proxy(port, callback);
-        r = request.defaults({
-            method: 'GET',
-            headers: {Authorization: 'token ' + proxy.auth_token},
-            port: api_port,
-            url: api_url,
-        });
+        function setup_r() {
+            r = request.defaults({
+                method: 'GET',
+                headers: {Authorization: 'token ' + proxy.auth_token},
+                port: api_port,
+                url: api_url,
+            });
+            callback();
+        }
+        proxy = util.setup_proxy(port, setup_r);
     });
     
     afterEach(function (callback) {
@@ -57,6 +60,7 @@ describe("API Tests", function () {
     
     it("GET /api/routes fetches the routing table", function (done) {
         r(api_url, function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(200);
             body = JSON.parse(res.body);
             var keys = Object.keys(body);
@@ -73,6 +77,7 @@ describe("API Tests", function () {
             url: api_url + '/user/foo',
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
             var route = proxy.routes['/user/foo'];
@@ -89,6 +94,7 @@ describe("API Tests", function () {
             url: api_url + '/user/foo%40bar',
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
             var route = proxy.routes['/user/foo@bar'];
@@ -107,6 +113,7 @@ describe("API Tests", function () {
             url: api_url,
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
             var route = proxy.routes['/'];
@@ -123,6 +130,7 @@ describe("API Tests", function () {
         util.add_target(proxy, path, port);
         expect(proxy.routes[path].target).toEqual(target);
         r.del(api_url + path, function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(204);
             expect(res.body).toEqual('');
             expect(proxy.routes[path]).toBe(undefined);
@@ -167,14 +175,16 @@ describe("API Tests", function () {
             },
         ];
         
-        r.get(api_url + "?inactive_since=endoftheuniverse", function (err, res, body) {
+        r.get(api_url + "?inactive_since=endoftheuniverse", function (error, res, body) {
+            expect(error).toBe(null);
             expect(res.statusCode).toEqual(400);
         });
     
         var seen = 0;
         var do_req = function (i) {
             var t = tests[i];
-            r.get(api_url + '?inactive_since=' + t.since.toISOString(), function (err, res, body) {
+            r.get(api_url + '?inactive_since=' + t.since.toISOString(), function (error, res, body) {
+                expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
                 var routes = JSON.parse(res.body);
                 var route_keys = Object.keys(routes);
