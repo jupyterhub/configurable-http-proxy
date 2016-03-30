@@ -157,20 +157,6 @@ if (args.statsdHost) {
         scope: args.statsdPrefix || 'chp',
     });
     log.info('Sending metrics to statsd at ' + args.statsdHost + ':' + args.statsdPort || 8125);
-} else {
-    // provide a dummy object with stubbed out methods
-    options.statsd = {
-        increment: function() {},
-        decrement: function() {},
-        timing: function() {},
-        gauge: function() {},
-        set: function() {},
-        createTimer: function() {
-            return {
-                stop: function() {}
-            }
-        }
-    };
 }
 
 // certs need to be provided for https redirection
