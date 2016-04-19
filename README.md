@@ -5,7 +5,7 @@ A simple wrapper around [node-http-proxy][] that adds a REST API for updating th
 The proxy is developed as a part of the [Jupyter Hub][] multi-user server.
 
 [node-http-proxy]: https://github.com/nodejitsu/node-http-proxy
-[Jupyter Hub]: https://github.com/jupyter/jupyterhub
+[Jupyter Hub]: https://github.com/jupyterhub/jupyterhub
 
 
 ## Install
@@ -16,7 +16,7 @@ To install `configurable-http-proxy`:
 
 To install from the repo:
     
-    git clone https://github.com/jupyter/configurable-http-proxy.git
+    git clone https://github.com/jupyterhub/configurable-http-proxy.git
     cd configurable-http-proxy
     # Use -g for global install
     npm install [-g]
