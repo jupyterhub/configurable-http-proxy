@@ -1,5 +1,9 @@
 # Changes in configurable-http-proxy
 
+## 1.2
+
+- add statsd support
+
 ## 1.1
 
 - add `--ssl-request-cert` args for certificate-based client authentication

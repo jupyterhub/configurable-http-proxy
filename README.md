@@ -46,7 +46,7 @@ in the proxy table:
     -h, --help                       output usage information
     -V, --version                    output the version number
     --ip <ip-address>                Public-facing IP of the proxy
-    --port <n>                       Public-facing port of the proxy
+    --port <n> (defaults to 8000)    Public-facing port of the proxy
     --ssl-key <keyfile>              SSL key to use, if any
     --ssl-cert <certfile>            SSL certificate to use, if any
     --ssl-ca <ca-file>               SSL certificate authority, if any
@@ -56,7 +56,7 @@ in the proxy table:
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
     --api-ip <ip>                    Inward-facing IP for API requests
-    --api-port <n>                   Inward-facing port for API requests
+    --api-port <n>                   Inward-facing port for API requests (defaults to --port=value+1)
     --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
     --api-ssl-cert <certfile>        SSL certificate to use, if any, for API requests
     --api-ssl-ca <ca-file>           SSL certificate authority, if any, for API requests
@@ -71,8 +71,10 @@ in the proxy table:
     --no-include-prefix              Don't include the routing prefix in proxied requests
     --insecure                       Disable SSL cert verification
     --host-routing                   Use host routing (host as first level of path)
+    --statsd-host <host>             Host to send statsd statistics to
+    --statsd-port <port>             Port to send statsd statistics to
+    --statsd-prefix <prefix>         Prefix to use for statsd statistics
     --log-level <loglevel>           Log level (debug, info, warn, error)
-
 ```
 
 ## REST API
