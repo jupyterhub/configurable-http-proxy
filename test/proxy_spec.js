@@ -1,5 +1,4 @@
 // jshint jasmine: true
-"use strict";
 
 var path = require('path');
 var util = require('../lib/testutil');
@@ -22,11 +21,11 @@ describe("Proxy Tests", function () {
     beforeEach(function (callback) {
         proxy = util.setup_proxy(port, callback);
     });
-    
+
     afterEach(function (callback) {
         util.teardown_servers(callback);
     });
-    
+
     it("basic HTTP request", function (done) {
         r(proxy_url, function (error, res, body) {
             expect(error).toBe(null);
@@ -38,7 +37,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("basic WebSocker request", function (done) {
         var ws = new WebSocket('ws://127.0.0.1:' + port);
         ws.on('error', function () {
@@ -65,14 +64,14 @@ describe("Proxy Tests", function () {
             ws.send('hi');
         });
     });
-    
+
     it("proxy_request event can modify headers", function (done) {
         var called = {};
         proxy.on('proxy_request', function (req, res) {
             req.headers.testing = 'Test Passed';
             called.proxy_request = true;
         });
-        
+
         r(proxy_url, function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(200);
@@ -84,11 +83,11 @@ describe("Proxy Tests", function () {
             expect(body.headers).toEqual(jasmine.objectContaining({
                 testing: 'Test Passed',
             }));
-            
+
             done();
         });
     });
-    
+
     it("target path is prepended by default", function (done) {
         util.add_target(proxy, '/bar', test_port, false, '/foo');
         r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
@@ -102,7 +101,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("handle URI encoding", function (done) {
         util.add_target(proxy, '/b@r/b r', test_port, false, '/foo');
         r(proxy_url + '/b%40r/b%20r/rest/of/it', function (error, res, body) {
@@ -116,7 +115,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("handle @ in URI same as %40", function (done) {
         util.add_target(proxy, '/b@r/b r', test_port, false, '/foo');
         r(proxy_url + '/b@r/b%20r/rest/of/it', function (error, res, body) {
@@ -130,7 +129,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("prependPath: false prevents target path from being prepended", function (done) {
         proxy.proxy.options.prependPath = false;
         util.add_target(proxy, '/bar', test_port, false, '/foo');
@@ -145,7 +144,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("includePrefix: false strips routing prefix from request", function (done) {
         proxy.includePrefix = false;
         util.add_target(proxy, '/bar', test_port, false, '/foo');
@@ -160,7 +159,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("includePrefix: false + prependPath: false", function (done) {
         proxy.includePrefix = false;
         proxy.proxy.options.prependPath = false;
@@ -191,7 +190,7 @@ describe("Proxy Tests", function () {
             done();
         });
     });
-    
+
     it("custom error target", function (done) {
         var port = 55555;
         util.setup_proxy(port, function (proxy) {
@@ -234,7 +233,7 @@ describe("Proxy Tests", function () {
         proxy.add_route('/missing', {
             target: 'https://127.0.0.1:54321',
         });
-        
+
         r(host_url + '/nope', function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(404);

@@ -4,6 +4,5 @@
   "forin": true,
   "latedef": true,
   "node": true,
-  "strict": true,
   "undef": true
 }

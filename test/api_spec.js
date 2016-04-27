@@ -1,5 +1,4 @@
 // jshint jasmine: true
-"use strict";
 
 var util = require('../lib/testutil');
 var extend = require('util')._extend;
@@ -13,9 +12,9 @@ describe("API Tests", function () {
     var api_port = port + 1;
     var proxy;
     var api_url = "http://127.0.0.1:" + api_port + '/api/routes';
-    
+
     var r;
-    
+
     beforeEach(function (callback) {
         function setup_r() {
             r = request.defaults({
@@ -28,11 +27,11 @@ describe("API Tests", function () {
         }
         proxy = util.setup_proxy(port, setup_r);
     });
-    
+
     afterEach(function (callback) {
         util.teardown_servers(callback);
     });
-    
+
     it("Basic proxy constructor", function () {
         expect(proxy).toBeDefined();
         expect(proxy.default_target).toBe(undefined);
@@ -41,7 +40,7 @@ describe("API Tests", function () {
             target: "http://127.0.0.1:" + (port + 2)
         });
     });
-    
+
     it("Default target is used for /any/random/url", function () {
         var target = proxy.target_for_req({url: '/any/random/url'});
         expect(target).toEqual({
@@ -49,7 +48,7 @@ describe("API Tests", function () {
             target: "http://127.0.0.1:" + (port + 2)
         });
     });
-    
+
     it("Default target is used for /", function () {
         var target = proxy.target_for_req({url: '/'});
         expect(target).toEqual({
@@ -57,7 +56,7 @@ describe("API Tests", function () {
             target: "http://127.0.0.1:" + (port + 2)
         });
     });
-    
+
     it("GET /api/routes fetches the routing table", function (done) {
         r(api_url, function (error, res, body) {
             expect(error).toBe(null);
@@ -69,7 +68,7 @@ describe("API Tests", function () {
             done();
         });
     });
-    
+
     it("POST /api/routes[/path] creates a new route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
@@ -86,7 +85,7 @@ describe("API Tests", function () {
             done();
         });
     });
-    
+
     it("POST /api/routes[/foo%20bar] handles URI escapes", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
@@ -105,7 +104,7 @@ describe("API Tests", function () {
             done();
         });
     });
-    
+
     it("POST /api/routes creates a new root route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
@@ -122,7 +121,7 @@ describe("API Tests", function () {
             done();
         });
     });
-    
+
     it("DELETE /api/routes[/path] deletes a route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
@@ -137,23 +136,23 @@ describe("API Tests", function () {
             done();
         });
     });
-    
+
     it("GET /api/routes?inactive_since= filters inactive entries", function (done) {
         var port = 8998;
         var path = '/yesterday';
         util.add_target(proxy, '/yesterday', port);
         util.add_target(proxy, '/today', port+1);
-    
+
         var now = new Date();
         var yesterday = new Date(now.getTime() - (24 * 3.6e6));
         var long_ago = new Date(1);
         var hour_ago = new Date(now.getTime() - 3.6e6);
         var hour_from_now = new Date(now.getTime() + 3.6e6);
-        
+
         proxy.remove_route('/');
-        
+
         proxy.routes['/yesterday'].last_activity = yesterday;
-    
+
         var tests = [
             {
                 name: 'long ago',
@@ -174,12 +173,12 @@ describe("API Tests", function () {
                 },
             },
         ];
-        
+
         r.get(api_url + "?inactive_since=endoftheuniverse", function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(400);
         });
-    
+
         var seen = 0;
         var do_req = function (i) {
             var t = tests[i];
@@ -209,7 +208,7 @@ describe("API Tests", function () {
                 }
             });
         };
-    
+
         do_req(0);
     });
 });
