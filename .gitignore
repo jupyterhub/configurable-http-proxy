@@ -6,4 +6,5 @@ node_modules
 bench/env
 bench/results
 bench/html
+coverage
 dist

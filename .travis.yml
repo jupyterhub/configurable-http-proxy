@@ -6,7 +6,11 @@ node_js:
   - "0.12"
   - "0.11"
   - "0.10"
-before_script:
-  - npm run -s jshint
+install:
+  - npm install -g codecov
+  - npm install
 script:
+  - npm run -s jshint
   - travis_retry npm test
+after_success:
+  - codecov

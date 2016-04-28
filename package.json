@@ -16,6 +16,7 @@
     "winston": "~0.8"
   },
   "devDependencies": {
+    "istanbul": "^0.4.3",
     "jasmine-node": "~2",
     "jshint": "*",
     "request": "~2",
@@ -34,6 +35,7 @@
   },
   "scripts": {
     "jshint": "jshint bin/ lib/ test/",
-    "test": "jasmine-node --captureExceptions test"
+    "test": "istanbul cover jasmine-node --captureExceptions test",
+    "test-cover-html": "istanbul cover --report html jasmine-node --captureExceptions test"
   }
 }
