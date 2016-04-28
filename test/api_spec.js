@@ -1,4 +1,5 @@
-// jshint jasmine: true
+// jshint expr: true
+// jshint mocha: true
 
 var util = require('../lib/testutil');
 var extend = require('util')._extend;
@@ -6,6 +7,11 @@ var request = require('request');
 var log = require('winston');
 // disable logging during tests
 log.remove(log.transports.Console);
+
+var chai = require('chai');
+var expect = chai.expect;
+var chaiSubset = require('chai-subset');
+chai.use(chaiSubset);
 
 describe("API Tests", function () {
     var port = 8902;
@@ -33,9 +39,9 @@ describe("API Tests", function () {
     });
 
     it("Basic proxy constructor", function () {
-        expect(proxy).toBeDefined();
-        expect(proxy.default_target).toBe(undefined);
-        expect(proxy.target_for_req({url: '/'})).toEqual({
+        expect(proxy).to.not.be.undefined;
+        expect(proxy.default_target).to.be.undefined;
+        expect(proxy.target_for_req({url: '/'})).to.deep.equal({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
         });
@@ -43,7 +49,7 @@ describe("API Tests", function () {
 
     it("Default target is used for /any/random/url", function () {
         var target = proxy.target_for_req({url: '/any/random/url'});
-        expect(target).toEqual({
+        expect(target).to.deep.equal({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
         });
@@ -51,7 +57,7 @@ describe("API Tests", function () {
 
     it("Default target is used for /", function () {
         var target = proxy.target_for_req({url: '/'});
-        expect(target).toEqual({
+        expect(target).to.deep.equal({
             prefix: '/',
             target: "http://127.0.0.1:" + (port + 2)
         });
@@ -59,12 +65,12 @@ describe("API Tests", function () {
 
     it("GET /api/routes fetches the routing table", function (done) {
         r(api_url, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(200);
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(200);
             body = JSON.parse(res.body);
             var keys = Object.keys(body);
-            expect(keys.length).toEqual(1);
-            expect(keys).toContain('/');
+            expect(keys.length).to.equal(1);
+            expect(keys).to.include('/');
             done();
         });
     });
@@ -76,12 +82,12 @@ describe("API Tests", function () {
             url: api_url + '/user/foo',
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(201);
-            expect(res.body).toEqual('');
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(201);
+            expect(res.body).to.equal('');
             var route = proxy.routes['/user/foo'];
-            expect(route.target).toEqual(target);
-            expect(typeof route.last_activity).toEqual('object');
+            expect(route.target).to.equal(target);
+            expect(typeof route.last_activity).to.equal('object');
             done();
         });
     });
@@ -93,14 +99,14 @@ describe("API Tests", function () {
             url: api_url + '/user/foo%40bar',
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(201);
-            expect(res.body).toEqual('');
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(201);
+            expect(res.body).to.equal('');
             var route = proxy.routes['/user/foo@bar'];
-            expect(route.target).toEqual(target);
-            expect(typeof route.last_activity).toEqual('object');
+            expect(route.target).to.equal(target);
+            expect(typeof route.last_activity).to.equal('object');
             route = proxy.target_for_req({url: '/user/foo@bar/path'});
-            expect(route.target).toEqual(target);
+            expect(route.target).to.equal(target);
             done();
         });
     });
@@ -112,12 +118,12 @@ describe("API Tests", function () {
             url: api_url,
             body: JSON.stringify({target: target}),
         }, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(201);
-            expect(res.body).toEqual('');
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(201);
+            expect(res.body).to.equal('');
             var route = proxy.routes['/'];
-            expect(route.target).toEqual(target);
-            expect(typeof route.last_activity).toEqual('object');
+            expect(route.target).to.equal(target);
+            expect(typeof route.last_activity).to.equal('object');
             done();
         });
     });
@@ -127,12 +133,12 @@ describe("API Tests", function () {
         var target = 'http://127.0.0.1:' + port;
         var path = '/user/bar';
         util.add_target(proxy, path, port);
-        expect(proxy.routes[path].target).toEqual(target);
+        expect(proxy.routes[path].target).to.equal(target);
         r.del(api_url + path, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(204);
-            expect(res.body).toEqual('');
-            expect(proxy.routes[path]).toBe(undefined);
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(204);
+            expect(res.body).to.equal('');
+            expect(proxy.routes[path]).to.be.undefined;
             done();
         });
     });
@@ -175,28 +181,28 @@ describe("API Tests", function () {
         ];
 
         r.get(api_url + "?inactive_since=endoftheuniverse", function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(400);
+            expect(error).to.be.null;
+            expect(res.statusCode).to.equal(400);
         });
 
         var seen = 0;
         var do_req = function (i) {
             var t = tests[i];
             r.get(api_url + '?inactive_since=' + t.since.toISOString(), function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
+                expect(error).to.be.null;
+                expect(res.statusCode).to.equal(200);
                 var routes = JSON.parse(res.body);
                 var route_keys = Object.keys(routes);
                 var expected_keys = Object.keys(t.expected);
                 var key;
                 Object.keys(routes).map(function (key) {
                     // check that all routes are expected
-                    expect(expected_keys).toContain(key);
+                    expect(expected_keys).to.include(key);
                 });
                 Object.keys(t.expected).map(function (key) {
                     // check that all expected routes are found
-                    expect(route_keys).toContain(key);
-                    expect(routes[key].last_activity).toEqual(
+                    expect(route_keys).to.include(key);
+                    expect(routes[key].last_activity).to.equal(
                         proxy.routes[key].last_activity.toISOString()
                     );
                 });
