@@ -1,10 +1,9 @@
 // jshint jasmine: true
-"use strict";
 
 var URLTrie = require('../lib/trie').URLTrie;
 
 describe("URLTrie", function () {
-    
+
     var full_trie = function () {
         // return a simple trie for testing
         var trie = new URLTrie();
@@ -30,13 +29,13 @@ describe("URLTrie", function () {
         expect(trie.size).toEqual(0);
         expect(trie.data).toBe(undefined);
         expect(trie.branches).toEqual({});
-    
+
         trie = new URLTrie('/foo');
         expect(trie.size).toEqual(0);
         expect(trie.prefix).toEqual('/foo');
         expect(trie.data).toBe(undefined);
         expect(trie.branches).toEqual({});
-    
+
         done();
     });
 
@@ -59,13 +58,13 @@ describe("URLTrie", function () {
         expect(node.data).toEqual(-1);
         done();
     });
-    
+
     it("trie_add", function (done) {
         var trie = new URLTrie();
-    
+
         trie.add('foo', 1);
         expect(trie.size).toEqual(1);
-    
+
         expect(trie.data).toBe(undefined);
         expect(trie.branches.foo.data).toEqual(1);
         expect(trie.branches.foo.size).toEqual(0);
@@ -149,7 +148,7 @@ describe("URLTrie", function () {
         trie.remove('/a/b/c/d');
         expect(b.size).toEqual(2);
         expect(b.branches.c).toBe(undefined);
-        
+
         trie.remove('/');
         node = trie.get('/');
         expect(node).toBe(undefined);
@@ -162,42 +161,42 @@ describe("URLTrie", function () {
         trie.add('/', {
             path: '/'
         });
-        
+
         node = trie.get('/prefix/sub');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
-        
+
         // add /prefix/sub/tree
         trie.add('/prefix/sub/tree', {});
-        
+
         // which shouldn't change the results for /prefix and /prefix/sub
         node = trie.get('/prefix');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
-        
+
         node = trie.get('/prefix/sub');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
-        
+
         node = trie.get('/prefix/sub/tree');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/prefix/sub/tree');
-        
+
         // add /prefix, and run one more time
         trie.add('/prefix', {});
-        
+
         node = trie.get('/prefix');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/prefix');
-        
+
         node = trie.get('/prefix/sub');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/prefix');
-        
+
         node = trie.get('/prefix/sub/tree');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/prefix/sub/tree');
-        
+
         done();
     });
 
@@ -206,7 +205,7 @@ describe("URLTrie", function () {
         trie.add('/', {
             path: '/'
         });
-        
+
         node = trie.get('/prefix/sub');
         expect(node).toBeTruthy();
         expect(node.prefix).toEqual('/');
