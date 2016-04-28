@@ -8,3 +8,5 @@ node_js:
   - "0.10"
 before_script:
   - npm run -s jshint
+script:
+  - travis_retry npm test
