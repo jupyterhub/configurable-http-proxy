@@ -13,4 +13,4 @@ script:
   - npm run -s jshint
   - travis_retry npm test
 after_success:
-  - codecov
+  - npm run codecov

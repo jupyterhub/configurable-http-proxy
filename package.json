@@ -16,9 +16,9 @@
     "winston": "~0.8"
   },
   "devDependencies": {
-    "istanbul": "^0.4.3",
     "jasmine-node": "~2",
     "jshint": "*",
+    "nyc": "^6.4.0",
     "request": "~2",
     "ws": "~0.4"
   },
@@ -35,7 +35,8 @@
   },
   "scripts": {
     "jshint": "jshint bin/ lib/ test/",
-    "test": "istanbul cover jasmine-node --captureExceptions test",
-    "test-cover-html": "istanbul cover --report html jasmine-node --captureExceptions test"
+    "test": "nyc jasmine-node --captureExceptions test",
+    "coverage-html": "nyc report --reporter=html",
+    "codecov": "nyc report --reporter=lcov && codecov"
   }
 }
