@@ -5,6 +5,8 @@ var util = require('../lib/testutil');
 var request = require('request');
 var WebSocket = require('ws');
 
+var ConfigurableProxy = require('../lib/configproxy').ConfigurableProxy;
+
 describe("Proxy Tests", function () {
     var port = 8902;
     var test_port = port + 10;
@@ -158,6 +160,15 @@ describe("Proxy Tests", function () {
             }));
             done();
         });
+    });
+
+    it('options.default_target', function () {
+      var options = {
+        default_target: 'http://127.0.0.1:9001',
+      };
+
+      var cp = new ConfigurableProxy(options);
+      expect(cp.routes['/'].target).toEqual('http://127.0.0.1:9001');
     });
 
     it("includePrefix: false + prependPath: false", function (done) {
