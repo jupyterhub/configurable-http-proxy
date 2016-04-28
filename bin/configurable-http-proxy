@@ -184,6 +184,11 @@ var proxy = new ConfigurableProxy(options);
 
 var listen = {};
 listen.port = parseInt(args.port) || 8000;
+if (args.ip === '*') {
+    // handle ip=* alias for all interfaces
+    log.warn("Interpreting ip='*' as all-interfaces. Use 0.0.0.0 or ''.")
+    args.ip = '';
+}
 listen.ip = args.ip;
 listen.api_ip = args.apiIp || 'localhost';
 listen.api_port = args.apiPort || listen.port + 1;
