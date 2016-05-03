@@ -36,6 +36,7 @@ args
     .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port])')
     .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port])')
     .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
+    .option('--pid-file <pid-file>', 'Write our PID to a file')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
@@ -184,7 +185,7 @@ var listen = {};
 listen.port = parseInt(args.port) || 8000;
 if (args.ip === '*') {
     // handle ip=* alias for all interfaces
-    log.warn("Interpreting ip='*' as all-interfaces. Use 0.0.0.0 or ''.")
+    log.warn("Interpreting ip='*' as all-interfaces. Use 0.0.0.0 or ''.");
     args.ip = '';
 }
 listen.ip = args.ip;
@@ -203,6 +204,17 @@ log.info("Proxy API at %s://%s:%s/api/routes",
     options.api_ssl ? 'https' : 'http',
     (listen.api_ip || '*'),
     listen.api_port);
+
+if (args.pidFile) {
+    log.info("Writing pid %s to %s", process.pid, args.pidFile);
+    var fd = fs.openSync(args.pidFile, 'w');
+    fs.writeSync(fd, process.pid.toString());
+    fs.closeSync(fd);
+    process.on('exit', function () {
+        log.debug("Removing %s", args.pidFile);
+        fs.unlinkSync(args.pidFile);
+    });
+}
 
 // Redirect HTTP to HTTPS on the proxy's port
 if (options.redirectPort && listen.port !== 80) {
