@@ -231,3 +231,15 @@ if (options.redirectPort && listen.port !== 80) {
     res.end();
   }).listen(options.redirectPort);
 }
+
+// trigger normal exit on sigint
+// without this, PID cleanup won't fire on SIGINT
+process.on('SIGINT', function () {
+  log.warn("Interrupted");
+  process.exit(2);
+});
+
+// log uncaught exceptions, don't exit now that setup is complete
+process.on('uncaughtException', function(e) {
+  log.error('Uncaught Exception', e.stack);
+});
