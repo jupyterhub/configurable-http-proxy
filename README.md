@@ -52,6 +52,7 @@ in the proxy table:
     --ssl-ca <ca-file>               SSL certificate authority, if any
     --ssl-request-cert               Request SSL certs to authenticate clients
     --ssl-reject-unauthorized        Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
+    --ssl-protocol <ssl-protocol>    Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
     --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
@@ -66,6 +67,7 @@ in the proxy table:
     --error-target <host>            Alternate server for handling proxy errors (proto://host[:port])
     --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
     --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
+    --pid-file <pid-file>            Write our PID to a file
     --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
     --no-prepend-path                Avoid prepending target paths to proxied requests
     --no-include-prefix              Don't include the routing prefix in proxied requests
