@@ -22,6 +22,7 @@ args
     .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
     .option('--ssl-request-cert', 'Request SSL certs to authenticate clients')
     .option('--ssl-reject-unauthorized', 'Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)')
+    .option('--ssl-protocol <ssl-protocol>', 'Set specific SSL protocol, e.g. TLSv1.2, SSLv3')
     .option('--ssl-ciphers <ciphers>', '`:`-separated ssl cipher list. Default excludes RC4')
     .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
     .option('--ssl-dhparam <dhparam-file>', 'SSL Diffie-Helman Parameters pem file, if any')
@@ -114,6 +115,9 @@ if (args.sslKey || args.sslCert) {
     if (args.sslDhparam) {
         options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
     }
+    if (args.sslProtocol) {
+      options.ssl.secureProtocol = args.sslProtocol + '_method';
+    }
     options.ssl.ciphers = ssl_ciphers;
     options.ssl.honorCipherOrder = true;
     options.ssl.requestCert = args.sslRequestCert;
@@ -134,6 +138,9 @@ if (args.apiSslKey || args.apiSslCert) {
     }
     if (args.sslDhparam) {
         options.api_ssl.dhparam = fs.readFileSync(args.sslDhparam);
+    }
+    if (args.sslProtocol) {
+      options.api_ssl.secureProtocol = args.sslProtocol + '_method';
     }
     options.api_ssl.ciphers = ssl_ciphers;
     options.api_ssl.honorCipherOrder = true;
