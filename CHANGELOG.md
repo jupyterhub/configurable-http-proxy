@@ -1,5 +1,10 @@
 # Changes in configurable-http-proxy
 
+## 1.3
+
+- add `--ssl-protocol`, so that one can restrict to TLS, e.g. `--ssl-protocol=TLSv1`
+- fix handling of ``--no-x-forward`
+
 ## 1.2
 
 - add statsd support
