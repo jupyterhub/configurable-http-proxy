@@ -1,42 +1,52 @@
 # configurable-http-proxy
 
-A simple wrapper around [node-http-proxy][] that adds a REST API for updating the routing table.
+[![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
 
-The proxy is developed as a part of the [Jupyter Hub][] multi-user server.
+
+**configurable-http-proxy**, a simple wrapper around [node-http-proxy][], adds
+a REST API for updating the routing table.
+
+The proxy is developed as a part of the [JupyterHub][] multi-user server.
+
+Note: [node-http-proxy][] is an HTTP programmable proxying library
+that supports websockets. It is suitable for implementing components such
+as reverse proxies and load balancers. configurable-http-proxy wraps
+node-http-proxy to provide this functionality to JupyterHub.
 
 [node-http-proxy]: https://github.com/nodejitsu/node-http-proxy
-[Jupyter Hub]: https://github.com/jupyterhub/jupyterhub
+[JupyterHub]: https://github.com/jupyterhub/jupyterhub
 
 
 ## Install
 
-To install `configurable-http-proxy`:
+To install `configurable-http-proxy` globally using the npm package manager:
 
     npm install -g configurable-http-proxy
 
-To install from the repo:
+To install from source found in this GitHub repo:
     
     git clone https://github.com/jupyterhub/configurable-http-proxy.git
     cd configurable-http-proxy
     # Use -g for global install
     npm install [-g]
 
+
 ## Using configurable-http-proxy
 
+The configurable proxy runs two HTTP(S) servers:
 
-the configurable proxy runs two HTTP(S) servers:
+1. The **public-facing interface to your application** (controlled by `--ip`,
+   `--port`, etc.). This listens on **all interfaces** by default.
+2. The **inward-facing REST API** (`--api-ip`, `--api-port`). This listens on
+   localhost by default. The REST API uses token authorization, set by the
+   `CONFIGPROXY_AUTH_TOKEN` environment variable.
 
-1. The public-facing interface to your application (controlled by `--ip`, `--port`, etc.).
-   This listens on **all interfaces** by default.
-2. The inward-facing REST API (`--api-ip`, `--api-port`). This listens on localhost by default.
-   The REST API uses token authorization, set by the `CONFIGPROXY_AUTH_TOKEN` environment variable.
-
-When you start the proxy, you can set a default target to be used when no match is found
-in the proxy table:
+When you start the proxy, you can set a default target to be used when no
+matching route is found in the proxy table:
 
     $ configurable-http-proxy --default-target=http://localhost:8888
 
-### Options
+### Command-line options
 
 ```
   Usage: configurable-http-proxy [options]
@@ -79,11 +89,10 @@ in the proxy table:
     --log-level <loglevel>           Log level (debug, info, warn, error)
 ```
 
-## REST API
+## Using the REST API
 
 The REST API is authenticated via a token in the `Authorization` header.
-The API is served under the `/api/routes` base URL.
-For example:
+The API is served under the `/api/routes` base URL. For example:
 
     $> curl -H "Authorization: token $CONFIGPROXY_AUTH_TOKEN" http://localhost:8001/api/routes
 
@@ -92,13 +101,17 @@ For example:
 
     GET /api/routes[?inactive_since=ISO8601-timestamp]
 
-Returns a JSON dictionary of the current routing table. This *excludes* the default route.
-If the `inactive_since` URL parameter is given as an [ISO8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp,
-only routes whose `last_activity` is earlier than the timestamp will be returned.
+Returns a JSON dictionary of the current routing table.
 
-#### Response
+This JSON dictionary *excludes* the default route. If the `inactive_since` URL
+parameter is given as an [ISO8601](http://en.wikipedia.org/wiki/ISO_8601)
+timestamp, only routes whose `last_activity` is earlier than the timestamp
+will be returned.
+
+**Response**
 
     status: 200 OK
+
 
 ```json
 {
@@ -113,71 +126,75 @@ only routes whose `last_activity` is earlier than the timestamp will be returned
 }
 ```
 
-The `last_activity` timestamp is updated whenever the proxy passes any data to or from
-the proxy target.
+The `last_activity` timestamp is updated whenever the proxy passes data to
+or from the proxy target.
 
 
 ### Adding new routes
 
-POST requests create new routes. The body of the request should be a JSON dictionary
-with at least one key: `target`, the host to be proxied.
+POST requests create new routes. The body of the request should be a JSON
+dictionary with at least one key: `target`, the target host to be proxied.
 
     POST /api/routes/[:path]
 
-#### Input
+**Input**
 
-<dl>
-    <dt>target</dt>
-    <dd>The host URL</dd>
-</dl>
+`target`: The host URL
 
-#### Response
+**Response**
 
     status: 201 Created
 
-Any request to `/path/prefix` on the proxy's public interface will be proxied to `target`.
+Any request to `/path/prefix` on the proxy's public interface will be proxied
+to `target`.
 
 ### Deleting routes
 
     DELETE /api/routes/[:path]
 
-#### Response
+**Response**
 
     status: 204 No Content
 
 ## Custom error pages
 
-CHP 0.5 adds two ways to provide custom error pages when the proxy encounters an error,
-and has no proxy target to handle a request. There are two typical errors that CHP can hit:
+With version 0.5, configurable-host-proxy (CHP) adds two ways to provide
+custom error pages when the proxy encounters an error, and has no proxy target
+to handle a request. There are two typical errors that CHP can hit:
 
 - 404: a client has requested a URL for which there is no routing target.
   This is impossible if a default target has been specified.
+  
 - 503: a route exists, but the upstream server isn't responding.
   This is more common, and can be due to any number of reasons,
   including the target service having died or not finished starting.
 
 ### error-path
 
-If you specify `--error-path /usr/share/chp-errors`,
-then when a proxy error occurs, CHP will look in `/usr/share/chp-errors/CODE.html` for an html page to serve,
-e.g. `404.html` or `503.html`.
-If no file exists for the error code,  `error.html` file will be used.
-If you use this scheme, make sure you have at least `error.html`.
+If you specify `--error-path /usr/share/chp-errors`, then when a proxy error 
+occurs, CHP will look in `/usr/share/chp-errors/CODE.html` for an html page
+to serve, e.g. `404.html` or `503.html`.
+
+If no file exists for the error code, `error.html` file will be used.
+If you use this approach, make sure you have created `error.html`.
 
 ### error-target
 
 If you specify `--error-target http://localhost:1234`,
-then when the proxy encounters an error, it will make a GET request to this server, with URL `/CODE`,
-and the URL of the failing request escaped in a URL parameter, e.g.:
+then when the proxy encounters an error, it will make a GET request to this
+server, with URL `/CODE`, and the URL of the failing request escaped in a URL
+parameter, e.g.:
 
     GET /404?url=%2Fescaped%2Fpath
 
 
 ## Host-based routing
 
-If `--host-routing` is given, the proxy will pick a target based on the host of the incoming request,
-instead of the URL prefix.
-The API when using host-based routes is the same as if the hostname were the first part of the URL path, e.g.
+If `--host-routing` is given, the proxy will pick a target based on the host
+of the incoming request, instead of the URL prefix.
+
+The API when using host-based routes is the same as if the hostname were the
+first part of the URL path, e.g.:
 
 ```python
 {
@@ -185,5 +202,3 @@ The API when using host-based routes is the same as if the hostname were the fir
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
-
-etc.
