@@ -18,6 +18,7 @@ describe("Proxy Tests", function () {
     var r = request.defaults({
         method: 'GET',
         url: proxy_url,
+        followRedirect: false,
     });
 
     beforeEach(function (callback) {
@@ -258,4 +259,42 @@ describe("Proxy Tests", function () {
             });
         });
     });
+
+    it("Redirect location untouched without rewrite options", function (done) {
+        var redirect_to = 'http://foo.com:12345/whatever';
+        util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to);
+        r(proxy_url + '/external/urlpath/rest/of/it', function (error, res, body) {
+            expect(error).toBe(null);
+            expect(res.statusCode).toEqual(301);
+            expect(res.headers.location).toEqual(redirect_to); 
+            done();
+        });
+    });
+
+    it("Redirect location with rewriting", function (done) {
+        var proxy_port = 55555;
+        var options = {
+            protocolRewrite: "https",
+            autoRewrite: true,
+        };
+
+        // where the backend server redirects us.
+        // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
+        var redirect_to = "http://127.0.0.1:"+test_port+"/whatever";
+
+        var validation_callback = function (proxy) {
+            util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to);
+            var url = 'http://127.0.0.1:' + proxy_port;
+
+            r(url + '/external/urlpath/', function (error, res, body) {
+                expect(error).toBe(null);
+                expect(res.statusCode).toEqual(301);
+                expect(res.headers.location).toEqual("https://127.0.0.1:"+proxy_port+"/whatever");
+                done();
+            });
+        };
+
+        var proxy = util.setup_proxy(proxy_port, validation_callback, options, []);
+    });
+
 });

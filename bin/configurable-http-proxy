@@ -42,6 +42,8 @@ args
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
     .option('--no-include-prefix', "Don't include the routing prefix in proxied requests")
+    .option('--auto-rewrite', "Rewrite the Location header host/port in redirect responses")
+    .option('--protocol-rewrite <proto>', "Rewrite the Location header protocol in redirect responses to the specified protocol")
     .option('--insecure', "Disable SSL cert verification")
     .option('--host-routing', "Use host routing (host as first level of path)")
     .option('--statsd-host <host>', 'Host to send statsd statistics to')
@@ -181,6 +183,15 @@ if (args.insecure) options.secure = false;
 options.xfwd = args.xForward ? false : true;
 options.prependPath = args.prependPath;
 options.includePrefix = args.includePrefix;
+if (args.autoRewrite) {
+    options.autoRewrite = true;
+    log.info("AutoRewrite of Location headers enabled.");
+}
+
+if (args.protocolRewrite) {
+    options.protocolRewrite = args.protocolRewrite;
+    log.info("ProtocolRewrite enabled. Rewriting to "+options.protocolRewrite);
+}
 
 if (!options.auth_token) {
     log.warn("REST API is not authenticated.");
