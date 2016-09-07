@@ -266,7 +266,7 @@ describe("Proxy Tests", function () {
         r(proxy_url + '/external/urlpath/rest/of/it', function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(301);
-            expect(res.headers["location"]).toEqual(redirect_to);
+            expect(res.headers.location).toEqual(redirect_to); 
             done();
         });
     });
@@ -289,7 +289,7 @@ describe("Proxy Tests", function () {
             r(url + '/external/urlpath/', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(301);
-                expect(res.headers["location"]).toEqual("https://127.0.0.1:"+proxy_port+"/whatever");
+                expect(res.headers.location).toEqual("https://127.0.0.1:"+proxy_port+"/whatever");
                 done();
             });
         };
