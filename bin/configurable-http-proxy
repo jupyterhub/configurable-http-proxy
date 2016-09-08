@@ -180,7 +180,7 @@ if (options.error_target && options.error_path) {
 
 // passthrough for http-proxy options
 if (args.insecure) options.secure = false;
-options.xfwd = args.xForward ? false : true;
+options.xfwd = args.xForward;
 options.prependPath = args.prependPath;
 options.includePrefix = args.includePrefix;
 if (args.autoRewrite) {
