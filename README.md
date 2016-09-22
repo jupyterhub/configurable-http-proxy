@@ -50,6 +50,8 @@ The configurable proxy runs two HTTP(S) servers:
    localhost by default. The REST API uses token authorization, set by the
    `CONFIGPROXY_AUTH_TOKEN` environment variable.
 
+![](./doc/_static/chp.png)
+
 ### Setting a default target
 
 When you start the proxy from the command line, you can set a 
