@@ -169,7 +169,7 @@ describe("Proxy Tests", function () {
       };
 
       var cp = new ConfigurableProxy(options);
-      expect(cp.routes['/'].target).toEqual('http://127.0.0.1:9001');
+      expect(cp._routes.get('/').target).toEqual('http://127.0.0.1:9001');
     });
 
     it("includePrefix: false + prependPath: false", function (done) {
@@ -266,7 +266,7 @@ describe("Proxy Tests", function () {
         r(proxy_url + '/external/urlpath/rest/of/it', function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(301);
-            expect(res.headers.location).toEqual(redirect_to); 
+            expect(res.headers.location).toEqual(redirect_to);
             done();
         });
     });

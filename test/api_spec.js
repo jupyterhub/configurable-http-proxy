@@ -79,7 +79,7 @@ describe("API Tests", function () {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
-            var route = proxy.routes['/user/foo'];
+            var route = proxy._routes.get('/user/foo');
             expect(route.target).toEqual(target);
             expect(typeof route.last_activity).toEqual('object');
             done();
@@ -96,7 +96,7 @@ describe("API Tests", function () {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
-            var route = proxy.routes['/user/foo@bar'];
+            var route = proxy._routes.get('/user/foo@bar');
             expect(route.target).toEqual(target);
             expect(typeof route.last_activity).toEqual('object');
             route = proxy.target_for_req({url: '/user/foo@bar/path'});
@@ -115,7 +115,7 @@ describe("API Tests", function () {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
-            var route = proxy.routes['/'];
+            var route = proxy._routes.get('/');
             expect(route.target).toEqual(target);
             expect(typeof route.last_activity).toEqual('object');
             done();
@@ -127,12 +127,12 @@ describe("API Tests", function () {
         var target = 'http://127.0.0.1:' + port;
         var path = '/user/bar';
         util.add_target(proxy, path, port);
-        expect(proxy.routes[path].target).toEqual(target);
+        expect(proxy._routes.get(path).target).toEqual(target);
         r.del(api_url + path, function (error, res, body) {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(204);
             expect(res.body).toEqual('');
-            expect(proxy.routes[path]).toBe(undefined);
+            expect(proxy._routes.get(path)).toBe(undefined);
             done();
         });
     });
@@ -151,7 +151,7 @@ describe("API Tests", function () {
 
         proxy.remove_route('/');
 
-        proxy.routes['/yesterday'].last_activity = yesterday;
+        proxy._routes.get('/yesterday').last_activity = yesterday;
 
         var tests = [
             {
@@ -197,7 +197,7 @@ describe("API Tests", function () {
                     // check that all expected routes are found
                     expect(route_keys).toContain(key);
                     expect(routes[key].last_activity).toEqual(
-                        proxy.routes[key].last_activity.toISOString()
+                        proxy._routes.get(key).last_activity.toISOString()
                     );
                 });
                 seen += 1;
