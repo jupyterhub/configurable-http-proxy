@@ -7,12 +7,6 @@ describe("MemoryStore", function () {
     this.subject = store.MemoryStore();
   });
 
-  describe("routes", function () {
-    it("creates an empty routes object", function () {
-      expect(this.subject.getAll()).toEqual({});
-    });
-  });
-
   describe("get", function () {
     it("returns the data for the specified path", function () {
       this.subject.add("/my_route", { "test": "value" });
@@ -53,6 +47,23 @@ describe("MemoryStore", function () {
       this.subject.add("/my_route", { "test": "updatedValue" });
 
       expect(this.subject.get("/my_route")).toEqual({ "test": "updatedValue" });
+    });
+  });
+
+  describe("update", function () {
+    it("merges supplied data with existing data", function () {
+      this.subject.add("/my_route", { "version": 1, "test": "value" });
+      this.subject.update("/my_route", { "version": 2 });
+
+      var route = this.subject.get("/my_route");
+      expect(route["version"]).toEqual(2);
+      expect(route["test"]).toEqual("value");
+    });
+
+    it("throws an error when the route doesn't exist", function () {
+      var subject = this.subject;
+
+      expect(function() { subject.update("/my_route", { "test": "value" }) }).toThrow();
     });
   });
 
