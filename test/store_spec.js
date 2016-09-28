@@ -19,6 +19,16 @@ describe("MemoryStore", function () {
     });
   });
 
+  describe("getTarget", function () {
+    it("returns the target object for the path", function () {
+      this.subject.add("/my_route", { "target": "http://localhost:8213" });
+
+      var target = this.subject.getTarget("/my_route");
+      expect(target.prefix).toEqual("/my_route");
+      expect(target.data.target).toEqual("http://localhost:8213");
+    });
+  });
+
   describe("getAll", function () {
     it("returns all routes", function () {
       this.subject.add("/my_route", { "test": "value1" });
