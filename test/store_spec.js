@@ -8,10 +8,13 @@ describe("MemoryStore", function () {
   });
 
   describe("get", function () {
-    it("returns the data for the specified path", function () {
+    it("returns the data for the specified path", function (done) {
       this.subject.add("/my_route", { "test": "value" });
 
-      expect(this.subject.get("/my_route")).toEqual({ "test": "value" });
+      this.subject.get("/my_route", function (data) {
+        expect(data).toEqual({ "test": "value" });
+        done();
+      });
     });
 
     it("returns undefined when not found", function () {
@@ -20,85 +23,103 @@ describe("MemoryStore", function () {
   });
 
   describe("getTarget", function () {
-    it("returns the target object for the path", function () {
+    it("returns the target object for the path", function (done) {
       this.subject.add("/my_route", { "target": "http://localhost:8213" });
 
-      var target = this.subject.getTarget("/my_route");
-      expect(target.prefix).toEqual("/my_route");
-      expect(target.data.target).toEqual("http://localhost:8213");
+      this.subject.getTarget("/my_route", function (target) {
+        expect(target.prefix).toEqual("/my_route");
+        expect(target.data.target).toEqual("http://localhost:8213");
+        done();
+      });
     });
   });
 
   describe("getAll", function () {
-    it("returns all routes", function () {
+    it("returns all routes", function (done) {
       this.subject.add("/my_route", { "test": "value1" });
       this.subject.add("/my_other_route", { "test": "value2" });
 
-      var routes = this.subject.getAll();
-      expect(Object.keys(routes).length).toEqual(2);
-      expect(routes["/my_route"]).toEqual({ "test": "value1" });
-      expect(routes["/my_other_route"]).toEqual({ "test": "value2" });
+      this.subject.getAll(function (routes) {
+        expect(Object.keys(routes).length).toEqual(2);
+        expect(routes["/my_route"]).toEqual({ "test": "value1" });
+        expect(routes["/my_other_route"]).toEqual({ "test": "value2" });
+        done();
+      });
     });
 
-    it("returns a blank object when no routes defined", function () {
-      expect(this.subject.getAll()).toEqual({});
+    it("returns a blank object when no routes defined", function (done) {
+      this.subject.getAll(function (routes) {
+        expect(routes).toEqual({});
+        done();
+      });
     });
   });
 
   describe("add", function () {
-    it("adds data to the store for the specified path", function () {
+    it("adds data to the store for the specified path", function (done) {
       this.subject.add("/my_route", { "test": "value" });
 
-      expect(this.subject.get("/my_route")).toEqual({ "test": "value" });
+      this.subject.get("/my_route", function (route) {
+        expect(route).toEqual({ "test": "value" });
+        done();
+      });
     });
 
-    it("overwrites any existing values", function () {
+    it("overwrites any existing values", function (done) {
       this.subject.add("/my_route", { "test": "value" });
       this.subject.add("/my_route", { "test": "updatedValue" });
 
-      expect(this.subject.get("/my_route")).toEqual({ "test": "updatedValue" });
+      this.subject.get("/my_route", function (route) {
+        expect(route).toEqual({ "test": "updatedValue" });
+        done();
+      });
     });
   });
 
   describe("update", function () {
-    it("merges supplied data with existing data", function () {
+    it("merges supplied data with existing data", function (done) {
       this.subject.add("/my_route", { "version": 1, "test": "value" });
       this.subject.update("/my_route", { "version": 2 });
 
-      var route = this.subject.get("/my_route");
-      expect(route["version"]).toEqual(2);
-      expect(route["test"]).toEqual("value");
-    });
-
-    it("throws an error when the route doesn't exist", function () {
-      var subject = this.subject;
-
-      expect(function() { subject.update("/my_route", { "test": "value" }) }).toThrow();
+      this.subject.get("/my_route", function (route) {
+        expect(route.version).toEqual(2);
+        expect(route.test).toEqual("value");
+        done();
+      });
     });
   });
 
   describe("remove", function () {
-    it("removes a route from the table", function () {
+    it("removes a route from the table", function (done) {
       this.subject.add("/my_route", { "test": "value" });
       this.subject.remove("/my_route");
 
-      expect(this.subject.get("/my_route")).toBe(undefined);
+      this.subject.get("/my_route", function (route) {
+        expect(route).toBe(undefined);
+        done();
+      });
     });
 
-    it("doesn't explode when route is not defined", function () {
+    it("doesn't explode when route is not defined", function (done) {
       // would blow up if an error was thrown
-      this.subject.remove("/my_route");
+      this.subject.remove("/my_route", done);
     });
   });
 
   describe("hasRoute", function () {
-    it("returns false when the path is not found", function () {
+    it("returns false when the path is not found", function (done) {
       this.subject.add("/my_route", { "test": "value" });
-      expect(this.subject.hasRoute("/my_route")).toBe(true)
+      this.subject.hasRoute("/my_route", function (result) {
+        expect(result).toBe(true);
+        done();
+      });
     });
 
-    it("returns false when the path is not found", function () {
-      expect(this.subject.hasRoute("/wut")).toBe(false)
+    it("returns false when the path is not found", function (done) {
+      this.subject.hasRoute("/wut", function (result) {
+        expect(result).toBe(false);
+        done();
+      });
     });
   });
 });
