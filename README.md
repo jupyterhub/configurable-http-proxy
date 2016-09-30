@@ -248,3 +248,26 @@ first part of the URL path, e.g.:
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
+
+## Using External Storage
+
+By default CHP uses memory in the local process for storing the route table. If you'd prefer to use an external storage
+mechanism, like redis, memcached, mysql, etc. You can specify an executable to be used instead, by passing the path to
+your script in the `--storage-command` option.
+
+To do this, you'll need to ensure that the script is both accessible on the path and executable. The script should
+support the following API, where `<path>` is the incoming request path and `<base64_json>` is a base64 encoded JSON
+object.
+
+```
+$ /path/to/script get <path>
+$ /path/to/script get_all
+$ /path/to/script add <path> <base64_json>
+$ /path/to/script update <path> <base64_json>
+$ /path/to/script remove <path>
+$ /path/to/script exists <path>
+```
+
+For an example, check out [the script] we use for testing this functionality.
+
+[the script]: https://github.com/jupyterhub/configurable-http-proxy/blob/master/test/support/external_store
