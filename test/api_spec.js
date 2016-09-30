@@ -181,16 +181,31 @@ describe("API Tests", function () {
         var port = 8998;
         var path = '/yesterday';
 
-        var now           = new Date();
-        var yesterday     = new Date(now.getTime() - (24 * 3.6e6));
-        var long_ago      = new Date(1);
-        var hour_ago      = new Date(now.getTime() - 3.6e6);
+        var now = new Date();
+        var yesterday = new Date(now.getTime() - (24 * 3.6e6));
+        var long_ago = new Date(1);
+        var hour_ago = new Date(now.getTime() - 3.6e6);
         var hour_from_now = new Date(now.getTime() + 3.6e6);
 
         var tests = [
-            { name: 'long ago', since: long_ago, expected: {} },
-            { name: 'an hour ago', since: hour_ago, expected: { '/yesterday': true } },
-            { name: 'the future', since: hour_from_now, expected: { '/yesterday': true, '/today': true } }
+            {
+                name: 'long ago',
+                since: long_ago,
+                expected: {}
+            },
+            {
+                name: 'an hour ago',
+                since: hour_ago,
+                expected: {'/yesterday': true}
+            },
+            {
+                name: 'the future',
+                since: hour_from_now,
+                expected: {
+                    '/yesterday': true,
+                    '/today': true
+                }
+            }
         ];
 
         var seen = 0;
