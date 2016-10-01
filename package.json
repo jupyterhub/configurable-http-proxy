@@ -27,6 +27,8 @@
     "index.js",
     "lib/configproxy.js",
     "lib/store.js",
+    "lib/store/external.js",
+    "lib/store/memory.js",
     "lib/trie.js",
     "lib/error/*.html",
     "bin/configurable-http-proxy"
