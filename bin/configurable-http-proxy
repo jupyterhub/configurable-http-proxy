@@ -17,7 +17,6 @@ args
     .version(pkg.version)
     .option('--ip <ip-address>', 'Public-facing IP of the proxy')
     .option('--port <n> (defaults to 8000)', 'Public-facing port of the proxy', parseInt)
-    .option('--storage-command <script>', 'An external command to use for storage, if any')
     .option('--ssl-key <keyfile>', 'SSL key to use, if any')
     .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
     .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
@@ -158,7 +157,6 @@ options.error_path = args.errorPath;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
-options.storageCommand = args.storageCommand;
 
 // statsd options
 if (args.statsdHost) {

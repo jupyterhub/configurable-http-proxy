@@ -28,7 +28,6 @@
     "index.js",
     "lib/configproxy.js",
     "lib/store.js",
-    "lib/store/external.js",
     "lib/store/memory.js",
     "lib/store/redis.js",
     "lib/trie.js",

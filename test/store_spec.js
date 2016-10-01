@@ -162,18 +162,6 @@ describe("store", function () {
     sharedExamples.store.apply(this);
   });
 
-  describe("ExternalStore", function () {
-    beforeEach(function () {
-      this.subject = storeProvider.ExternalStore("./test/support/external_store");
-    });
-
-    afterEach(function (done) {
-      require("fs").unlink("./teststore.db", done);
-    });
-
-    sharedExamples.store.apply(this);
-  });
-
   describe("RedisStore", function () {
     beforeEach(function () {
       this.subject = storeProvider.RedisStore();
