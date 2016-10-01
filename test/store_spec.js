@@ -99,10 +99,10 @@ var sharedExamples = {
       it("merges supplied data with existing data", function (done) {
         var store = this.subject;
 
-        store.add("/my_route", { "version": 1, "test": "value" }, function () {
-          store.update("/my_route", { "version": 2 }, function () {
+        store.add("/my_route", { "version": "1", "test": "value" }, function () {
+          store.update("/my_route", { "version": "2" }, function () {
             store.get("/my_route", function (route) {
-              expect(route.version).toEqual(2);
+              expect(route.version).toEqual("2");
               expect(route.test).toEqual("value");
               done();
             });
@@ -169,6 +169,18 @@ describe("store", function () {
 
     afterEach(function (done) {
       require("fs").unlink("./teststore.db", done);
+    });
+
+    sharedExamples.store.apply(this);
+  });
+
+  describe("RedisStore", function () {
+    beforeEach(function () {
+      this.subject = storeProvider.RedisStore();
+    });
+
+    afterEach(function (done) {
+      require("redis").createClient().flushdb(done);
     });
 
     sharedExamples.store.apply(this);

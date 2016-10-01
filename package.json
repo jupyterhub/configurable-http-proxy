@@ -18,6 +18,7 @@
   "devDependencies": {
     "jasmine": "^2.5.1",
     "jshint": "^2.9.2",
+    "redis": "~2.6",
     "nyc": "^6.4.0",
     "request": "~2",
     "ws": "^1.1"
@@ -29,6 +30,7 @@
     "lib/store.js",
     "lib/store/external.js",
     "lib/store/memory.js",
+    "lib/store/redis.js",
     "lib/trie.js",
     "lib/error/*.html",
     "bin/configurable-http-proxy"
