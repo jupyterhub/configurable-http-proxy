@@ -38,6 +38,11 @@ args
     .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port])')
     .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
     .option('--pid-file <pid-file>', 'Write our PID to a file')
+    // storage configuration
+    .option('--storage-provider <provider>', 'The storage provider for the route table (defaults to memory)')
+    .option('--redis-host <host>', 'The redis host address (defaults to localhost)')
+    .option('--redis-port <port>', 'The port redis is listening on (defaults to 6379)')
+    .option('--redis-db <db>', 'The redis db to use (defaults to 0)')
     // passthrough http-proxy options
     .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
     .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
@@ -157,6 +162,12 @@ options.error_path = args.errorPath;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
+
+// storage options
+options.storageProvider = args.storageProvider;
+options.redisHost       = args.redisHost;
+options.redisPort       = args.redisPort;
+options.redisDb         = args.redisDb;
 
 // statsd options
 if (args.statsdHost) {

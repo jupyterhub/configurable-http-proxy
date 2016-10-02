@@ -63,7 +63,7 @@ matching route is found in the proxy table:
 ### Command-line options
 
 ```
-  Usage: configurable-http-proxy [options]
+Usage: configurable-http-proxy [options]
 
   Options:
 
@@ -77,7 +77,7 @@ matching route is found in the proxy table:
     --ssl-ca <ca-file>               SSL certificate authority, if any
     --ssl-request-cert               Request SSL certs to authenticate clients
     --ssl-reject-unauthorized        Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
-    --ssl-protocol <ssl-protocol>    Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
+    --ssl-protocol <ssl-protocol>    Set specific SSL protocol, e.g. TLSv1.2, SSLv3
     --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
@@ -95,9 +95,17 @@ matching route is found in the proxy table:
     --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
     --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
     --pid-file <pid-file>            Write our PID to a file
+
+    --storage-provider <provider>    The storage provider for the route table (defaults to memory)
+    --redis-host <host>              The redis host address (defaults to localhost)
+    --redis-port <port>              The port redis is listening on (defaults to 6379)
+    --redis-db <db>                  The redis db to use (defaults to 0)
+
     --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
     --no-prepend-path                Avoid prepending target paths to proxied requests
     --no-include-prefix              Don't include the routing prefix in proxied requests
+    --auto-rewrite                   Rewrite the Location header host/port in redirect responses
+    --protocol-rewrite <proto>       Rewrite the Location header protocol in redirect responses to the specified protocol
     --insecure                       Disable SSL cert verification
     --host-routing                   Use host routing (host as first level of path)
     --statsd-host <host>             Host to send statsd statistics to
@@ -105,7 +113,6 @@ matching route is found in the proxy table:
     --statsd-prefix <prefix>         Prefix to use for statsd statistics
     --log-level <loglevel>           Log level (debug, info, warn, error)
 ```
-
 
 ## Using the REST API
 
@@ -247,3 +254,20 @@ first part of the URL path, e.g.:
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
+
+## Using Redis
+
+If you require multiple instances of CHP to be running and kept in sync, you can use [redis] to to store the route table
+rather than the default in memory option.
+
+To do so, you'll need to pass in a couple of options to CHP when launching it.  Specifically, you'll need to set the
+storage provider and any [redis options] you need.
+
+For example, to use [redis] on `localhost:6379` and the default database, you can run the following:
+
+    configurable-http-proxy --storage-provider redis
+
+If you are running [redis] on a different host, or need to customize the port/db, see [redis options].
+
+[redis]: http://redis.io/
+[redis options]: https://github.com/jupyterhub/configurable-http-proxy#command-line-options
