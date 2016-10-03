@@ -255,19 +255,30 @@ first part of the URL path, e.g.:
 }
 ```
 
-## Using Redis
+## Using Redis as a Storage Provider
 
-If you require multiple instances of CHP to be running and kept in sync, you can use [redis] to to store the route table
-rather than the default in memory option.
+If your deployment runs multiple CHP instances, you may need to keep these instances in sync. You can use [redis], to
+store the route table instead of the default which is storing the table in memory
 
 To do so, you'll need to pass in a couple of options to CHP when launching it.  Specifically, you'll need to set the
 storage provider and any [redis options] you need.
 
-For example, to use [redis] on `localhost:6379` and the default database, you can run the following:
+To configure CHP to launch with redis as the storage provider, run the following:
 
     configurable-http-proxy --storage-provider redis
 
-If you are running [redis] on a different host, or need to customize the port/db, see [redis options].
+If you wish to run [redis] on a different host, port, or database location, you should set the appropriate [redis
+options]. For example, to connect to `redis.example.com:16379` and use db `1`, run the following:
+
+```
+configurable-http-proxy \
+  --storage-provider redis \
+  --redis-host redis.example.com \
+  --redis-port 16379 \
+  --redis-db 1
+```
+
+> Note: If you use the [redis] storage provider, the route table will not be stored in memory.
 
 [redis]: http://redis.io/
 [redis options]: https://github.com/jupyterhub/configurable-http-proxy#command-line-options
