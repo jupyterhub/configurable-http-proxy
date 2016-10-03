@@ -12,13 +12,13 @@
     "commander": "~2.9",
     "http-proxy": "~1.13.2",
     "lynx": "^0.2.0",
+    "redis": "~2.6",
     "strftime": "~0.9",
     "winston": "~2.2"
   },
   "devDependencies": {
     "jasmine": "^2.5.1",
     "jshint": "^2.9.2",
-    "redis": "~2.6",
     "nyc": "^6.4.0",
     "request": "~2",
     "ws": "^1.1"
