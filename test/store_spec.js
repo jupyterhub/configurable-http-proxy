@@ -37,6 +37,18 @@ var sharedExamples = {
         });
       });
 
+      it("returns the closest matching prefix when an exact match isn't found", function (done) {
+        var store = this.subject;
+
+        store.add("/hub", { "target": "http://localhost:8081" }, function () {
+          store.getTarget("/hub/spawn", function (target) {
+            expect(target.prefix).toEqual("/hub");
+            expect(target.data.target).toEqual("http://localhost:8081");
+            done();
+          });
+        });
+      });
+
       it("returns undefined when target not found", function (done) {
         this.subject.getTarget("/my_route", function (target) {
           expect(target).toBe(undefined);
