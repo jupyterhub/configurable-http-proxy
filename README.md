@@ -104,6 +104,7 @@ matching route is found in the proxy table:
     --statsd-port <port>             Port to send statsd statistics to
     --statsd-prefix <prefix>         Prefix to use for statsd statistics
     --log-level <loglevel>           Log level (debug, info, warn, error)
+    --proxy-timeout <n>              Timeout (in millis) when proxy receives no response from target
 ```
 
 

@@ -49,7 +49,8 @@ args
     .option('--statsd-host <host>', 'Host to send statsd statistics to')
     .option('--statsd-port <port>', 'Port to send statsd statistics to', parseInt)
     .option('--statsd-prefix <prefix>', 'Prefix to use for statsd statistics')
-    .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info');
+    .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info')
+    .option('--proxy-timeout <n>', 'Timeout (in millis) when proxy receives no response from target.', parseInt);
 
 args.parse(process.argv);
 
@@ -157,6 +158,7 @@ options.error_path = args.errorPath;
 options.host_routing = args.hostRouting;
 options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
+options.proxyTimeout = args.proxyTimeout;
 
 // statsd options
 if (args.statsdHost) {
