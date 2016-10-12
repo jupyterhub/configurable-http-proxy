@@ -8,6 +8,13 @@ command line for details.
 
 ## [1.3] - 2016-08-01
 
+### 1.3.1
+
+- small fixes for node 6 support
+- fix `--no-x-forward` again (for real, this time)
+
+### 1.3.0
+
 - add `--ssl-protocol`, so that one can restrict to TLS, e.g. `--ssl-protocol=TLSv1`
 - fix handling of ``--no-x-forward`
 
