@@ -151,7 +151,7 @@ describe("API Tests", function () {
         var target = 'http://127.0.0.1:' + port;
         var path = '/user/bar';
 
-        util.add_target(proxy, path, port, null, null, function () {
+        util.add_target(proxy, path, port, null, null, null, function () {
             proxy._routes.get(path, function (route) {
                 expect(route.target).toEqual(target);
 
@@ -239,13 +239,40 @@ describe("API Tests", function () {
         };
 
         proxy.remove_route("/", function () {
-            util.add_target(proxy, '/yesterday', port, null, null, function () {
-                util.add_target(proxy, '/today', port + 1, null, null, function () {
+            util.add_target(proxy, '/yesterday', port, null, null, null, function () {
+                util.add_target(proxy, '/today', port + 1, null, null, null, function () {
                     proxy._routes.update('/yesterday', { last_activity: yesterday }, function () {
                         do_req(0);
                     });
                 });
             });
+        });
+    });
+    
+    it("GET /api/routes?label=foo filters entries", function (done) {
+        var port = 8998;
+
+        additional_data = {
+            "label": "foo"
+        };
+        
+        proxy.remove_route("/", function () {
+            util.add_target(proxy, '/my/url', port, null, null, additional_data, function () {
+                util.add_target(proxy, '/my/url2', port + 1, null, null, additional_data, function () {
+                    util.add_target(proxy, '/my/url3', port + 2, null, null, null, function () {
+                        r.get(api_url + "?label=foo", function (error, res, body) {
+                            expect(error).toBe(null);
+                            expect(res.statusCode).toEqual(200);
+                            var routes = JSON.parse(res.body);
+                            var route_keys = Object.keys(routes);
+                            expect(route_keys.length).toEqual(2);
+                            expect(route_keys).toContain("/my/url");
+                            expect(route_keys).toContain("/my/url2");
+                            done();
+                        })
+                    })
+                })
+            })
         });
     });
 });
