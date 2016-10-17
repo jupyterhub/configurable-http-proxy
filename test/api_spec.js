@@ -252,7 +252,7 @@ describe("API Tests", function () {
     it("GET /api/routes?label=foo filters entries", function (done) {
         var port = 8998;
 
-        additional_data = {
+        var additional_data = {
             "label": "foo"
         };
         
@@ -269,10 +269,10 @@ describe("API Tests", function () {
                             expect(route_keys).toContain("/my/url");
                             expect(route_keys).toContain("/my/url2");
                             done();
-                        })
-                    })
-                })
-            })
+                        });
+                    });
+                });
+            });
         });
     });
 });
