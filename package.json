@@ -12,6 +12,7 @@
     "commander": "~2.9",
     "http-proxy": "~1.13.2",
     "lynx": "^0.2.0",
+    "redis": "~2.6",
     "strftime": "~0.9",
     "winston": "~2.2"
   },
@@ -27,6 +28,8 @@
     "index.js",
     "lib/configproxy.js",
     "lib/store.js",
+    "lib/store/memory.js",
+    "lib/store/redis.js",
     "lib/trie.js",
     "lib/error/*.html",
     "bin/configurable-http-proxy"

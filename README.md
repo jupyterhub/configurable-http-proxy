@@ -33,7 +33,7 @@ using the npm package manager:
     npm install -g configurable-http-proxy
 
 To install from the source code found in this GitHub repo:
-    
+
     git clone https://github.com/jupyterhub/configurable-http-proxy.git
     cd configurable-http-proxy
     # Use -g for global install
@@ -54,7 +54,7 @@ The configurable proxy runs two HTTP(S) servers:
 
 ### Setting a default target
 
-When you start the proxy from the command line, you can set a 
+When you start the proxy from the command line, you can set a
 default target (`--default-target` option) to be used when no
 matching route is found in the proxy table:
 
@@ -63,7 +63,7 @@ matching route is found in the proxy table:
 ### Command-line options
 
 ```
-  Usage: configurable-http-proxy [options]
+Usage: configurable-http-proxy [options]
 
   Options:
 
@@ -71,17 +71,17 @@ matching route is found in the proxy table:
     -V, --version                    output the version number
     --ip <ip-address>                Public-facing IP of the proxy
     --port <n> (defaults to 8000)    Public-facing port of the proxy
-    
+
     --ssl-key <keyfile>              SSL key to use, if any
     --ssl-cert <certfile>            SSL certificate to use, if any
     --ssl-ca <ca-file>               SSL certificate authority, if any
     --ssl-request-cert               Request SSL certs to authenticate clients
     --ssl-reject-unauthorized        Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
-    --ssl-protocol <ssl-protocol>    Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
+    --ssl-protocol <ssl-protocol>    Set specific SSL protocol, e.g. TLSv1.2, SSLv3
     --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
     --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
     --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
-    
+
     --api-ip <ip>                    Inward-facing IP for API requests
     --api-port <n>                   Inward-facing port for API requests (defaults to --port=value+1)
     --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
@@ -89,15 +89,23 @@ matching route is found in the proxy table:
     --api-ssl-ca <ca-file>           SSL certificate authority, if any, for API requests
     --api-ssl-request-cert           Request SSL certs to authenticate clients for API requests
     --api-ssl-reject-unauthorized    Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
-    
+
     --default-target <host>          Default proxy target (proto://host[:port])
     --error-target <host>            Alternate server for handling proxy errors (proto://host[:port])
     --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
     --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
     --pid-file <pid-file>            Write our PID to a file
+
+    --storage-provider <provider>    The storage provider for the route table (defaults to memory)
+    --redis-host <host>              The redis host address (defaults to localhost)
+    --redis-port <port>              The port redis is listening on (defaults to 6379)
+    --redis-db <db>                  The redis db to use (defaults to 0)
+
     --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
     --no-prepend-path                Avoid prepending target paths to proxied requests
     --no-include-prefix              Don't include the routing prefix in proxied requests
+    --auto-rewrite                   Rewrite the Location header host/port in redirect responses
+    --protocol-rewrite <proto>       Rewrite the Location header protocol in redirect responses to the specified protocol
     --insecure                       Disable SSL cert verification
     --host-routing                   Use host routing (host as first level of path)
     --statsd-host <host>             Host to send statsd statistics to
@@ -107,10 +115,9 @@ matching route is found in the proxy table:
     --proxy-timeout <n>              Timeout (in millis) when proxy receives no response from target
 ```
 
-
 ## Using the REST API
 
-The configurable-http-proxy API is documented and available at the 
+The configurable-http-proxy API is documented and available at the
 interactive swagger site, [petstore](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/jupyterhub/configurable-http-proxy/master/doc/rest-api.yml#/default)
 or as a [swagger specification file in this repo](https://github.com/jupyterhub/configurable-http-proxy/blob/master/doc/rest-api.yml).
 
@@ -203,7 +210,7 @@ with their status code:
 - 404: a client has requested a URL for which there is no routing target.
   This can be prevented if a `default target` is specified when starting
   the configurable-http-proxy.
-  
+
 - 503: a route exists, but the upstream server isn't responding.
   This is more common, and can be due to any number of reasons,
   including the target service having died or not finished starting.
@@ -212,10 +219,10 @@ with their status code:
 
 If you specify an error path `--error-path /usr/share/chp-errors` when
 starting the CHP:
- 
+
     configurable-http-proxy --error-path /usr/share/chp-errors
- 
-then when a proxy error occurs, CHP will look in 
+
+then when a proxy error occurs, CHP will look in
 `/usr/share/chp-errors/<CODE>.html` (where CODE is the status code number)
 for an html page to serve, e.g. `404.html` or `503.html`.
 
@@ -226,7 +233,7 @@ If you specify an error path, make sure you also create `error.html`.
 
 When starting the CHP, you can pass a command line option for `--error-target`.
 If you specify `--error-target http://localhost:1234`,
-then when the proxy encounters an error, it will make a GET request to 
+then when the proxy encounters an error, it will make a GET request to
 this server, with URL `/CODE`, and the URL of the failing request
 escaped in a URL parameter, e.g.:
 
@@ -248,3 +255,31 @@ first part of the URL path, e.g.:
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
+
+## Using Redis as a Storage Provider
+
+If your deployment runs multiple CHP instances, you may need to keep these instances in sync. You can use [redis], to
+store the route table instead of the default which is storing the table in memory
+
+To do so, you'll need to pass in a couple of options to CHP when launching it.  Specifically, you'll need to set the
+storage provider and any [redis options] you need.
+
+To configure CHP to launch with redis as the storage provider, run the following:
+
+    configurable-http-proxy --storage-provider redis
+
+If you wish to run [redis] on a different host, port, or database location, you should set the appropriate [redis
+options]. For example, to connect to `redis.example.com:16379` and use db `1`, run the following:
+
+```
+configurable-http-proxy \
+  --storage-provider redis \
+  --redis-host redis.example.com \
+  --redis-port 16379 \
+  --redis-db 1
+```
+
+> Note: If you use the [redis] storage provider, the route table will not be stored in memory.
+
+[redis]: http://redis.io/
+[redis options]: https://github.com/jupyterhub/configurable-http-proxy#command-line-options

@@ -1,4 +1,6 @@
 language: node_js
+services:
+  - redis-server
 sudo: false
 node_js:
   - "6"
