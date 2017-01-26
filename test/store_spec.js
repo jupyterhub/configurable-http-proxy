@@ -102,7 +102,7 @@ describe("MemoryStore", function () {
 
     it("doesn't explode when route is not defined", function (done) {
       // would blow up if an error was thrown
-      this.subject.remove("/my_route", done);
+      this.subject.remove("/my_route/foo/bar", done);
     });
   });
 

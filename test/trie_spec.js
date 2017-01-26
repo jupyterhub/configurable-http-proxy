@@ -13,6 +13,7 @@ describe("URLTrie", function () {
             '/a/b/c/d',
             '/a/b/d',
             '/a/b/e',
+            '/b',
             '/b/c',
             '/b/c/d',
         ];
@@ -137,11 +138,18 @@ describe("URLTrie", function () {
     it("trie_remove", function (done) {
         var trie = full_trie();
         var size = trie.size;
-        trie.remove('/b');
-        expect(trie.size).toEqual(size - 1);
-        expect(trie.get('/b/c/dword')).toBe(undefined);
+        var node;
+        node = trie.get('/b/just-b');
+        expect(node.prefix).toEqual('/b');
 
-        var node = trie.get('/a/b/c/d/word');
+        trie.remove('/b');
+        // deleting a node doesn't change size if no children
+        expect(trie.size).toEqual(size);
+        expect(trie.get('/b/just-b')).toBe(undefined);
+        node = trie.get('/b/c/sub-still-here');
+        expect(node.prefix).toEqual('/b/c');
+
+        node = trie.get('/a/b/c/d/word');
         expect(node.prefix).toEqual('/a/b/c/d');
         var b = trie.branches.a.branches.b;
         expect(b.size).toEqual(3);
