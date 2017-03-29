@@ -1,5 +1,5 @@
 {
   "spec_dir": "test",
   "stopSpecOnExpectationFailure": false,
-  "spec_files": ["store_spec.js"]
+  "spec_files": ["*spec.js"]
 }
