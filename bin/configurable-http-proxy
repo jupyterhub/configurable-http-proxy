@@ -205,7 +205,7 @@ var listen = {};
 listen.port = parseInt(args.port) || 8000;
 if (args.ip === '*') {
     // handle ip=* alias for all interfaces
-    log.warn("Interpreting ip='*' as all-interfaces. Use 0.0.0.0 or ''.");
+    log.warn("Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces.");
     args.ip = '';
 }
 listen.ip = args.ip;
