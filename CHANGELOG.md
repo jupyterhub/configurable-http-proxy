@@ -4,7 +4,28 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [Unreleased]
+## [Unreleased - 2.0.0dev]
+
+**Added:**
+
+- Add configuration option for proxy timeout `--proxy-timeout <n>, Timeout
+  (in millis) when proxy receives no response from target.`
+  [\#86](https://github.com/jupyterhub/configurable-http-proxy/pull/86)
+- Add configuration options for auto rewrite and protocol rewrite
+  [\#73](https://github.com/jupyterhub/configurable-http-proxy/pull/73):
+    - `--auto-rewrite, Rewrite the Location header host/port in redirect responses`
+    - `--protocol-rewrite <proto>', Rewrite the Location header protocol in redirect responses to the specified protocol`
+- Add low-level code for separate stores of routes to enable future support of other data stores such as Redis [\#81](https://github.com/jupyterhub/configurable-http-proxy/pull/81)
+
+**Changed:**
+
+- Support only LTS releases and above for NodeJS [\#82](https://github.com/jupyterhub/configurable-http-proxy/pull/82)
+
+**Fixed:**
+
+- Fix behavior to correctly handle children when a parent node is deleted [\#93](https://github.com/jupyterhub/configurable-http-proxy/pull/93)
+- Fix closure reference when serving custom error pages [\#91](https://github.com/jupyterhub/configurable-http-proxy/pull/91)
+- Improved all-interfaces warning message when `ip='*'`  [\#94](https://github.com/jupyterhub/configurable-http-proxy/pull/94)
 
 ## [1.3] - 2016-08-01
 
@@ -56,8 +77,7 @@ command line for details.
 
 ## 0.1.1 - 2014-10-01
 
-
-[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.0...HEAD
+[Unreleased - 2.0.0dev](https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...HEAD)
 [1.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.2.0...1.3.0
 [1.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.1.0...1.2.0
 [1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.0.0...1.1.0
