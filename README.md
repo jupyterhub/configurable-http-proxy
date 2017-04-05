@@ -2,7 +2,8 @@
 **[Usage](#usage)** |
 **[Using the REST API](#using-the-rest-api)** |
 **[Custom error pages](#custom-error-pages)** |
-**[Host-based routing](#host-based-routing)**
+**[Host-based routing](#host-based-routing)** |
+**[Troubleshooting](#troubleshooting)**
 
 # configurable-http-proxy
 
@@ -20,7 +21,12 @@ functionality to [JupyterHub] deployments.
 
 ## Install
 
-Prerequisite: [Node.js](https://nodejs.org/en/download/)
+Prerequisite:
+
+[Node.js](https://nodejs.org/en/download/) (A recent version of
+Node is needed. Some versions of Ubuntu/Debian ship with a very old version
+of Node and must be upgraded. We currently test on node versions 4 and up.
+We recommend using the latest stable version of Node.)
 
 To install the `configurable-http-proxy` package globally
 using the npm package manager:
@@ -282,6 +288,15 @@ the hostname were the first part of the URL path, e.g.:
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
+
+## Troubleshooting
+
+Q: My proxy is not starting. What could be happening?
+
+- If this occurs on Ubuntu/Debian, check that the you are using a recent
+  version of node. Some versions of Ubuntu/Debian come with a version of node
+  that is very old, and it is necessary to update node.
+
 
 [**Return to top**][]
 
