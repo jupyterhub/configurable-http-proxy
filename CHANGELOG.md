@@ -77,7 +77,7 @@ command line for details.
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased - 2.0.0dev](https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...HEAD)
+[Unreleased - 2.0.0dev]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...HEAD
 [1.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.2.0...1.3.0
 [1.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.1.0...1.2.0
 [1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.0.0...1.1.0
