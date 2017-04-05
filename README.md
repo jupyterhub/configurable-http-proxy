@@ -6,6 +6,8 @@
 
 # configurable-http-proxy
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jupyterhub/configurable-http-proxy.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
 
 
