@@ -10,17 +10,17 @@
   },
   "dependencies": {
     "commander": "~2.9",
-    "http-proxy": "~1.13.2",
+    "http-proxy": "~1.16.2",
     "lynx": "^0.2.0",
-    "strftime": "~0.9",
-    "winston": "~2.2"
+    "strftime": "~0.10.0",
+    "winston": "~2.3.1"
   },
   "devDependencies": {
     "jasmine": "^2.5.1",
     "jshint": "^2.9.2",
-    "nyc": "^6.4.0",
+    "nyc": "^10.2.0",
     "request": "~2",
-    "ws": "^1.1"
+    "ws": "^2.2.3"
   },
   "main": "index.js",
   "files": [
