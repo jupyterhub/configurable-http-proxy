@@ -23,13 +23,14 @@ functionality to [JupyterHub] deployments.
 
 Prerequisite:
 
-[Node.js](https://nodejs.org/en/download/) (A recent version of
-Node is needed. Some versions of Ubuntu/Debian ship with a very old version
-of Node and must be upgraded. We currently test on node versions 4 and up.
-We recommend using the latest stable version of Node.)
+[Node.js](https://nodejs.org/en/download/) ≥ 4
+
+Note: Ubuntu < 16.04 and Debian Jessie ship with too-old versions of Node
+and must be upgraded.
+We recommend using the latest stable or LTS version of Node.
 
 To install the `configurable-http-proxy` package globally
-using the npm package manager:
+using npm:
 
 ```
     npm install -g configurable-http-proxy
@@ -38,8 +39,8 @@ using the npm package manager:
 To install from the source code found in this GitHub repo:
 
 ```
-    git clone https://github.com/jupyterhub/configurable-http-proxy.git
-    cd configurable-http-proxy  
+    git clone https://github.com/jupyterhub/configurable-http-proxy
+    cd configurable-http-proxy 
     npm install # Use 'npm install -g' for global install
 ```
 
