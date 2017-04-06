@@ -22,6 +22,10 @@
     "request": "~2",
     "ws": "^2.2.3"
   },
+  "engines": {
+    "node": ">= 4.0"
+  },
+  "engineStrict": true,
   "main": "index.js",
   "files": [
     "index.js",
