@@ -4,7 +4,11 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [Unreleased - 2.0.0dev]
+## [Unreleased]
+
+## [2.0] - 2017-04-05
+
+**Important** CHP 2.0.0 drops support for node.js ≤ 4.0.
 
 **Added:**
 
@@ -19,7 +23,8 @@ command line for details.
 
 **Changed:**
 
-- Support only LTS releases and above for NodeJS [\#82](https://github.com/jupyterhub/configurable-http-proxy/pull/82)
+- Support only LTS releases and above for NodeJS [\#82](https://github.com/jupyterhub/configurable-http-proxy/pull/82).
+  This means only ≥ 4.0 are supported.
 
 **Fixed:**
 
@@ -77,7 +82,8 @@ command line for details.
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased - 2.0.0dev]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...HEAD
+[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.1...HEAD
+[2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...2.0.1
 [1.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.2.0...1.3.0
 [1.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.1.0...1.2.0
 [1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.0.0...1.1.0
