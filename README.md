@@ -7,9 +7,8 @@
 
 # configurable-http-proxy
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/jupyterhub/configurable-http-proxy.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
-[![stable](https://img.shields.io/badge/stable-2.0.1-lightgrey.svg)](https://github.com/jupyterhub/configurable-http-proxy/releases/tag/2.0.1)
+[![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg)](https://www.npmjs.com/package/configurable-http-proxy)
 
 **configurable-http-proxy** (CHP) provides you with a way to update and manage
 a proxy table using a command line interface or REST API.
