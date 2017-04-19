@@ -1,4 +1,4 @@
-FROM node:5-slim
+FROM node:6-alpine
 
 EXPOSE 8000
 
@@ -8,4 +8,4 @@ RUN npm install -g
 
 USER nobody
 
-ENTRYPOINT ["configurable-http-proxy"]
+ENTRYPOINT ["/srv/configurable-http-proxy/chp-docker-entrypoint"]
