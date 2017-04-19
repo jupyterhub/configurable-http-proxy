@@ -8,4 +8,4 @@ RUN npm install -g
 
 USER nobody
 
-ENTRYPOINT ["configurable-http-proxy"]
+ENTRYPOINT ["/srv/configurable-http-proxy/chp-docker-entrypoint"]
