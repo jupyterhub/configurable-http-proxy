@@ -1,12 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 # Wrapper around CHP entrypoint that changes defaults slightly
 # to be more appropriate when run in a container.
 
-if [[ "$@" != *"--api-ip"* ]]; then
-  # Default api-ip to all interfaces in docker,
-  # so that it is accessible to other containers
-  # and when port-forwarding is requested.
-  ARGS="--api-ip=0.0.0.0"
-fi
+case "$@" in
+  *"--api-ip"*)
+    break;;
+  *)
+    # Default api-ip to all interfaces in docker,
+    # so that it is accessible to other containers
+    # and when port-forwarding is requested.
+    ARGS="--api-ip=0.0.0.0";;
+esac
 
-exec configurable-http-proxy $ARGS $@
+echo $ARGS $@
+# configurable-http-proxy $ARGS $@
