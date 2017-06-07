@@ -12,6 +12,7 @@ describe("API Tests", function () {
     var api_port = port + 1;
     var proxy;
     var api_url = "http://127.0.0.1:" + api_port + '/api/routes';
+    var api_labels_url = "http://127.0.0.1:" + api_port + '/api/labels/';
 
     var r;
 
@@ -145,7 +146,56 @@ describe("API Tests", function () {
             });
         });
     });
-
+    
+    it("POST /api/routes with a label adds the label", function (done) {
+        var port = 8998;
+        var target = 'http://127.0.0.1:' + port;
+        r.post({
+            url: api_url,
+            body: JSON.stringify({
+                target: target,
+                label: "12345"
+            })
+        }, function (error, res, body) {
+            expect(error).toBe(null);
+            expect(res.statusCode).toEqual(201);
+            expect(res.body).toEqual('');
+            proxy._routes.get('/', function (route) {
+                expect(route.target).toEqual(target);
+                expect(typeof route.last_activity).toEqual('object');
+                var labels = proxy.labels;
+                expect(labels["12345"].length).toEqual(1);
+                expect(labels["12345"][0]).toEqual('/');
+                done();
+            });
+        });
+    });
+    
+    it("GET /api/labels fetches the labels table", function (done) {
+        var port = 8998;
+        var target = 'http://127.0.0.1:' + port;
+        r.post({
+                url: api_url,
+                body: JSON.stringify({
+                    target: target,
+                    label: "12345"
+                })
+        }, function () {
+                r(api_labels_url, function (error, res, body) {
+                    expect(error).toBe(null);
+                    expect(res.statusCode).toEqual(200);
+                    body = JSON.parse(res.body);
+                    var keys = Object.keys(body);
+                    expect(keys.length).toEqual(1);
+                    expect(keys).toContain('12345');
+                    expect(body['12345'].length).toEqual(1);
+                    expect(body['12345'][0]).toEqual('/');
+                    done();
+                });
+            }
+        );
+    });
+    
     it("DELETE /api/routes[/path] deletes a route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
@@ -174,6 +224,32 @@ describe("API Tests", function () {
             expect(error).toBe(null);
             expect(res.statusCode).toEqual(400);
             done();
+        });
+    });
+    
+    it("DELETE /api/labels/label deletes routes of that label", function (done) {
+        var port = 8998;
+        var target = 'http://127.0.0.1:' + port;
+        var path = '/user/bar';
+        var label = '12345';
+        
+        var cb = function() {
+            expect(proxy.labels[label][0]).toBe(path);
+        };
+        
+        util.add_target(proxy, path, port, null, null, cb, label);
+        proxy._routes.get(path, function(result) {
+            expect(result.target).toEqual(target);
+        });
+        
+        r.del(api_labels_url + label, function (error, res, body) {
+            expect(error).toBe(null);
+            expect(res.statusCode).toEqual(204);
+            expect(res.body).toEqual('');
+            proxy._routes.get(path, function(result) {
+                expect(result).toBe(undefined);
+                done();
+            });
         });
     });
 
