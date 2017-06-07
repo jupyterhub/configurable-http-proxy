@@ -18,7 +18,7 @@
   "devDependencies": {
     "jasmine": "^2.5.1",
     "jshint": "^2.9.2",
-    "nyc": "^10.2.0",
+    "nyc": "^11.0.2",
     "request": "~2",
     "ws": "^3.0.0"
   },
