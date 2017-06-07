@@ -8,6 +8,12 @@ command line for details.
 
 ## [2.0] - 2017-04-05
 
+### 2.0.2 - 2017-06-07
+
+- Fix error raised trying to `setHeader` on an undefined response (e.g. when encountering socket-level error)
+
+### 2.0.1
+
 **Important** CHP 2.0.0 drops support for node.js ≤ 4.0.
 
 **Added:**
@@ -82,7 +88,7 @@ command line for details.
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.2...HEAD
 [2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...2.0.1
 [1.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.2.0...1.3.0
 [1.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.1.0...1.2.0
