@@ -95,7 +95,7 @@ describe("Proxy Tests", function () {
     });
 
     it("target path is prepended by default", function (done) {
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo', null, function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -110,7 +110,7 @@ describe("Proxy Tests", function () {
     });
 
     it("handle URI encoding", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', null, function () {
             r(proxy_url + '/b%40r/b%20r/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -125,7 +125,7 @@ describe("Proxy Tests", function () {
     });
 
     it("handle @ in URI same as %40", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', null, function () {
             r(proxy_url + '/b@r/b%20r/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -141,7 +141,7 @@ describe("Proxy Tests", function () {
 
     it("prependPath: false prevents target path from being prepended", function (done) {
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo', null, function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -157,7 +157,7 @@ describe("Proxy Tests", function () {
 
     it("includePrefix: false strips routing prefix from request", function (done) {
         proxy.includePrefix = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo', null, function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -186,7 +186,7 @@ describe("Proxy Tests", function () {
     it("includePrefix: false + prependPath: false", function (done) {
         proxy.includePrefix = false;
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function() {
+        util.add_target(proxy, '/bar', test_port, false, '/foo', null, function() {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -202,7 +202,7 @@ describe("Proxy Tests", function () {
 
     it("hostRouting: routes by host", function(done) {
         proxy.host_routing = true;
-        util.add_target(proxy, '/' + host_test, test_port, false, null, function () {
+        util.add_target(proxy, '/' + host_test, test_port, false, null, null, function () {
             r(host_url + '/some/path', function(error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
