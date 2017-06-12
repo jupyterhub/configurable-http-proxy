@@ -8,6 +8,10 @@ command line for details.
 
 ## [2.0] - 2017-04-05
 
+### 2.0.3 - 2017-06-12
+
+- Fix docker image entrypoint, broken in 2.0.2
+
 ### 2.0.2 - 2017-06-07
 
 - Fix error raised trying to `setHeader` on an undefined response (e.g. when encountering socket-level error)
