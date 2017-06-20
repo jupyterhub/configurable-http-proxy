@@ -84,6 +84,29 @@ describe("API Tests", function () {
         });
     });
 
+    it("GET /api/routes[/path] fetches a single route", function (done) {
+        var path = '/path';
+        var url = 'https://127.0.0.1:54321';
+        proxy.add_route(path, { target: url }, function () {
+            r(api_url + path, function (error, res, body) {
+                expect(res.statusCode).toEqual(200);
+                var reply = JSON.parse(res.body);
+                var keys = Object.keys(reply);
+                expect(keys).toContain('target');
+                expect(reply.target).toEqual(url);
+                done();
+            });
+        });
+    });
+
+    it("GET /api/routes[/path] fetches a single route (404 if missing)", function (done) {
+        r(api_url + '/path', function (error, res, body) {
+            expect(error).toBe(null);
+            expect(res.statusCode).toEqual(404);
+            done();
+        });
+    });
+
     it("POST /api/routes[/path] creates a new route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
