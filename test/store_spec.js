@@ -109,15 +109,15 @@ describe("MemoryStore", function () {
   describe("hasRoute", function () {
     it("returns false when the path is not found", function (done) {
       this.subject.add("/my_route", { "test": "value" });
-      this.subject.hasRoute("/my_route", function (result) {
-        expect(result).toBe(true);
+      this.subject.get("/my_route", function (result) {
+        expect(result).toEqual({ "test": "value" });
         done();
       });
     });
 
     it("returns false when the path is not found", function (done) {
-      this.subject.hasRoute("/wut", function (result) {
-        expect(result).toBe(false);
+      this.subject.get("/wut", function (result) {
+        expect(result).toBe(undefined);
         done();
       });
     });
