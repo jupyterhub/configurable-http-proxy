@@ -22,7 +22,7 @@ describe("Proxy Tests", function () {
     });
 
     beforeEach(function (callback) {
-        util.setup_proxy(port, function (new_proxy) {
+        util.setup_proxy(port).then(function (new_proxy) {
             proxy = new_proxy;
             callback();
         });
@@ -95,7 +95,7 @@ describe("Proxy Tests", function () {
     });
 
     it("target path is prepended by default", function (done) {
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -110,7 +110,7 @@ describe("Proxy Tests", function () {
     });
 
     it("handle URI encoding", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo').then(function () {
             r(proxy_url + '/b%40r/b%20r/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -125,7 +125,7 @@ describe("Proxy Tests", function () {
     });
 
     it("handle @ in URI same as %40", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo').then(function () {
             r(proxy_url + '/b@r/b%20r/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -141,7 +141,7 @@ describe("Proxy Tests", function () {
 
     it("prependPath: false prevents target path from being prepended", function (done) {
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -155,9 +155,9 @@ describe("Proxy Tests", function () {
         });
     });
 
-    it("includePrefix: false strips routing prefix from request", function (done) {
+    it("includePrefix: false strips routing prefix from request",function (done) {
         proxy.includePrefix = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function () {
+        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -177,7 +177,7 @@ describe("Proxy Tests", function () {
       };
 
       var cp = new ConfigurableProxy(options);
-      cp._routes.get("/", function (route) {
+      cp._routes.get("/").then(function (route) {
           expect(route.target).toEqual("http://127.0.0.1:9001");
           done();
       });
@@ -186,7 +186,7 @@ describe("Proxy Tests", function () {
     it("includePrefix: false + prependPath: false", function (done) {
         proxy.includePrefix = false;
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo', function() {
+        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function() {
             r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -202,7 +202,7 @@ describe("Proxy Tests", function () {
 
     it("hostRouting: routes by host", function(done) {
         proxy.host_routing = true;
-        util.add_target(proxy, '/' + host_test, test_port, false, null, function () {
+        util.add_target(proxy, '/' + host_test, test_port, false, null).then(function () {
             r(host_url + '/some/path', function(error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(200);
@@ -218,7 +218,8 @@ describe("Proxy Tests", function () {
 
     it("custom error target", function (done) {
         var port = 55555;
-        var cb = function (proxy) {
+        util.setup_proxy(port, { error_target: "http://127.0.0.1:55565" }, [])
+        .then(function (proxy) {
             var url = 'http://127.0.0.1:' + port + '/foo/bar';
             r(url, function (error, res, body) {
                 expect(error).toBe(null);
@@ -227,27 +228,26 @@ describe("Proxy Tests", function () {
                 expect(body).toEqual('/foo/bar');
                 done();
             });
-        };
-
-        util.setup_proxy(port, cb, { error_target: "http://127.0.0.1:55565" }, []);
+        });
     });
 
     it("custom error path", function (done) {
         proxy.error_path = path.join(__dirname, 'error');
-        proxy.remove_route('/', function () {
-            proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' }, function (route) {
-                r(host_url + '/nope', function (error, res, body) {
+        proxy.remove_route('/')
+        .then(function () {
+            return proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' })
+        }).then(function (route) {
+            r(host_url + '/nope', function (error, res, body) {
+                expect(error).toBe(null);
+                expect(res.statusCode).toEqual(404);
+                expect(res.headers['content-type']).toEqual('text/html');
+                expect(body).toMatch(/404'D/);
+                r(host_url + '/missing/prefix', function (error, res, body) {
                     expect(error).toBe(null);
-                    expect(res.statusCode).toEqual(404);
+                    expect(res.statusCode).toEqual(503);
                     expect(res.headers['content-type']).toEqual('text/html');
-                    expect(body).toMatch(/404'D/);
-                    r(host_url + '/missing/prefix', function (error, res, body) {
-                        expect(error).toBe(null);
-                        expect(res.statusCode).toEqual(503);
-                        expect(res.headers['content-type']).toEqual('text/html');
-                        expect(body).toMatch(/UNKNOWN/);
-                        done();
-                    });
+                    expect(body).toMatch(/UNKNOWN/);
+                    done();
                 });
             });
         });
@@ -255,7 +255,7 @@ describe("Proxy Tests", function () {
 
     it("default error html", function (done) {
         proxy.remove_route('/');
-        proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' }, function (route) {
+        proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' }).then(function (route) {
             r(host_url + '/nope', function (error, res, body) {
                 expect(error).toBe(null);
                 expect(res.statusCode).toEqual(404);
@@ -293,7 +293,8 @@ describe("Proxy Tests", function () {
         // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
         var redirect_to = "http://127.0.0.1:"+test_port+"/whatever";
 
-        var validation_callback = function (proxy) {
+        util.setup_proxy(proxy_port, options, [])
+        .then(function (proxy) {
             util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to);
             var url = 'http://127.0.0.1:' + proxy_port;
 
@@ -303,8 +304,7 @@ describe("Proxy Tests", function () {
                 expect(res.headers.location).toEqual("https://127.0.0.1:"+proxy_port+"/whatever");
                 done();
             });
-        };
+        });
 
-        util.setup_proxy(proxy_port, validation_callback, options, []);
     });
 });

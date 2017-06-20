@@ -16,42 +16,40 @@ describe("API Tests", function () {
     var r;
 
     beforeEach(function (callback) {
-        function setup_r() {
+        util.setup_proxy(port).then(function (new_proxy) {
+            proxy = new_proxy;
+        }).then(function () {
             r = request.defaults({
                 method: 'GET',
                 headers: {Authorization: 'token ' + proxy.auth_token},
                 port: api_port,
                 url: api_url,
             });
+        }).then(function () {
             callback();
-        }
-
-        util.setup_proxy(port, function (new_proxy) {
-            proxy = new_proxy;
-            setup_r();
-        });
+        })
     });
 
     afterEach(function (callback) {
         util.teardown_servers(callback);
     });
+    
 
-    it("Basic proxy constructor", function (done) {
+    it("Basic proxy constructor", function () {
         expect(proxy).toBeDefined();
         expect(proxy.default_target).toBe(undefined);
 
-        proxy.target_for_req({ url: "/" }, function (route) {
+        return proxy.target_for_req({ url: "/" })
+        .then(function (route) {
             expect(route).toEqual({
                 prefix: "/",
                 target: "http://127.0.0.1:" + (port + 2)
             });
-
-            done();
         });
     });
 
     it("Default target is used for /any/random/url", function (done) {
-        proxy.target_for_req({ url: "/any/random/url" }, function (target) {
+        proxy.target_for_req({ url: "/any/random/url" }).then(function (target) {
             expect(target).toEqual({
                 prefix: "/",
                 target: "http://127.0.0.1:" + (port + 2)
@@ -62,7 +60,7 @@ describe("API Tests", function () {
     });
 
     it("Default target is used for /", function (done) {
-        proxy.target_for_req({ url: "/" }, function (target) {
+        proxy.target_for_req({ url: "/" }).then(function (target) {
             expect(target).toEqual({
                 prefix: "/",
                 target: "http://127.0.0.1:" + (port + 2)
@@ -87,7 +85,7 @@ describe("API Tests", function () {
     it("GET /api/routes[/path] fetches a single route", function (done) {
         var path = '/path';
         var url = 'https://127.0.0.1:54321';
-        proxy.add_route(path, { target: url }, function () {
+        proxy.add_route(path, { target: url }).then(function () {
             r(api_url + path, function (error, res, body) {
                 expect(res.statusCode).toEqual(200);
                 var reply = JSON.parse(res.body);
@@ -119,7 +117,7 @@ describe("API Tests", function () {
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
 
-            proxy._routes.get('/user/foo', function (route) {
+            proxy._routes.get('/user/foo').then(function (route) {
                 expect(route.target).toEqual(target);
                 expect(typeof route.last_activity).toEqual('object');
                 done();
@@ -138,14 +136,14 @@ describe("API Tests", function () {
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
 
-            proxy._routes.get('/user/foo@bar', function (route) {
+            proxy._routes.get('/user/foo@bar').then(function (route) {
                 expect(route.target).toEqual(target);
                 expect(typeof route.last_activity).toEqual('object');
-
-                proxy.target_for_req({ url: "/user/foo@bar/path" }, function (proxy_target) {
-                    expect(proxy_target.target).toEqual(target);
-                    done();
-                });
+            }).then(function () {
+                return proxy.target_for_req({ url: "/user/foo@bar/path" })
+            }).then(function (proxy_target) {
+                expect(proxy_target.target).toEqual(target);
+                done();
             });
         });
     });
@@ -161,7 +159,7 @@ describe("API Tests", function () {
             expect(res.statusCode).toEqual(201);
             expect(res.body).toEqual('');
 
-            proxy._routes.get("/", function (route) {
+            proxy._routes.get("/").then(function (route) {
                 expect(route.target).toEqual(target);
                 expect(typeof route.last_activity).toEqual('object');
                 done();
@@ -169,24 +167,26 @@ describe("API Tests", function () {
         });
     });
 
+
     it("DELETE /api/routes[/path] deletes a route", function (done) {
         var port = 8998;
         var target = 'http://127.0.0.1:' + port;
         var path = '/user/bar';
 
-        util.add_target(proxy, path, port, null, null, function () {
-            proxy._routes.get(path, function (route) {
-                expect(route.target).toEqual(target);
+        util.add_target(proxy, path, port, null, null)
+        .then(function () {
+            return proxy._routes.get(path);
+        }).then(function (route) {
+            expect(route.target).toEqual(target);
 
-                r.del(api_url + path, function (error, res, body) {
-                    expect(error).toBe(null);
-                    expect(res.statusCode).toEqual(204);
-                    expect(res.body).toEqual('');
+            r.del(api_url + path, function (error, res, body) {
+                expect(error).toBe(null);
+                expect(res.statusCode).toEqual(204);
+                expect(res.body).toEqual('');
 
-                    proxy._routes.get(path, function (deleted_route) {
-                        expect(deleted_route).toBe(undefined);
-                        done();
-                    });
+                proxy._routes.get(path).then(function (deleted_route) {
+                    expect(deleted_route).toBe(undefined);
+                    done();
                 });
             });
         });
@@ -261,14 +261,14 @@ describe("API Tests", function () {
             });
         };
 
-        proxy.remove_route("/", function () {
-            util.add_target(proxy, '/yesterday', port, null, null, function () {
-                util.add_target(proxy, '/today', port + 1, null, null, function () {
-                    proxy._routes.update('/yesterday', { last_activity: yesterday }, function () {
-                        do_req(0);
-                    });
-                });
-            });
+        proxy.remove_route("/").then(() => {
+            return util.add_target(proxy, '/yesterday', port, null, null);
+        }).then(() => {
+            return util.add_target(proxy, '/today', port + 1, null, null)
+        }).then(() => {
+            return proxy._routes.update('/yesterday', { last_activity: yesterday })
+        }).then(() => {
+            do_req(0);
         });
     });
 });
