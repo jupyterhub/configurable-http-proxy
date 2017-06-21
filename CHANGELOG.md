@@ -8,6 +8,10 @@ command line for details.
 
 ## [2.0] - 2017-04-05
 
+### 2.0.4 - 2017-06-21
+
+- Add logging of all API requests
+
 ### 2.0.3 - 2017-06-12
 
 - Fix docker image entrypoint, broken in 2.0.2
