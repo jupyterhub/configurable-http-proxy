@@ -1,5 +1,6 @@
 {
   "eqeqeq": true,
+  "esversion": 6,
   "devel": true,
   "forin": true,
   "latedef": true,

@@ -2,12 +2,13 @@
 
 var path = require('path');
 var util = require('../lib/testutil');
-var request = require('request');
+var request = require('request-promise-native');
 var WebSocket = require('ws');
 
 var ConfigurableProxy = require('../lib/configproxy').ConfigurableProxy;
 
 describe("Proxy Tests", function () {
+    "use strict";
     var port = 8902;
     var test_port = port + 10;
     var proxy;
@@ -33,9 +34,8 @@ describe("Proxy Tests", function () {
     });
 
     it("basic HTTP request", function (done) {
-        r(proxy_url, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(200);
+        r(proxy_url)
+        .then((body) => {
             body = JSON.parse(body);
             expect(body).toEqual(jasmine.objectContaining({
                 path: '/',
@@ -78,9 +78,8 @@ describe("Proxy Tests", function () {
             called.proxy_request = true;
         });
 
-        r(proxy_url, function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(200);
+        r(proxy_url)
+        .then(function (body) {
             body = JSON.parse(body);
             expect(called.proxy_request).toBe(true);
             expect(body).toEqual(jasmine.objectContaining({
@@ -89,85 +88,73 @@ describe("Proxy Tests", function () {
             expect(body.headers).toEqual(jasmine.objectContaining({
                 testing: 'Test Passed',
             }));
+        }).then(done);
+    });
 
+    it("target path is prepended by default", function (done) {
+        util.add_target(proxy, '/bar', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/bar/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/foo/bar/rest/of/it'
+            }));
             done();
         });
     });
 
-    it("target path is prepended by default", function (done) {
-        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
-            r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/bar',
-                    url: '/foo/bar/rest/of/it'
-                }));
-                done();
-            });
-        });
-    });
-
     it("handle URI encoding", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo').then(function () {
-            r(proxy_url + '/b%40r/b%20r/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/b@r/b r',
-                    url: '/foo/b%40r/b%20r/rest/of/it'
-                }));
-                done();
-            });
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/b%40r/b%20r/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/b@r/b r',
+                url: '/foo/b%40r/b%20r/rest/of/it'
+            }));
+            done();
         });
     });
 
     it("handle @ in URI same as %40", function (done) {
-        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo').then(function () {
-            r(proxy_url + '/b@r/b%20r/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/b@r/b r',
-                    url: '/foo/b@r/b%20r/rest/of/it'
-                }));
-                done();
-            });
+        util.add_target(proxy, '/b@r/b r', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/b@r/b%20r/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/b@r/b r',
+                url: '/foo/b@r/b%20r/rest/of/it'
+            }));
+            done();
         });
     });
 
     it("prependPath: false prevents target path from being prepended", function (done) {
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
-            r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/bar',
-                    url: '/bar/rest/of/it'
-                }));
-                done();
-            });
+        util.add_target(proxy, '/bar', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/bar/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/bar/rest/of/it'
+            }));
+            done();
         });
     });
 
     it("includePrefix: false strips routing prefix from request",function (done) {
         proxy.includePrefix = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function () {
-            r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/bar',
-                    url: '/foo/rest/of/it'
-                }));
-                done();
-            });
+        util.add_target(proxy, '/bar', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/bar/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/foo/rest/of/it'
+            }));
+            done();
         });
     });
 
@@ -186,100 +173,89 @@ describe("Proxy Tests", function () {
     it("includePrefix: false + prependPath: false", function (done) {
         proxy.includePrefix = false;
         proxy.proxy.options.prependPath = false;
-        util.add_target(proxy, '/bar', test_port, false, '/foo').then(function() {
-            r(proxy_url + '/bar/rest/of/it', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    path: '/bar',
-                    url: '/rest/of/it'
-                }));
-                done();
-            });
+        util.add_target(proxy, '/bar', test_port, false, '/foo')
+        .then(() => r(proxy_url + '/bar/rest/of/it'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                path: '/bar',
+                url: '/rest/of/it'
+            }));
+            done();
         });
     });
 
     it("hostRouting: routes by host", function(done) {
         proxy.host_routing = true;
-        util.add_target(proxy, '/' + host_test, test_port, false, null).then(function () {
-            r(host_url + '/some/path', function(error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(200);
-                body = JSON.parse(body);
-                expect(body).toEqual(jasmine.objectContaining({
-                    target: "http://127.0.0.1:" + test_port,
-                    url: '/some/path'
-                }));
-                done();
-            });
-        });
+        util.add_target(proxy, '/' + host_test, test_port, false, null)
+        .then(() => r(host_url + '/some/path'))
+        .then((body) => {
+            body = JSON.parse(body);
+            expect(body).toEqual(jasmine.objectContaining({
+                target: "http://127.0.0.1:" + test_port,
+                url: '/some/path'
+            }));
+        }).then(done);
     });
 
     it("custom error target", function (done) {
         var port = 55555;
         util.setup_proxy(port, { error_target: "http://127.0.0.1:55565" }, [])
-        .then(function (proxy) {
-            var url = 'http://127.0.0.1:' + port + '/foo/bar';
-            r(url, function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(404);
-                expect(res.headers['content-type']).toEqual('text/plain');
-                expect(body).toEqual('/foo/bar');
-                done();
-            });
-        });
+        .then(() => r('http://127.0.0.1:' + port + '/foo/bar'))
+        .then((body) => done.fail("Expected 404"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(404);
+            expect(err.response.headers['content-type']).toEqual('text/plain');
+            expect(err.response.body).toEqual('/foo/bar');
+        }).then(done);
     });
 
     it("custom error path", function (done) {
         proxy.error_path = path.join(__dirname, 'error');
         proxy.remove_route('/')
-        .then(function () {
-            return proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' })
-        }).then(function (route) {
-            r(host_url + '/nope', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(404);
-                expect(res.headers['content-type']).toEqual('text/html');
-                expect(body).toMatch(/404'D/);
-                r(host_url + '/missing/prefix', function (error, res, body) {
-                    expect(error).toBe(null);
-                    expect(res.statusCode).toEqual(503);
-                    expect(res.headers['content-type']).toEqual('text/html');
-                    expect(body).toMatch(/UNKNOWN/);
-                    done();
-                });
-            });
-        });
+        .then(() => proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' }))
+        .then(() => r(host_url + '/nope'))
+        .then((body) => done.fail("Expected 404"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(404);
+            expect(err.response.headers['content-type']).toEqual('text/html');
+            expect(err.response.body).toMatch(/404'D/);
+        }).then(() => r(host_url + '/missing/prefix'))
+        .then((body) => done.fail("Expected 503"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(503);
+            expect(err.response.headers['content-type']).toEqual('text/html');
+            expect(err.response.body).toMatch(/UNKNOWN/);
+        }).then(done);
     });
 
     it("default error html", function (done) {
         proxy.remove_route('/');
-        proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' }).then(function (route) {
-            r(host_url + '/nope', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(404);
-                expect(res.headers['content-type']).toEqual('text/html');
-                expect(body).toMatch(/404:/);
-                r(host_url + '/missing/prefix', function (error, res, body) {
-                    expect(res.statusCode).toEqual(503);
-                    expect(res.headers['content-type']).toEqual('text/html');
-                    expect(body).toMatch(/503:/);
-                    done();
-                });
-            });
-        });
+        proxy.add_route('/missing', { target: 'https://127.0.0.1:54321' })
+        .then(() => r(host_url + '/nope'))
+        .then((body) => done.fail("Expected 404"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(404);
+            expect(err.response.headers['content-type']).toEqual('text/html');
+            expect(err.response.body).toMatch(/404:/);
+        }).then(() => r(host_url + '/missing/prefix'))
+        .then((body) => done.fail("Expected 503"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(503);
+            expect(err.response.headers['content-type']).toEqual('text/html');
+            expect(err.response.body).toMatch(/503:/);
+        }).then(done);
     });
 
     it("Redirect location untouched without rewrite options", function (done) {
         var redirect_to = 'http://foo.com:12345/whatever';
-        util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to);
-        r(proxy_url + '/external/urlpath/rest/of/it', function (error, res, body) {
-            expect(error).toBe(null);
-            expect(res.statusCode).toEqual(301);
-            expect(res.headers.location).toEqual(redirect_to);
-            done();
-        });
+        util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to)
+        .then(() => r(proxy_url + '/external/urlpath/rest/of/it'))
+        .then((body) => done.fail("Expected 301"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(301);
+            expect(err.response.headers.location).toEqual(redirect_to);
+        }).then(done);
     });
 
     it("Redirect location with rewriting", function (done) {
@@ -291,20 +267,17 @@ describe("Proxy Tests", function () {
 
         // where the backend server redirects us.
         // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
-        var redirect_to = "http://127.0.0.1:"+test_port+"/whatever";
+        var redirect_to = "https://127.0.0.1:"+test_port+"/whatever";
+        var expected_redirect = "https://127.0.0.1:"+proxy_port+"/whatever";
 
         util.setup_proxy(proxy_port, options, [])
-        .then(function (proxy) {
-            util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to);
-            var url = 'http://127.0.0.1:' + proxy_port;
-
-            r(url + '/external/urlpath/', function (error, res, body) {
-                expect(error).toBe(null);
-                expect(res.statusCode).toEqual(301);
-                expect(res.headers.location).toEqual("https://127.0.0.1:"+proxy_port+"/whatever");
-                done();
-            });
-        });
+        .then((proxy) => util.add_target_redirecting(proxy, '/external/urlpath/', test_port, '/internal/urlpath/', redirect_to))
+        .then(() => r('http://127.0.0.1:' + proxy_port + '/external/urlpath/'))
+        .then((body) => done.fail("Expected 301"))
+        .catch((err) => {
+            expect(err.statusCode).toEqual(301);
+            expect(err.response.headers.location).toEqual(expected_redirect);
+        }).then(done);
 
     });
 });
