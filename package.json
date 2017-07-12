@@ -1,5 +1,5 @@
 {
-  "version": "2.0.4",
+  "version": "3.0.0-dev",
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
@@ -19,7 +19,8 @@
     "jasmine": "^2.5.1",
     "jshint": "^2.9.2",
     "nyc": "^11.0.2",
-    "request": "~2",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4",
     "ws": "^3.0.0"
   },
   "engines": {
