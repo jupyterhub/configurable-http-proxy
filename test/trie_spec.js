@@ -4,7 +4,7 @@
 var URLTrie = require("../lib/trie").URLTrie;
 
 describe("URLTrie", function() {
-  var full_trie = function() {
+  var fullTrie = function() {
     // return a simple trie for testing
     var trie = new URLTrie();
     var paths = [
@@ -24,7 +24,7 @@ describe("URLTrie", function() {
     return trie;
   };
 
-  it("trie_init", function(done) {
+  it("trie.init", function(done) {
     var trie = new URLTrie();
     expect(trie.prefix).toEqual("/");
     expect(trie.size).toEqual(0);
@@ -40,7 +40,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie_root", function(done) {
+  it("trie.root", function(done) {
     var trie = new URLTrie();
     trie.add("/", -1);
     var node = trie.get("/1/etc/etc/");
@@ -60,7 +60,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie_add", function(done) {
+  it("trie.add", function(done) {
     var trie = new URLTrie();
 
     trie.add("foo", 1);
@@ -101,8 +101,8 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie_get", function(done) {
-    var trie = full_trie();
+  it("trie.get", function(done) {
+    var trie = fullTrie();
     expect(trie.get("/not/found")).toBe(undefined);
 
     var node = trie.get("/1");
@@ -135,8 +135,8 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie_remove", function(done) {
-    var trie = full_trie();
+  it("trie.remove", function(done) {
+    var trie = fullTrie();
     var size = trie.size;
     var node;
     node = trie.get("/b/just-b");
@@ -164,7 +164,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie_sub_paths", function(done) {
+  it("trie.subPaths", function(done) {
     var trie = new URLTrie(),
       node;
     trie.add("/", {

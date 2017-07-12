@@ -10,31 +10,31 @@ var ConfigurableProxy = require("../lib/configproxy").ConfigurableProxy;
 
 describe("Proxy Tests", function() {
   var port = 8902;
-  var test_port = port + 10;
+  var testPort = port + 10;
   var proxy;
-  var proxy_url = "http://127.0.0.1:" + port;
-  var host_test = "test.localhost.jovyan.org";
-  var host_url = "http://" + host_test + ":" + port;
+  var proxyUrl = "http://127.0.0.1:" + port;
+  var hostTest = "test.localhost.jovyan.org";
+  var hostUrl = "http://" + hostTest + ":" + port;
 
   var r = request.defaults({
     method: "GET",
-    url: proxy_url,
+    url: proxyUrl,
     followRedirect: false,
   });
 
   beforeEach(function(callback) {
-    util.setup_proxy(port).then(function(new_proxy) {
-      proxy = new_proxy;
+    util.setupProxy(port).then(function(newProxy) {
+      proxy = newProxy;
       callback();
     });
   });
 
   afterEach(function(callback) {
-    util.teardown_servers(callback);
+    util.teardownServers(callback);
   });
 
   it("basic HTTP request", function(done) {
-    r(proxy_url).then(body => {
+    r(proxyUrl).then(body => {
       body = JSON.parse(body);
       expect(body).toEqual(
         jasmine.objectContaining({
@@ -74,17 +74,17 @@ describe("Proxy Tests", function() {
     });
   });
 
-  it("proxy_request event can modify headers", function(done) {
+  it("proxyRequest event can modify headers", function(done) {
     var called = {};
-    proxy.on("proxy_request", function(req, res) {
+    proxy.on("proxyRequest", function(req, res) {
       req.headers.testing = "Test Passed";
-      called.proxy_request = true;
+      called.proxyRequest = true;
     });
 
-    r(proxy_url)
+    r(proxyUrl)
       .then(function(body) {
         body = JSON.parse(body);
-        expect(called.proxy_request).toBe(true);
+        expect(called.proxyRequest).toBe(true);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/",
@@ -101,8 +101,8 @@ describe("Proxy Tests", function() {
 
   it("target path is prepended by default", function(done) {
     util
-      .add_target(proxy, "/bar", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/bar/rest/of/it"))
+      .addTarget(proxy, "/bar", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/bar/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -117,8 +117,8 @@ describe("Proxy Tests", function() {
 
   it("handle URI encoding", function(done) {
     util
-      .add_target(proxy, "/b@r/b r", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/b%40r/b%20r/rest/of/it"))
+      .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/b%40r/b%20r/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -133,8 +133,8 @@ describe("Proxy Tests", function() {
 
   it("handle @ in URI same as %40", function(done) {
     util
-      .add_target(proxy, "/b@r/b r", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/b@r/b%20r/rest/of/it"))
+      .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/b@r/b%20r/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -152,8 +152,8 @@ describe("Proxy Tests", function() {
   ) {
     proxy.proxy.options.prependPath = false;
     util
-      .add_target(proxy, "/bar", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/bar/rest/of/it"))
+      .addTarget(proxy, "/bar", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/bar/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -169,8 +169,8 @@ describe("Proxy Tests", function() {
   it("includePrefix: false strips routing prefix from request", function(done) {
     proxy.includePrefix = false;
     util
-      .add_target(proxy, "/bar", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/bar/rest/of/it"))
+      .addTarget(proxy, "/bar", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/bar/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -183,9 +183,9 @@ describe("Proxy Tests", function() {
       });
   });
 
-  it("options.default_target", function(done) {
+  it("options.defaultTarget", function(done) {
     var options = {
-      default_target: "http://127.0.0.1:9001",
+      defaultTarget: "http://127.0.0.1:9001",
     };
 
     var cp = new ConfigurableProxy(options);
@@ -199,8 +199,8 @@ describe("Proxy Tests", function() {
     proxy.includePrefix = false;
     proxy.proxy.options.prependPath = false;
     util
-      .add_target(proxy, "/bar", test_port, false, "/foo")
-      .then(() => r(proxy_url + "/bar/rest/of/it"))
+      .addTarget(proxy, "/bar", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/bar/rest/of/it"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
@@ -214,15 +214,15 @@ describe("Proxy Tests", function() {
   });
 
   it("hostRouting: routes by host", function(done) {
-    proxy.host_routing = true;
+    proxy.hostRouting = true;
     util
-      .add_target(proxy, "/" + host_test, test_port, false, null)
-      .then(() => r(host_url + "/some/path"))
+      .addTarget(proxy, "/" + hostTest, testPort, false, null)
+      .then(() => r(hostUrl + "/some/path"))
       .then(body => {
         body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
-            target: "http://127.0.0.1:" + test_port,
+            target: "http://127.0.0.1:" + testPort,
             url: "/some/path",
           })
         );
@@ -233,7 +233,7 @@ describe("Proxy Tests", function() {
   it("custom error target", function(done) {
     var port = 55555;
     util
-      .setup_proxy(port, { error_target: "http://127.0.0.1:55565" }, [])
+      .setupProxy(port, { errorTarget: "http://127.0.0.1:55565" }, [])
       .then(() => r("http://127.0.0.1:" + port + "/foo/bar"))
       .then(body => done.fail("Expected 404"))
       .catch(err => {
@@ -245,20 +245,20 @@ describe("Proxy Tests", function() {
   });
 
   it("custom error path", function(done) {
-    proxy.error_path = path.join(__dirname, "error");
+    proxy.errorPath = path.join(__dirname, "error");
     proxy
-      .remove_route("/")
+      .removeRoute("/")
       .then(() =>
-        proxy.add_route("/missing", { target: "https://127.0.0.1:54321" })
+        proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" })
       )
-      .then(() => r(host_url + "/nope"))
+      .then(() => r(hostUrl + "/nope"))
       .then(body => done.fail("Expected 404"))
       .catch(err => {
         expect(err.statusCode).toEqual(404);
         expect(err.response.headers["content-type"]).toEqual("text/html");
         expect(err.response.body).toMatch(/404'D/);
       })
-      .then(() => r(host_url + "/missing/prefix"))
+      .then(() => r(hostUrl + "/missing/prefix"))
       .then(body => done.fail("Expected 503"))
       .catch(err => {
         expect(err.statusCode).toEqual(503);
@@ -269,17 +269,17 @@ describe("Proxy Tests", function() {
   });
 
   it("default error html", function(done) {
-    proxy.remove_route("/");
+    proxy.removeRoute("/");
     proxy
-      .add_route("/missing", { target: "https://127.0.0.1:54321" })
-      .then(() => r(host_url + "/nope"))
+      .addRoute("/missing", { target: "https://127.0.0.1:54321" })
+      .then(() => r(hostUrl + "/nope"))
       .then(body => done.fail("Expected 404"))
       .catch(err => {
         expect(err.statusCode).toEqual(404);
         expect(err.response.headers["content-type"]).toEqual("text/html");
         expect(err.response.body).toMatch(/404:/);
       })
-      .then(() => r(host_url + "/missing/prefix"))
+      .then(() => r(hostUrl + "/missing/prefix"))
       .then(body => done.fail("Expected 503"))
       .catch(err => {
         expect(err.statusCode).toEqual(503);
@@ -290,26 +290,26 @@ describe("Proxy Tests", function() {
   });
 
   it("Redirect location untouched without rewrite options", function(done) {
-    var redirect_to = "http://foo.com:12345/whatever";
+    var redirectTo = "http://foo.com:12345/whatever";
     util
-      .add_target_redirecting(
+      .addTargetRedirecting(
         proxy,
         "/external/urlpath/",
-        test_port,
+        testPort,
         "/internal/urlpath/",
-        redirect_to
+        redirectTo
       )
-      .then(() => r(proxy_url + "/external/urlpath/rest/of/it"))
+      .then(() => r(proxyUrl + "/external/urlpath/rest/of/it"))
       .then(body => done.fail("Expected 301"))
       .catch(err => {
         expect(err.statusCode).toEqual(301);
-        expect(err.response.headers.location).toEqual(redirect_to);
+        expect(err.response.headers.location).toEqual(redirectTo);
       })
       .then(done);
   });
 
   it("Redirect location with rewriting", function(done) {
-    var proxy_port = 55555;
+    var proxyPort = 55555;
     var options = {
       protocolRewrite: "https",
       autoRewrite: true,
@@ -317,25 +317,25 @@ describe("Proxy Tests", function() {
 
     // where the backend server redirects us.
     // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
-    var redirect_to = "https://127.0.0.1:" + test_port + "/whatever";
-    var expected_redirect = "https://127.0.0.1:" + proxy_port + "/whatever";
+    var redirectTo = "https://127.0.0.1:" + testPort + "/whatever";
+    var expectedRedirect = "https://127.0.0.1:" + proxyPort + "/whatever";
 
     util
-      .setup_proxy(proxy_port, options, [])
+      .setupProxy(proxyPort, options, [])
       .then(proxy =>
-        util.add_target_redirecting(
+        util.addTargetRedirecting(
           proxy,
           "/external/urlpath/",
-          test_port,
+          testPort,
           "/internal/urlpath/",
-          redirect_to
+          redirectTo
         )
       )
-      .then(() => r("http://127.0.0.1:" + proxy_port + "/external/urlpath/"))
+      .then(() => r("http://127.0.0.1:" + proxyPort + "/external/urlpath/"))
       .then(body => done.fail("Expected 301"))
       .catch(err => {
         expect(err.statusCode).toEqual(301);
-        expect(err.response.headers.location).toEqual(expected_redirect);
+        expect(err.response.headers.location).toEqual(expectedRedirect);
       })
       .then(done);
   });

@@ -10,24 +10,24 @@ log.remove(log.transports.Console);
 
 describe("API Tests", function() {
   var port = 8902;
-  var api_port = port + 1;
+  var apiPort = port + 1;
   var proxy;
-  var api_url = "http://127.0.0.1:" + api_port + "/api/routes";
+  var apiUrl = "http://127.0.0.1:" + apiPort + "/api/routes";
 
   var r;
 
   beforeEach(function(callback) {
     util
-      .setup_proxy(port)
-      .then(function(new_proxy) {
-        proxy = new_proxy;
+      .setupProxy(port)
+      .then(function(newProxy) {
+        proxy = newProxy;
       })
       .then(function() {
         r = request.defaults({
           method: "GET",
-          headers: { Authorization: "token " + proxy.auth_token },
-          port: api_port,
-          url: api_url,
+          headers: { Authorization: "token " + proxy.authToken },
+          port: apiPort,
+          url: apiUrl,
         });
       })
       .then(function() {
@@ -36,14 +36,14 @@ describe("API Tests", function() {
   });
 
   afterEach(function(callback) {
-    util.teardown_servers(callback);
+    util.teardownServers(callback);
   });
 
   it("Basic proxy constructor", function() {
     expect(proxy).toBeDefined();
-    expect(proxy.default_target).toBe(undefined);
+    expect(proxy.defaultTarget).toBe(undefined);
 
-    return proxy.target_for_req({ url: "/" }).then(function(route) {
+    return proxy.targetForReq({ url: "/" }).then(function(route) {
       expect(route).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -52,7 +52,7 @@ describe("API Tests", function() {
   });
 
   it("Default target is used for /any/random/url", function(done) {
-    proxy.target_for_req({ url: "/any/random/url" }).then(function(target) {
+    proxy.targetForReq({ url: "/any/random/url" }).then(function(target) {
       expect(target).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -63,7 +63,7 @@ describe("API Tests", function() {
   });
 
   it("Default target is used for /", function(done) {
-    proxy.target_for_req({ url: "/" }).then(function(target) {
+    proxy.targetForReq({ url: "/" }).then(function(target) {
       expect(target).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -74,7 +74,7 @@ describe("API Tests", function() {
   });
 
   it("GET /api/routes fetches the routing table", function(done) {
-    r(api_url)
+    r(apiUrl)
       .then(function(body) {
         var reply = JSON.parse(body);
         var keys = Object.keys(reply);
@@ -88,9 +88,9 @@ describe("API Tests", function() {
     var path = "/path";
     var url = "https://127.0.0.1:54321";
     proxy
-      .add_route(path, { target: url })
+      .addRoute(path, { target: url })
       .then(function() {
-        return r(api_url + path);
+        return r(apiUrl + path);
       })
       .then(function(body) {
         var reply = JSON.parse(body);
@@ -104,7 +104,7 @@ describe("API Tests", function() {
   it("GET /api/routes[/path] fetches a single route (404 if missing)", function(
     done
   ) {
-    r(api_url + "/path")
+    r(apiUrl + "/path")
       .then(body => {
         done.fail("Expected a 404");
       })
@@ -120,7 +120,7 @@ describe("API Tests", function() {
 
     r
       .post({
-        url: api_url + "/user/foo",
+        url: apiUrl + "/user/foo",
         body: JSON.stringify({ target: target }),
       })
       .then(body => {
@@ -139,7 +139,7 @@ describe("API Tests", function() {
     var target = "http://127.0.0.1:" + port;
     r
       .post({
-        url: api_url + "/user/foo%40bar",
+        url: apiUrl + "/user/foo%40bar",
         body: JSON.stringify({ target: target }),
       })
       .then(body => {
@@ -150,9 +150,9 @@ describe("API Tests", function() {
         expect(route.target).toEqual(target);
         expect(typeof route.last_activity).toEqual("object");
       })
-      .then(() => proxy.target_for_req({ url: "/user/foo@bar/path" }))
-      .then(proxy_target => {
-        expect(proxy_target.target).toEqual(target);
+      .then(() => proxy.targetForReq({ url: "/user/foo@bar/path" }))
+      .then(proxyTarget => {
+        expect(proxyTarget.target).toEqual(target);
       })
       .then(done);
   });
@@ -162,7 +162,7 @@ describe("API Tests", function() {
     var target = "http://127.0.0.1:" + port;
     r
       .post({
-        url: api_url,
+        url: apiUrl,
         body: JSON.stringify({ target: target }),
       })
       .then(body => {
@@ -182,27 +182,27 @@ describe("API Tests", function() {
     var path = "/user/bar";
 
     util
-      .add_target(proxy, path, port, null, null)
+      .addTarget(proxy, path, port, null, null)
       .then(() => proxy._routes.get(path))
       .then(route => expect(route.target).toEqual(target))
-      .then(() => r.del(api_url + path))
+      .then(() => r.del(apiUrl + path))
       .then(body => expect(body).toEqual(""))
       .then(() => proxy._routes.get(path))
-      .then(deleted_route => expect(deleted_route).toBe(undefined))
+      .then(deletedRoute => expect(deletedRoute).toBe(undefined))
       .then(done);
   });
 
-  it("GET /api/routes?inactive_since= with bad value returns a 400", function(
+  it("GET /api/routes?inactiveSince= with bad value returns a 400", function(
     done
   ) {
     r
-      .get(api_url + "?inactive_since=endoftheuniverse")
+      .get(apiUrl + "?inactiveSince=endoftheuniverse")
       .then(() => done.fail("Expected 400"))
       .catch(err => expect(err.statusCode).toEqual(400))
       .then(done);
   });
 
-  it("GET /api/routes?inactive_since= filters inactive entries", function(
+  it("GET /api/routes?inactiveSince= filters inactive entries", function(
     done
   ) {
     var port = 8998;
@@ -210,24 +210,24 @@ describe("API Tests", function() {
 
     var now = new Date();
     var yesterday = new Date(now.getTime() - 24 * 3.6e6);
-    var long_ago = new Date(1);
-    var hour_ago = new Date(now.getTime() - 3.6e6);
-    var hour_from_now = new Date(now.getTime() + 3.6e6);
+    var longAgo = new Date(1);
+    var hourAgo = new Date(now.getTime() - 3.6e6);
+    var hourFromNow = new Date(now.getTime() + 3.6e6);
 
     var tests = [
       {
         name: "long ago",
-        since: long_ago,
+        since: longAgo,
         expected: {},
       },
       {
         name: "an hour ago",
-        since: hour_ago,
+        since: hourAgo,
         expected: { "/yesterday": true },
       },
       {
         name: "the future",
-        since: hour_from_now,
+        since: hourFromNow,
         expected: {
           "/yesterday": true,
           "/today": true,
@@ -236,42 +236,42 @@ describe("API Tests", function() {
     ];
 
     var seen = 0;
-    var do_req = function(i) {
+    var doReq = function(i) {
       var t = tests[i];
       return r
-        .get(api_url + "?inactive_since=" + t.since.toISOString())
+        .get(apiUrl + "?inactiveSince=" + t.since.toISOString())
         .then(function(body) {
           var routes = JSON.parse(body);
-          var route_keys = Object.keys(routes);
-          var expected_keys = Object.keys(t.expected);
+          var routeKeys = Object.keys(routes);
+          var expectedKeys = Object.keys(t.expected);
 
-          route_keys.forEach(function(key) {
+          routeKeys.forEach(function(key) {
             // check that all routes are expected
-            expect(expected_keys).toContain(key);
+            expect(expectedKeys).toContain(key);
           });
 
-          expected_keys.forEach(function(key) {
+          expectedKeys.forEach(function(key) {
             // check that all expected routes are found
-            expect(route_keys).toContain(key);
+            expect(routeKeys).toContain(key);
           });
 
           seen += 1;
           if (seen === tests.length) {
             done();
           } else {
-            return do_req(seen);
+            return doReq(seen);
           }
         });
     };
 
     proxy
-      .remove_route("/")
-      .then(() => util.add_target(proxy, "/yesterday", port, null, null))
-      .then(() => util.add_target(proxy, "/today", port + 1, null, null))
+      .removeRoute("/")
+      .then(() => util.addTarget(proxy, "/yesterday", port, null, null))
+      .then(() => util.addTarget(proxy, "/today", port + 1, null, null))
       .then(() =>
         proxy._routes.update("/yesterday", { last_activity: yesterday })
       )
-      .then(() => do_req(0))
+      .then(() => doReq(0))
       .then();
   });
 });

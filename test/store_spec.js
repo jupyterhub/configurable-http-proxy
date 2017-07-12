@@ -10,9 +10,9 @@ describe("MemoryStore", function() {
 
   describe("get", function() {
     it("returns the data for the specified path", function(done) {
-      this.subject.add("/my_route", { test: "value" });
+      this.subject.add("/myRoute", { test: "value" });
 
-      this.subject.get("/my_route").then(function(data) {
+      this.subject.get("/myRoute").then(function(data) {
         expect(data).toEqual({ test: "value" });
         done();
       });
@@ -28,10 +28,10 @@ describe("MemoryStore", function() {
 
   describe("getTarget", function() {
     it("returns the target object for the path", function(done) {
-      this.subject.add("/my_route", { target: "http://localhost:8213" });
+      this.subject.add("/myRoute", { target: "http://localhost:8213" });
 
-      this.subject.getTarget("/my_route").then(function(target) {
-        expect(target.prefix).toEqual("/my_route");
+      this.subject.getTarget("/myRoute").then(function(target) {
+        expect(target.prefix).toEqual("/myRoute");
         expect(target.data.target).toEqual("http://localhost:8213");
         done();
       });
@@ -40,13 +40,13 @@ describe("MemoryStore", function() {
 
   describe("getAll", function() {
     it("returns all routes", function(done) {
-      this.subject.add("/my_route", { test: "value1" });
-      this.subject.add("/my_other_route", { test: "value2" });
+      this.subject.add("/myRoute", { test: "value1" });
+      this.subject.add("/myOtherRoute", { test: "value2" });
 
       this.subject.getAll().then(function(routes) {
         expect(Object.keys(routes).length).toEqual(2);
-        expect(routes["/my_route"]).toEqual({ test: "value1" });
-        expect(routes["/my_other_route"]).toEqual({ test: "value2" });
+        expect(routes["/myRoute"]).toEqual({ test: "value1" });
+        expect(routes["/myOtherRoute"]).toEqual({ test: "value2" });
         done();
       });
     });
@@ -61,19 +61,19 @@ describe("MemoryStore", function() {
 
   describe("add", function() {
     it("adds data to the store for the specified path", function(done) {
-      this.subject.add("/my_route", { test: "value" });
+      this.subject.add("/myRoute", { test: "value" });
 
-      this.subject.get("/my_route").then(function(route) {
+      this.subject.get("/myRoute").then(function(route) {
         expect(route).toEqual({ test: "value" });
         done();
       });
     });
 
     it("overwrites any existing values", function(done) {
-      this.subject.add("/my_route", { test: "value" });
-      this.subject.add("/my_route", { test: "updatedValue" });
+      this.subject.add("/myRoute", { test: "value" });
+      this.subject.add("/myRoute", { test: "updatedValue" });
 
-      this.subject.get("/my_route").then(function(route) {
+      this.subject.get("/myRoute").then(function(route) {
         expect(route).toEqual({ test: "updatedValue" });
         done();
       });
@@ -82,10 +82,10 @@ describe("MemoryStore", function() {
 
   describe("update", function() {
     it("merges supplied data with existing data", function(done) {
-      this.subject.add("/my_route", { version: 1, test: "value" });
-      this.subject.update("/my_route", { version: 2 });
+      this.subject.add("/myRoute", { version: 1, test: "value" });
+      this.subject.update("/myRoute", { version: 2 });
 
-      this.subject.get("/my_route").then(function(route) {
+      this.subject.get("/myRoute").then(function(route) {
         expect(route.version).toEqual(2);
         expect(route.test).toEqual("value");
         done();
@@ -95,10 +95,10 @@ describe("MemoryStore", function() {
 
   describe("remove", function() {
     it("removes a route from the table", function(done) {
-      this.subject.add("/my_route", { test: "value" });
-      this.subject.remove("/my_route");
+      this.subject.add("/myRoute", { test: "value" });
+      this.subject.remove("/myRoute");
 
-      this.subject.get("/my_route").then(function(route) {
+      this.subject.get("/myRoute").then(function(route) {
         expect(route).toBe(undefined);
         done();
       });
@@ -106,15 +106,15 @@ describe("MemoryStore", function() {
 
     it("doesn't explode when route is not defined", function(done) {
       // would blow up if an error was thrown
-      this.subject.remove("/my_route/foo/bar").then(done);
+      this.subject.remove("/myRoute/foo/bar").then(done);
     });
   });
 
   describe("hasRoute", function() {
     it("returns false when the path is not found", function(done) {
       this.subject
-        .add("/my_route", { test: "value" })
-        .then(() => this.subject.get("/my_route"))
+        .add("/myRoute", { test: "value" })
+        .then(() => this.subject.get("/myRoute"))
         .then(result => {
           expect(result).toEqual({ test: "value" });
         })

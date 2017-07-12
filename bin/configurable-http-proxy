@@ -68,16 +68,16 @@ var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
 
 var options = {};
 
-var ssl_ciphers;
+var sslCiphers;
 if (args.sslCiphers) {
-    ssl_ciphers = args.sslCiphers;
+    sslCiphers = args.sslCiphers;
 } else {
     var rc4 = "!RC4"; // disable RC4 by default
     if (args.sslAllowRc4) { // autoCamelCase is duMb
         rc4 = "RC4";
     }
     // ref: https://iojs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite
-    ssl_ciphers = [
+    sslCiphers = [
         "ECDHE-RSA-AES128-GCM-SHA256",
         "ECDHE-ECDSA-AES128-GCM-SHA256",
         "ECDHE-RSA-AES256-GCM-SHA384",
@@ -121,7 +121,7 @@ if (args.sslKey || args.sslCert) {
     if (args.sslProtocol) {
       options.ssl.secureProtocol = args.sslProtocol + '_method';
     }
-    options.ssl.ciphers = ssl_ciphers;
+    options.ssl.ciphers = sslCiphers;
     options.ssl.honorCipherOrder = true;
     options.ssl.requestCert = args.sslRequestCert;
     options.ssl.rejectUnauthorized = args.sslRejectUnauthorized;
@@ -129,34 +129,34 @@ if (args.sslKey || args.sslCert) {
 
 // ssl options for the API interface
 if (args.apiSslKey || args.apiSslCert) {
-    options.api_ssl = {};
+    options.apiSsl = {};
     if (args.apiSslKey) {
-        options.api_ssl.key = fs.readFileSync(args.apiSslKey);
+        options.apiSsl.key = fs.readFileSync(args.apiSslKey);
     }
     if (args.apiSslCert) {
-        options.api_ssl.cert = fs.readFileSync(args.apiSslCert);
+        options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
     }
     if (args.apiSslCa) {
-        options.api_ssl.ca = fs.readFileSync(args.apiSslCa);
+        options.apiSsl.ca = fs.readFileSync(args.apiSslCa);
     }
     if (args.sslDhparam) {
-        options.api_ssl.dhparam = fs.readFileSync(args.sslDhparam);
+        options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
     }
     if (args.sslProtocol) {
-      options.api_ssl.secureProtocol = args.sslProtocol + '_method';
+      options.apiSsl.secureProtocol = args.sslProtocol + '_method';
     }
-    options.api_ssl.ciphers = ssl_ciphers;
-    options.api_ssl.honorCipherOrder = true;
-    options.api_ssl.requestCert = args.apiSslRequestCert;
-    options.api_ssl.rejectUnauthorized = args.apiSslRejectUnauthorized;
+    options.apiSsl.ciphers = sslCiphers;
+    options.apiSsl.honorCipherOrder = true;
+    options.apiSsl.requestCert = args.apiSslRequestCert;
+    options.apiSsl.rejectUnauthorized = args.apiSslRejectUnauthorized;
 }
 
 // because camelCase is the js way!
-options.default_target = args.defaultTarget;
-options.error_target = args.errorTarget;
-options.error_path = args.errorPath;
-options.host_routing = args.hostRouting;
-options.auth_token = process.env.CONFIGPROXY_AUTH_TOKEN;
+options.defaultTarget = args.defaultTarget;
+options.errorTarget = args.errorTarget;
+options.errorPath = args.errorPath;
+options.hostRouting = args.hostRouting;
+options.authToken = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
 options.proxyTimeout = args.proxyTimeout;
 
@@ -175,7 +175,7 @@ if (!options.ssl && options.redirectPort) {
     process.exit(1);
 }
 
-if (options.error_target && options.error_path) {
+if (options.errorTarget && options.errorPath) {
     log.error("Cannot specify both error-target and error-path. Pick one.");
     process.exit(1);
 }
@@ -195,7 +195,7 @@ if (args.protocolRewrite) {
     log.info("ProtocolRewrite enabled. Rewriting to "+options.protocolRewrite);
 }
 
-if (!options.auth_token) {
+if (!options.authToken) {
     log.warn("REST API is not authenticated.");
 }
 
@@ -209,21 +209,21 @@ if (args.ip === '*') {
     args.ip = '';
 }
 listen.ip = args.ip;
-listen.api_ip = args.apiIp || 'localhost';
-listen.api_port = args.apiPort || listen.port + 1;
+listen.apiIp = args.apiIp || 'localhost';
+listen.apiPort = args.apiPort || listen.port + 1;
 
-proxy.proxy_server.listen(listen.port, listen.ip);
-proxy.api_server.listen(listen.api_port, listen.api_ip);
+proxy.proxyServer.listen(listen.port, listen.ip);
+proxy.apiServer.listen(listen.apiPort, listen.apiIp);
 
 log.info("Proxying %s://%s:%s to %s",
     options.ssl ? 'https' : 'http',
     (listen.ip || '*'), listen.port,
-    options.default_target || "(no default)"
+    options.defaultTarget || "(no default)"
 );
 log.info("Proxy API at %s://%s:%s/api/routes",
-    options.api_ssl ? 'https' : 'http',
-    (listen.api_ip || '*'),
-    listen.api_port);
+    options.apiSsl ? 'https' : 'http',
+    (listen.apiIp || '*'),
+    listen.apiPort);
 
 if (args.pidFile) {
     log.info("Writing pid %s to %s", process.pid, args.pidFile);
@@ -260,6 +260,6 @@ process.on('SIGINT', function () {
 });
 
 // log uncaught exceptions, don't exit now that setup is complete
-process.on('uncaughtException', function(e) {
+process.on('uncaught_exception', function(e) {
   log.error('Uncaught Exception', e.stack);
 });
