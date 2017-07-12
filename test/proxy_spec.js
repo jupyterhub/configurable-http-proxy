@@ -13,7 +13,7 @@ describe("Proxy Tests", function () {
     var test_port = port + 10;
     var proxy;
     var proxy_url = "http://127.0.0.1:" + port;
-    var host_test = "test.127.0.0.1.xip.io";
+    var host_test = "test.localhost.jovyan.org";
     var host_url = "http://" + host_test + ":" + port;
 
     var r = request.defaults({
