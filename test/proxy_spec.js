@@ -147,9 +147,7 @@ describe("Proxy Tests", function() {
       });
   });
 
-  it("prependPath: false prevents target path from being prepended", function(
-    done
-  ) {
+  it("prependPath: false prevents target path from being prepended", function(done) {
     proxy.proxy.options.prependPath = false;
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
@@ -248,9 +246,7 @@ describe("Proxy Tests", function() {
     proxy.errorPath = path.join(__dirname, "error");
     proxy
       .removeRoute("/")
-      .then(() =>
-        proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" })
-      )
+      .then(() => proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" }))
       .then(() => r(hostUrl + "/nope"))
       .then(body => done.fail("Expected 404"))
       .catch(err => {
@@ -292,13 +288,7 @@ describe("Proxy Tests", function() {
   it("Redirect location untouched without rewrite options", function(done) {
     var redirectTo = "http://foo.com:12345/whatever";
     util
-      .addTargetRedirecting(
-        proxy,
-        "/external/urlpath/",
-        testPort,
-        "/internal/urlpath/",
-        redirectTo
-      )
+      .addTargetRedirecting(proxy, "/external/urlpath/", testPort, "/internal/urlpath/", redirectTo)
       .then(() => r(proxyUrl + "/external/urlpath/rest/of/it"))
       .then(body => done.fail("Expected 301"))
       .catch(err => {

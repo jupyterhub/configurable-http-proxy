@@ -6,149 +6,173 @@
 // Distributed under the terms of the Modified BSD License.
 //
 
-var fs = require('fs'),
-    pkg = require('../package.json'),
-    args = require('commander'),
-    strftime = require('strftime'),
-    tls = require('tls'),
-    log = require('winston');
+var fs = require("fs"),
+  pkg = require("../package.json"),
+  args = require("commander"),
+  strftime = require("strftime"),
+  tls = require("tls"),
+  log = require("winston");
 
 args
-    .version(pkg.version)
-    .option('--ip <ip-address>', 'Public-facing IP of the proxy')
-    .option('--port <n> (defaults to 8000)', 'Public-facing port of the proxy', parseInt)
-    .option('--ssl-key <keyfile>', 'SSL key to use, if any')
-    .option('--ssl-cert <certfile>', 'SSL certificate to use, if any')
-    .option('--ssl-ca <ca-file>', 'SSL certificate authority, if any')
-    .option('--ssl-request-cert', 'Request SSL certs to authenticate clients')
-    .option('--ssl-reject-unauthorized', 'Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)')
-    .option('--ssl-protocol <ssl-protocol>', 'Set specific SSL protocol, e.g. TLSv1.2, SSLv3')
-    .option('--ssl-ciphers <ciphers>', '`:`-separated ssl cipher list. Default excludes RC4')
-    .option('--ssl-allow-rc4', 'Allow RC4 cipher for SSL (disabled by default)')
-    .option('--ssl-dhparam <dhparam-file>', 'SSL Diffie-Helman Parameters pem file, if any')
-    .option('--api-ip <ip>', 'Inward-facing IP for API requests', 'localhost')
-    .option('--api-port <n>', 'Inward-facing port for API requests (defaults to --port=value+1)', parseInt)
-    .option('--api-ssl-key <keyfile>', 'SSL key to use, if any, for API requests')
-    .option('--api-ssl-cert <certfile>', 'SSL certificate to use, if any, for API requests')
-    .option('--api-ssl-ca <ca-file>', 'SSL certificate authority, if any, for API requests')
-    .option('--api-ssl-request-cert', 'Request SSL certs to authenticate clients for API requests')
-    .option('--api-ssl-reject-unauthorized', 'Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)')
-    .option('--default-target <host>', 'Default proxy target (proto://host[:port])')
-    .option('--error-target <host>', 'Alternate server for handling proxy errors (proto://host[:port])')
-    .option('--error-path <path>', 'Alternate server for handling proxy errors (proto://host[:port])')
-    .option('--redirect-port <redirect-port>', 'Redirect HTTP requests on this port to the server on HTTPS')
-    .option('--pid-file <pid-file>', 'Write our PID to a file')
-    // passthrough http-proxy options
-    .option('--no-x-forward', "Don't add 'X-forward-' headers to proxied requests")
-    .option('--no-prepend-path', "Avoid prepending target paths to proxied requests")
-    .option('--no-include-prefix', "Don't include the routing prefix in proxied requests")
-    .option('--auto-rewrite', "Rewrite the Location header host/port in redirect responses")
-    .option('--protocol-rewrite <proto>', "Rewrite the Location header protocol in redirect responses to the specified protocol")
-    .option('--insecure', "Disable SSL cert verification")
-    .option('--host-routing', "Use host routing (host as first level of path)")
-    .option('--statsd-host <host>', 'Host to send statsd statistics to')
-    .option('--statsd-port <port>', 'Port to send statsd statistics to', parseInt)
-    .option('--statsd-prefix <prefix>', 'Prefix to use for statsd statistics')
-    .option('--log-level <loglevel>', 'Log level (debug, info, warn, error)', 'info')
-    .option('--proxy-timeout <n>', 'Timeout (in millis) when proxy receives no response from target.', parseInt);
+  .version(pkg.version)
+  .option("--ip <ip-address>", "Public-facing IP of the proxy")
+  .option("--port <n> (defaults to 8000)", "Public-facing port of the proxy", parseInt)
+  .option("--ssl-key <keyfile>", "SSL key to use, if any")
+  .option("--ssl-cert <certfile>", "SSL certificate to use, if any")
+  .option("--ssl-ca <ca-file>", "SSL certificate authority, if any")
+  .option("--ssl-request-cert", "Request SSL certs to authenticate clients")
+  .option(
+    "--ssl-reject-unauthorized",
+    "Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)"
+  )
+  .option("--ssl-protocol <ssl-protocol>", "Set specific SSL protocol, e.g. TLSv1.2, SSLv3")
+  .option("--ssl-ciphers <ciphers>", "`:`-separated ssl cipher list. Default excludes RC4")
+  .option("--ssl-allow-rc4", "Allow RC4 cipher for SSL (disabled by default)")
+  .option("--ssl-dhparam <dhparam-file>", "SSL Diffie-Helman Parameters pem file, if any")
+  .option("--api-ip <ip>", "Inward-facing IP for API requests", "localhost")
+  .option(
+    "--api-port <n>",
+    "Inward-facing port for API requests (defaults to --port=value+1)",
+    parseInt
+  )
+  .option("--api-ssl-key <keyfile>", "SSL key to use, if any, for API requests")
+  .option("--api-ssl-cert <certfile>", "SSL certificate to use, if any, for API requests")
+  .option("--api-ssl-ca <ca-file>", "SSL certificate authority, if any, for API requests")
+  .option("--api-ssl-request-cert", "Request SSL certs to authenticate clients for API requests")
+  .option(
+    "--api-ssl-reject-unauthorized",
+    "Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)"
+  )
+  .option("--default-target <host>", "Default proxy target (proto://host[:port])")
+  .option(
+    "--error-target <host>",
+    "Alternate server for handling proxy errors (proto://host[:port])"
+  )
+  .option("--error-path <path>", "Alternate server for handling proxy errors (proto://host[:port])")
+  .option(
+    "--redirect-port <redirect-port>",
+    "Redirect HTTP requests on this port to the server on HTTPS"
+  )
+  .option("--pid-file <pid-file>", "Write our PID to a file")
+  // passthrough http-proxy options
+  .option("--no-x-forward", "Don't add 'X-forward-' headers to proxied requests")
+  .option("--no-prepend-path", "Avoid prepending target paths to proxied requests")
+  .option("--no-include-prefix", "Don't include the routing prefix in proxied requests")
+  .option("--auto-rewrite", "Rewrite the Location header host/port in redirect responses")
+  .option(
+    "--protocol-rewrite <proto>",
+    "Rewrite the Location header protocol in redirect responses to the specified protocol"
+  )
+  .option("--insecure", "Disable SSL cert verification")
+  .option("--host-routing", "Use host routing (host as first level of path)")
+  .option("--statsd-host <host>", "Host to send statsd statistics to")
+  .option("--statsd-port <port>", "Port to send statsd statistics to", parseInt)
+  .option("--statsd-prefix <prefix>", "Prefix to use for statsd statistics")
+  .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
+  .option(
+    "--proxy-timeout <n>",
+    "Timeout (in millis) when proxy receives no response from target.",
+    parseInt
+  );
 
 args.parse(process.argv);
 
 log.remove(log.transports.Console);
 log.add(log.transports.Console, {
-    colorize: (process.stdout.isTTY && process.stderr.isTTY),
-    level: args.logLevel.toLowerCase(),
-    timestamp: function () {
-      return strftime("%H:%M:%S.%L", new Date());
-    },
-    label: 'ConfigProxy',
+  colorize: process.stdout.isTTY && process.stderr.isTTY,
+  level: args.logLevel.toLowerCase(),
+  timestamp: function() {
+    return strftime("%H:%M:%S.%L", new Date());
+  },
+  label: "ConfigProxy",
 });
 
-var ConfigurableProxy = require('../lib/configproxy.js').ConfigurableProxy;
+var ConfigurableProxy = require("../lib/configproxy.js").ConfigurableProxy;
 
 var options = {};
 
 var sslCiphers;
 if (args.sslCiphers) {
-    sslCiphers = args.sslCiphers;
+  sslCiphers = args.sslCiphers;
 } else {
-    var rc4 = "!RC4"; // disable RC4 by default
-    if (args.sslAllowRc4) { // autoCamelCase is duMb
-        rc4 = "RC4";
-    }
-    // ref: https://iojs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite
-    sslCiphers = [
-        "ECDHE-RSA-AES128-GCM-SHA256",
-        "ECDHE-ECDSA-AES128-GCM-SHA256",
-        "ECDHE-RSA-AES256-GCM-SHA384",
-        "ECDHE-ECDSA-AES256-GCM-SHA384",
-        "DHE-RSA-AES128-GCM-SHA256",
-        "ECDHE-RSA-AES128-SHA256",
-        "DHE-RSA-AES128-SHA256",
-        "ECDHE-RSA-AES256-SHA384",
-        "DHE-RSA-AES256-SHA384",
-        "ECDHE-RSA-AES256-SHA256",
-        "DHE-RSA-AES256-SHA256",
-        "HIGH",
-        rc4,
-        "!aNULL",
-        "!eNULL",
-        "!EXPORT",
-        "!DES",
-        "!RC4",
-        "!MD5",
-        "!PSK",
-        "!SRP",
-        "!CAMELLIA",
-    ].join(':');
+  var rc4 = "!RC4"; // disable RC4 by default
+  if (args.sslAllowRc4) {
+    // autoCamelCase is duMb
+    rc4 = "RC4";
+  }
+  // ref: https://iojs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite
+  sslCiphers = [
+    "ECDHE-RSA-AES128-GCM-SHA256",
+    "ECDHE-ECDSA-AES128-GCM-SHA256",
+    "ECDHE-RSA-AES256-GCM-SHA384",
+    "ECDHE-ECDSA-AES256-GCM-SHA384",
+    "DHE-RSA-AES128-GCM-SHA256",
+    "ECDHE-RSA-AES128-SHA256",
+    "DHE-RSA-AES128-SHA256",
+    "ECDHE-RSA-AES256-SHA384",
+    "DHE-RSA-AES256-SHA384",
+    "ECDHE-RSA-AES256-SHA256",
+    "DHE-RSA-AES256-SHA256",
+    "HIGH",
+    rc4,
+    "!aNULL",
+    "!eNULL",
+    "!EXPORT",
+    "!DES",
+    "!RC4",
+    "!MD5",
+    "!PSK",
+    "!SRP",
+    "!CAMELLIA",
+  ].join(":");
 }
 
 // ssl options
 if (args.sslKey || args.sslCert) {
-    options.ssl = {};
-    if (args.sslKey) {
-        options.ssl.key = fs.readFileSync(args.sslKey);
-    }
-    if (args.sslCert) {
-        options.ssl.cert = fs.readFileSync(args.sslCert);
-    }
-    if (args.sslCa) {
-        options.ssl.ca = fs.readFileSync(args.sslCa);
-    }
-    if (args.sslDhparam) {
-        options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
-    }
-    if (args.sslProtocol) {
-      options.ssl.secureProtocol = args.sslProtocol + '_method';
-    }
-    options.ssl.ciphers = sslCiphers;
-    options.ssl.honorCipherOrder = true;
-    options.ssl.requestCert = args.sslRequestCert;
-    options.ssl.rejectUnauthorized = args.sslRejectUnauthorized;
+  options.ssl = {};
+  if (args.sslKey) {
+    options.ssl.key = fs.readFileSync(args.sslKey);
+  }
+  if (args.sslCert) {
+    options.ssl.cert = fs.readFileSync(args.sslCert);
+  }
+  if (args.sslCa) {
+    options.ssl.ca = fs.readFileSync(args.sslCa);
+  }
+  if (args.sslDhparam) {
+    options.ssl.dhparam = fs.readFileSync(args.sslDhparam);
+  }
+  if (args.sslProtocol) {
+    options.ssl.secureProtocol = args.sslProtocol + "_method";
+  }
+  options.ssl.ciphers = sslCiphers;
+  options.ssl.honorCipherOrder = true;
+  options.ssl.requestCert = args.sslRequestCert;
+  options.ssl.rejectUnauthorized = args.sslRejectUnauthorized;
 }
 
 // ssl options for the API interface
 if (args.apiSslKey || args.apiSslCert) {
-    options.apiSsl = {};
-    if (args.apiSslKey) {
-        options.apiSsl.key = fs.readFileSync(args.apiSslKey);
-    }
-    if (args.apiSslCert) {
-        options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
-    }
-    if (args.apiSslCa) {
-        options.apiSsl.ca = fs.readFileSync(args.apiSslCa);
-    }
-    if (args.sslDhparam) {
-        options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
-    }
-    if (args.sslProtocol) {
-      options.apiSsl.secureProtocol = args.sslProtocol + '_method';
-    }
-    options.apiSsl.ciphers = sslCiphers;
-    options.apiSsl.honorCipherOrder = true;
-    options.apiSsl.requestCert = args.apiSslRequestCert;
-    options.apiSsl.rejectUnauthorized = args.apiSslRejectUnauthorized;
+  options.apiSsl = {};
+  if (args.apiSslKey) {
+    options.apiSsl.key = fs.readFileSync(args.apiSslKey);
+  }
+  if (args.apiSslCert) {
+    options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
+  }
+  if (args.apiSslCa) {
+    options.apiSsl.ca = fs.readFileSync(args.apiSslCa);
+  }
+  if (args.sslDhparam) {
+    options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
+  }
+  if (args.sslProtocol) {
+    options.apiSsl.secureProtocol = args.sslProtocol + "_method";
+  }
+  options.apiSsl.ciphers = sslCiphers;
+  options.apiSsl.honorCipherOrder = true;
+  options.apiSsl.requestCert = args.apiSslRequestCert;
+  options.apiSsl.rejectUnauthorized = args.apiSslRejectUnauthorized;
 }
 
 // because camelCase is the js way!
@@ -162,22 +186,22 @@ options.proxyTimeout = args.proxyTimeout;
 
 // statsd options
 if (args.statsdHost) {
-    var lynx = require('lynx');
-    options.statsd = new lynx(args.statsdHost, args.statsdPort || 8125, {
-        scope: args.statsdPrefix || 'chp',
-    });
-    log.info('Sending metrics to statsd at ' + args.statsdHost + ':' + args.statsdPort || 8125);
+  var lynx = require("lynx");
+  options.statsd = new lynx(args.statsdHost, args.statsdPort || 8125, {
+    scope: args.statsdPrefix || "chp",
+  });
+  log.info("Sending metrics to statsd at " + args.statsdHost + ":" + args.statsdPort || 8125);
 }
 
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {
-    log.error("HTTPS redirection specified but certificates not provided.");
-    process.exit(1);
+  log.error("HTTPS redirection specified but certificates not provided.");
+  process.exit(1);
 }
 
 if (options.errorTarget && options.errorPath) {
-    log.error("Cannot specify both error-target and error-path. Pick one.");
-    process.exit(1);
+  log.error("Cannot specify both error-target and error-path. Pick one.");
+  process.exit(1);
 }
 
 // passthrough for http-proxy options
@@ -186,80 +210,88 @@ options.xfwd = args.xForward;
 options.prependPath = args.prependPath;
 options.includePrefix = args.includePrefix;
 if (args.autoRewrite) {
-    options.autoRewrite = true;
-    log.info("AutoRewrite of Location headers enabled.");
+  options.autoRewrite = true;
+  log.info("AutoRewrite of Location headers enabled.");
 }
 
 if (args.protocolRewrite) {
-    options.protocolRewrite = args.protocolRewrite;
-    log.info("ProtocolRewrite enabled. Rewriting to "+options.protocolRewrite);
+  options.protocolRewrite = args.protocolRewrite;
+  log.info("ProtocolRewrite enabled. Rewriting to " + options.protocolRewrite);
 }
 
 if (!options.authToken) {
-    log.warn("REST API is not authenticated.");
+  log.warn("REST API is not authenticated.");
 }
 
 var proxy = new ConfigurableProxy(options);
 
 var listen = {};
 listen.port = parseInt(args.port) || 8000;
-if (args.ip === '*') {
-    // handle ip=* alias for all interfaces
-    log.warn("Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces.");
-    args.ip = '';
+if (args.ip === "*") {
+  // handle ip=* alias for all interfaces
+  log.warn(
+    "Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces."
+  );
+  args.ip = "";
 }
 listen.ip = args.ip;
-listen.apiIp = args.apiIp || 'localhost';
+listen.apiIp = args.apiIp || "localhost";
 listen.apiPort = args.apiPort || listen.port + 1;
 
 proxy.proxyServer.listen(listen.port, listen.ip);
 proxy.apiServer.listen(listen.apiPort, listen.apiIp);
 
-log.info("Proxying %s://%s:%s to %s",
-    options.ssl ? 'https' : 'http',
-    (listen.ip || '*'), listen.port,
-    options.defaultTarget || "(no default)"
+log.info(
+  "Proxying %s://%s:%s to %s",
+  options.ssl ? "https" : "http",
+  listen.ip || "*",
+  listen.port,
+  options.defaultTarget || "(no default)"
 );
-log.info("Proxy API at %s://%s:%s/api/routes",
-    options.apiSsl ? 'https' : 'http',
-    (listen.apiIp || '*'),
-    listen.apiPort);
+log.info(
+  "Proxy API at %s://%s:%s/api/routes",
+  options.apiSsl ? "https" : "http",
+  listen.apiIp || "*",
+  listen.apiPort
+);
 
 if (args.pidFile) {
-    log.info("Writing pid %s to %s", process.pid, args.pidFile);
-    var fd = fs.openSync(args.pidFile, 'w');
-    fs.writeSync(fd, process.pid.toString());
-    fs.closeSync(fd);
-    process.on('exit', function () {
-        log.debug("Removing %s", args.pidFile);
-        fs.unlinkSync(args.pidFile);
-    });
+  log.info("Writing pid %s to %s", process.pid, args.pidFile);
+  var fd = fs.openSync(args.pidFile, "w");
+  fs.writeSync(fd, process.pid.toString());
+  fs.closeSync(fd);
+  process.on("exit", function() {
+    log.debug("Removing %s", args.pidFile);
+    fs.unlinkSync(args.pidFile);
+  });
 }
 
 // Redirect HTTP to HTTPS on the proxy's port
 if (options.redirectPort && listen.port !== 80) {
-  var http = require('http');
+  var http = require("http");
 
-  http.createServer(function (req, res) {
-    var host = req.headers.host.split(':')[0];
+  http
+    .createServer(function(req, res) {
+      var host = req.headers.host.split(":")[0];
 
-    // Make sure that when we redirect, it's to the port the proxy is running on
-    if (listen.port !== 443) {
-        host = host + ':' + listen.port;
-    }
-    res.writeHead(301, { "Location": "https://" + host + req.url });
-    res.end();
-  }).listen(options.redirectPort);
+      // Make sure that when we redirect, it's to the port the proxy is running on
+      if (listen.port !== 443) {
+        host = host + ":" + listen.port;
+      }
+      res.writeHead(301, { Location: "https://" + host + req.url });
+      res.end();
+    })
+    .listen(options.redirectPort);
 }
 
 // trigger normal exit on sigint
 // without this, PID cleanup won't fire on SIGINT
-process.on('SIGINT', function () {
+process.on("SIGINT", function() {
   log.warn("Interrupted");
   process.exit(2);
 });
 
 // log uncaught exceptions, don't exit now that setup is complete
-process.on('uncaught_exception', function(e) {
-  log.error('Uncaught Exception', e.stack);
+process.on("uncaughtException", function(e) {
+  log.error("Uncaught Exception", e.stack);
 });

@@ -101,9 +101,7 @@ describe("API Tests", function() {
       .then(done);
   });
 
-  it("GET /api/routes[/path] fetches a single route (404 if missing)", function(
-    done
-  ) {
+  it("GET /api/routes[/path] fetches a single route (404 if missing)", function(done) {
     r(apiUrl + "/path")
       .then(body => {
         done.fail("Expected a 404");
@@ -192,9 +190,7 @@ describe("API Tests", function() {
       .then(done);
   });
 
-  it("GET /api/routes?inactiveSince= with bad value returns a 400", function(
-    done
-  ) {
+  it("GET /api/routes?inactiveSince= with bad value returns a 400", function(done) {
     r
       .get(apiUrl + "?inactiveSince=endoftheuniverse")
       .then(() => done.fail("Expected 400"))
@@ -202,9 +198,7 @@ describe("API Tests", function() {
       .then(done);
   });
 
-  it("GET /api/routes?inactiveSince= filters inactive entries", function(
-    done
-  ) {
+  it("GET /api/routes?inactiveSince= filters inactive entries", function(done) {
     var port = 8998;
     var path = "/yesterday";
 
@@ -238,39 +232,35 @@ describe("API Tests", function() {
     var seen = 0;
     var doReq = function(i) {
       var t = tests[i];
-      return r
-        .get(apiUrl + "?inactiveSince=" + t.since.toISOString())
-        .then(function(body) {
-          var routes = JSON.parse(body);
-          var routeKeys = Object.keys(routes);
-          var expectedKeys = Object.keys(t.expected);
+      return r.get(apiUrl + "?inactiveSince=" + t.since.toISOString()).then(function(body) {
+        var routes = JSON.parse(body);
+        var routeKeys = Object.keys(routes);
+        var expectedKeys = Object.keys(t.expected);
 
-          routeKeys.forEach(function(key) {
-            // check that all routes are expected
-            expect(expectedKeys).toContain(key);
-          });
-
-          expectedKeys.forEach(function(key) {
-            // check that all expected routes are found
-            expect(routeKeys).toContain(key);
-          });
-
-          seen += 1;
-          if (seen === tests.length) {
-            done();
-          } else {
-            return doReq(seen);
-          }
+        routeKeys.forEach(function(key) {
+          // check that all routes are expected
+          expect(expectedKeys).toContain(key);
         });
+
+        expectedKeys.forEach(function(key) {
+          // check that all expected routes are found
+          expect(routeKeys).toContain(key);
+        });
+
+        seen += 1;
+        if (seen === tests.length) {
+          done();
+        } else {
+          return doReq(seen);
+        }
+      });
     };
 
     proxy
       .removeRoute("/")
       .then(() => util.addTarget(proxy, "/yesterday", port, null, null))
       .then(() => util.addTarget(proxy, "/today", port + 1, null, null))
-      .then(() =>
-        proxy._routes.update("/yesterday", { last_activity: yesterday })
-      )
+      .then(() => proxy._routes.update("/yesterday", { last_activity: yesterday }))
       .then(() => doReq(0))
       .then();
   });

@@ -42,7 +42,7 @@
   },
   "scripts": {
     "lint": "jshint bin/ lib/ test/",
-    "fmt": "prettier --write *.js bin/*.js lib/*.js test/*.js --trailing-comma es5",
+    "fmt": "prettier --write *.js bin/* lib/*.js test/*.js --trailing-comma es5 --print-width 100",
     "test": "nyc jasmine JASMINE_CONFIG_PATH=test/jasmine.json",
     "coverage-html": "nyc report --reporter=html",
     "codecov": "nyc report --reporter=lcov && codecov"

@@ -7,16 +7,7 @@ describe("URLTrie", function() {
   var fullTrie = function() {
     // return a simple trie for testing
     var trie = new URLTrie();
-    var paths = [
-      "/1",
-      "/2",
-      "/a/b/c/d",
-      "/a/b/d",
-      "/a/b/e",
-      "/b",
-      "/b/c",
-      "/b/c/d",
-    ];
+    var paths = ["/1", "/2", "/a/b/c/d", "/a/b/d", "/a/b/e", "/b", "/b/c", "/b/c/d"];
     for (var i = 0; i < paths.length; i++) {
       var path = paths[i];
       trie.add(path, { path: path });
