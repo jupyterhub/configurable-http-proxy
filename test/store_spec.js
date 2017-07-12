@@ -5,7 +5,7 @@ var store = require("../lib/store.js");
 
 describe("MemoryStore", function() {
   beforeEach(function() {
-    this.subject = store.MemoryStore();
+    this.subject = new store.MemoryStore();
   });
 
   describe("get", function() {
