@@ -115,6 +115,23 @@ describe("Proxy Tests", function() {
       });
   });
 
+  it("/prefix?query is proxied correctly", function(done) {
+    util
+      .addTarget(proxy, "/bar", testPort, null, "/foo")
+      .then(() => r(proxyUrl + "/bar?query=foo"))
+      .then(body => {
+        body = JSON.parse(body);
+        expect(body).toEqual(
+          jasmine.objectContaining({
+            target: "http://127.0.0.1:" + testPort + "/foo",
+            path: "/bar",
+            url: "/foo/bar?query=foo",
+          })
+        );
+        done();
+      });
+  });
+
   it("handle URI encoding", function(done) {
     util
       .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
