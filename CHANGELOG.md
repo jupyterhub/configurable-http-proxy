@@ -4,7 +4,30 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [Unreleased]
+## [3.0] - 2017-09-19
+
+3.0 is a major release because much of the code has been reorganized
+to adopt some javascript standards:
+
+- Use ES6 and Promises instead of ES5 and callbacks,
+  which we can do without a compiler because CHP 2.0 required nodejs < 4.
+- auto-format code with prettify (run `npm run fmt` to auto-format your code after making changes).
+
+There shouldn't be any major changes in 3.0, but marking it as a major upgrade because
+there could be regressions introduced by the restructuring.
+
+Fixes:
+
+- Fix routing of `/prefix?query` where a query parameter was passed
+  exactly on the routing prefix with no trailing slash.
+
+Improvements:
+
+- Quieter messages for ECONNREFUSED and ECONNRESET,
+  which are generally not indicative of problems,
+  but rather common events of peers disconnecting during a request.
+- The docker image for `jupyterhub/configurable-http-proxy`
+  is now based on `node:6-alpine`.
 
 ## [2.0] - 2017-04-05
 
