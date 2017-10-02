@@ -13,7 +13,7 @@
     "http-proxy": "~1.16.2",
     "lynx": "^0.2.0",
     "strftime": "~0.10.0",
-    "winston": "~2.3.1"
+    "winston": "~2.4.0"
   },
   "devDependencies": {
     "jasmine": "^2.5.1",
