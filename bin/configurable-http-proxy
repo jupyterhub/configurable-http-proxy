@@ -73,7 +73,8 @@ args
     "--proxy-timeout <n>",
     "Timeout (in millis) when proxy receives no response from target.",
     parseInt
-  );
+  )
+  .option("--storage-backend <storage-class>", "Define an external storage class. Defaults to in-MemoryStore.");
 
 args.parse(process.argv);
 
@@ -222,6 +223,9 @@ if (args.protocolRewrite) {
 if (!options.authToken) {
   log.warn("REST API is not authenticated.");
 }
+
+// external backend class
+options.storageBackend = args.storageBackend;
 
 var proxy = new ConfigurableProxy(options);
 
