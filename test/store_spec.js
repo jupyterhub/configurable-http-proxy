@@ -1,11 +1,11 @@
 // jshint jasmine: true
 "use strict";
 
-var store = require("../lib/store.js");
+var MemoryStore = require("../lib/store.js").MemoryStore;
 
 describe("MemoryStore", function() {
   beforeEach(function() {
-    this.subject = new store.MemoryStore();
+    this.subject = new MemoryStore();
   });
 
   describe("get", function() {

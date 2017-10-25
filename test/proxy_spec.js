@@ -210,6 +210,27 @@ describe("Proxy Tests", function() {
     });
   });
 
+  it("options.storageBackend", function(done) {
+    const options = {
+      storageBackend: "mybackend",
+    };
+    expect(() => {
+      const cp = new ConfigurableProxy(options);
+    }).toThrow(new Error("Cannot find module 'mybackend'"));
+    done();
+	});
+
+  it("options.storageBackend with an user-defined backend", function(done) {
+    const store = path.resolve(__dirname, 'dummy-store.js');
+    const options = {
+      storageBackend: store,
+    };
+    const cp = new ConfigurableProxy(options);
+    expect(cp._routes.constructor.name).toEqual("PlugableDummyStore");
+    done();
+  });
+
+
   it("includePrefix: false + prependPath: false", function(done) {
     proxy.includePrefix = false;
     proxy.proxy.options.prependPath = false;
