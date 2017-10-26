@@ -59,6 +59,7 @@ args
   .option("--no-prepend-path", "Avoid prepending target paths to proxied requests")
   .option("--no-include-prefix", "Don't include the routing prefix in proxied requests")
   .option("--auto-rewrite", "Rewrite the Location header host/port in redirect responses")
+  .option("--change-origin", "Changes the origin of the host header to the target URL")
   .option(
     "--protocol-rewrite <proto>",
     "Rewrite the Location header protocol in redirect responses to the specified protocol"
@@ -213,6 +214,10 @@ options.includePrefix = args.includePrefix;
 if (args.autoRewrite) {
   options.autoRewrite = true;
   log.info("AutoRewrite of Location headers enabled.");
+}
+if (args.changeOrigin) {
+  options.changeOrigin = true;
+  log.info("Change Origin of host headers enabled.");
 }
 
 if (args.protocolRewrite) {
