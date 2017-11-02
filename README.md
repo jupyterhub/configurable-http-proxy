@@ -108,6 +108,9 @@ matching route is found in the proxy table:
     --statsd-prefix <prefix>         Prefix to use for statsd statistics
     --log-level <loglevel>           Log level (debug, info, warn, error)
     --proxy-timeout <n>              Timeout (in millis) when proxy receives no response from target
+
+    --change-origin                  Passthrough for node-http-proxy's changeOrigin option
+    --storage-backend <storage-class> Use for custom storage classes
 ```
 
 
