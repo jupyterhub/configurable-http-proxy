@@ -70,47 +70,47 @@ matching route is found in the proxy table:
 
   Options:
 
-    -h, --help                       output usage information
-    -V, --version                    output the version number
-    --ip <ip-address>                Public-facing IP of the proxy
-    --port <n> (defaults to 8000)    Public-facing port of the proxy
+    -h, --help                         output usage information
+    -V, --version                      output the version number
+    --ip <ip-address>                  Public-facing IP of the proxy
+    --port <n> (defaults to 8000)      Public-facing port of the proxy
 
-    --ssl-key <keyfile>              SSL key to use, if any
-    --ssl-cert <certfile>            SSL certificate to use, if any
-    --ssl-ca <ca-file>               SSL certificate authority, if any
-    --ssl-request-cert               Request SSL certs to authenticate clients
-    --ssl-reject-unauthorized        Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
-    --ssl-protocol <ssl-protocol>    Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
-    --ssl-ciphers <ciphers>          `:`-separated ssl cipher list. Default excludes RC4
-    --ssl-allow-rc4                  Allow RC4 cipher for SSL (disabled by default)
-    --ssl-dhparam <dhparam-file>     SSL Diffie-Helman Parameters pem file, if any
+    --ssl-key <keyfile>                SSL key to use, if any
+    --ssl-cert <certfile>              SSL certificate to use, if any
+    --ssl-ca <ca-file>                 SSL certificate authority, if any
+    --ssl-request-cert                 Request SSL certs to authenticate clients
+    --ssl-reject-unauthorized          Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
+    --ssl-protocol <ssl-protocol>      Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
+    --ssl-ciphers <ciphers>            `:`-separated ssl cipher list. Default excludes RC4
+    --ssl-allow-rc4                    Allow RC4 cipher for SSL (disabled by default)
+    --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
 
-    --api-ip <ip>                    Inward-facing IP for API requests
-    --api-port <n>                   Inward-facing port for API requests (defaults to --port=value+1)
-    --api-ssl-key <keyfile>          SSL key to use, if any, for API requests
-    --api-ssl-cert <certfile>        SSL certificate to use, if any, for API requests
-    --api-ssl-ca <ca-file>           SSL certificate authority, if any, for API requests
-    --api-ssl-request-cert           Request SSL certs to authenticate clients for API requests
-    --api-ssl-reject-unauthorized    Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
+    --api-ip <ip>                      Inward-facing IP for API requests
+    --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
+    --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
+    --api-ssl-cert <certfile>          SSL certificate to use, if any, for API requests
+    --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
+    --api-ssl-request-cert             Request SSL certs to authenticate clients for API requests
+    --api-ssl-reject-unauthorized      Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
 
-    --default-target <host>          Default proxy target (proto://host[:port])
-    --error-target <host>            Alternate server for handling proxy errors (proto://host[:port])
-    --error-path <path>              Alternate server for handling proxy errors (proto://host[:port])
-    --redirect-port <redirect-port>  Redirect HTTP requests on this port to the server on HTTPS
-    --pid-file <pid-file>            Write our PID to a file
-    --no-x-forward                   Don't add 'X-forward-' headers to proxied requests
-    --no-prepend-path                Avoid prepending target paths to proxied requests
-    --no-include-prefix              Don't include the routing prefix in proxied requests
-    --insecure                       Disable SSL cert verification
-    --host-routing                   Use host routing (host as first level of path)
-    --statsd-host <host>             Host to send statsd statistics to
-    --statsd-port <port>             Port to send statsd statistics to
-    --statsd-prefix <prefix>         Prefix to use for statsd statistics
-    --log-level <loglevel>           Log level (debug, info, warn, error)
-    --proxy-timeout <n>              Timeout (in millis) when proxy receives no response from target
+    --default-target <host>            Default proxy target (proto://host[:port])
+    --error-target <host>              Alternate server for handling proxy errors (proto://host[:port])
+    --error-path <path>                Alternate server for handling proxy errors (proto://host[:port])
+    --redirect-port <redirect-port>    Redirect HTTP requests on this port to the server on HTTPS
+    --pid-file <pid-file>              Write our PID to a file
+    --no-x-forward                     Don't add 'X-forward-' headers to proxied requests
+    --no-prepend-path                  Avoid prepending target paths to proxied requests
+    --no-include-prefix                Don't include the routing prefix in proxied requests
+    --insecure                         Disable SSL cert verification
+    --host-routing                     Use host routing (host as first level of path)
+    --statsd-host <host>               Host to send statsd statistics to
+    --statsd-port <port>               Port to send statsd statistics to
+    --statsd-prefix <prefix>           Prefix to use for statsd statistics
+    --log-level <loglevel>             Log level (debug, info, warn, error)
+    --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target
 
-    --change-origin                  Passthrough for node-http-proxy's changeOrigin option
-    --storage-backend <storage-class> Use for custom storage classes
+    --change-origin                    Passthrough for node-http-proxy's changeOrigin option
+    --storage-backend <storage-class>  Use for custom storage classes
 ```
 
 
