@@ -4,6 +4,15 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
+## [3.1] - 2017-11
+
+3.1 adds two new features:
+
+- Add `--change-origin` passthrough for node-http-proxy's changeOrigin option.
+- Add support via `--storage-backend <storage-class>` for custom storage classes.
+  See [configurable-http-proxy-redis-backend](https://github.com/globocom/configurable-http-proxy-redis-backend)
+  for an example using redis.
+
 ## [3.0] - 2017-09-19
 
 3.0 is a major release because much of the code has been reorganized
@@ -119,8 +128,10 @@ Improvements:
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.2...HEAD
-[2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...2.0.1
+[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.0...HEAD
+[3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.0.0...3.1.0
+[3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.4...3.0.0
+[2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...2.0.4
 [1.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.2.0...1.3.0
 [1.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.1.0...1.2.0
 [1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.0.0...1.1.0
