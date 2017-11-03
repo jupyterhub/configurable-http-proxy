@@ -4,7 +4,7 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [3.1] - 2017-11
+## [3.1] - 2017-11-03
 
 3.1 adds two new features:
 
