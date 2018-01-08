@@ -75,7 +75,10 @@ args
     "Timeout (in millis) when proxy receives no response from target.",
     parseInt
   )
-  .option("--storage-backend <storage-class>", "Define an external storage class. Defaults to in-MemoryStore.");
+  .option(
+    "--storage-backend <storage-class>",
+    "Define an external storage class. Defaults to in-MemoryStore."
+  );
 
 args.parse(process.argv);
 
