@@ -4,6 +4,11 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
+## [3.1.1] - 2018-01
+
+- Fix a bug when using the new custom storage backend support
+  where the body of requests could be lost.
+
 ## [3.1] - 2017-11-03
 
 3.1 adds two new features:
@@ -128,7 +133,8 @@ Improvements:
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.1...HEAD
+[3.1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.0...3.1.1
 [3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.0.0...3.1.0
 [3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.4...3.0.0
 [2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/1.3.1...2.0.4
