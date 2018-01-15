@@ -4,7 +4,7 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [3.1.1] - 2018-01
+## [3.1.1] - 2018-01-15
 
 - Fix a bug when using the new custom storage backend support
   where the body of requests could be lost.
