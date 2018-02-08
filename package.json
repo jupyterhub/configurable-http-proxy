@@ -16,7 +16,7 @@
     "winston": "~2.4.0"
   },
   "devDependencies": {
-    "jasmine": "^2.5.1",
+    "jasmine": "^3.0.0",
     "jshint": "^2.9.2",
     "nyc": "^11.0.2",
     "prettier": "^1.4.4",
