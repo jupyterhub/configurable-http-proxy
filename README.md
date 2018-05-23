@@ -15,15 +15,15 @@ functionality to [JupyterHub] deployments.
 
 - [Install](#install)
 - [Usage](#usage)
-    - Starting the proxy
-    - Setting a default target
-    - Command-line options
+    - [Starting the proxy](#starting-the-proxy)
+    - [Setting a default target](#setting-a-default-target)
+    - [Command-line options](#command-line-options)
 - [Using the REST API](#using-the-rest-api)
-    - REST API Basics
-    - Authenticating via passing a token
-    - Getting the routing table
-    - Adding new routes
-    - Deleting routes
+    - [REST API Basics](#REST-api-basics)
+    - [Authenticating via passing a token](#authenticating-via-passing-a-token)
+    - [Getting the routing table](#getting-the-routing-table)
+    - [Adding new routes](#adding-new-routes)
+    - [Deleting routes](#deleting-routes)
 - [Custom error pages](#custom-error-pages)
 - [Host-based routing](#host-based-routing)
 - [Troubleshooting](#troubleshooting)
