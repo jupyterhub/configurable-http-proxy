@@ -1,10 +1,3 @@
-**[Install](#install)** |
-**[Usage](#usage)** |
-**[Using the REST API](#using-the-rest-api)** |
-**[Custom error pages](#custom-error-pages)** |
-**[Host-based routing](#host-based-routing)** |
-**[Troubleshooting](#troubleshooting)**
-
 # configurable-http-proxy
 
 [![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
@@ -17,6 +10,23 @@ programmable proxying library that supports websockets and is suitable for
 implementing components such as reverse proxies and load balancers. By
 wrapping node-http-proxy, **configurable-http-proxy** extends this
 functionality to [JupyterHub] deployments.
+
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+    - Starting the proxy
+    - Setting a default target
+    - Command-line options
+- [Using the REST API](#using-the-rest-api)
+    - REST API Basics
+    - Authenticating via passing a token
+    - Getting the routing table
+    - Adding new routes
+    - Deleting routes
+- [Custom error pages](#custom-error-pages)
+- [Host-based routing](#host-based-routing)
+- [Troubleshooting](#troubleshooting)
 
 ## Install
 
@@ -41,6 +51,8 @@ cd configurable-http-proxy
 npm install  # Use 'npm install -g' for global install
 ```
 
+[**Return to top**][]
+
 ## Usage
 
 The configurable proxy runs two HTTP(S) servers:
@@ -55,6 +67,8 @@ The configurable proxy runs two HTTP(S) servers:
 
 ![](./doc/_static/chp.png)
 
+[**Return to top**][]
+
 ### Starting the proxy
 
 ```bash
@@ -62,6 +76,8 @@ configurable-http-proxy [options]
 ```
 
 where `[options]` are the command-line options described below.
+
+[**Return to top**][]
 
 ### Setting a default target
 
@@ -79,6 +95,8 @@ For example:
 ```bash
 configurable-http-proxy --default-target=http://localhost:8888
 ```
+
+[**Return to top**][]
 
 ### Command-line options
 
@@ -134,12 +152,16 @@ configurable-http-proxy --default-target=http://localhost:8888
     --storage-backend <storage-class>  Use for custom storage classes
 ```
 
+[**Return to top**][]
+
 ## Using the REST API
 
 The configurable-http-proxy REST API is documented and available as:
 - a nicely rendered, interactive version at the
 [petstore swagger site][]
 - a [swagger specification file][] in this repo
+
+[**Return to top**][]
 
 ### REST API Basics
 
@@ -158,6 +180,8 @@ The configurable-http-proxy REST API is documented and available as:
 | POST        | /api/routes/{route_spec} | [Add a new route][]                 |
 | DELETE      | /api/routes/{route_spec} | [Remove the given route][]          |
 
+[**Return to top**][]
+
 ### Authenticating via passing a token
 
 The REST API is authenticated via passing a token in the `Authorization`
@@ -171,6 +195,8 @@ authentication and retrieves the current routing table from this endpoint,
 ```bash
 curl -H "Authorization: token $CONFIGPROXY_AUTH_TOKEN" http://localhost:8001/api/routes
 ```
+
+[**Return to top**][]
 
 ### Getting the routing table
 
@@ -202,6 +228,8 @@ dictionary *excludes* the default route.
 
 The current routing table is returned to the user if the request is
 successful.
+
+[**Return to top**][]
 
 ### Adding new routes
 
@@ -237,6 +265,8 @@ Example request body:
 After adding the new route, any request to `/path/prefix` on the proxy's
 public interface will be proxied to `target`.
 
+[**Return to top**][]
+
 ### Deleting routes
 
 **Request:**
@@ -251,6 +281,7 @@ public interface will be proxied to `target`.
 
 Removes a route from the proxy's routing table.
 
+[**Return to top**][]
 
 ## Custom error pages
 
@@ -266,6 +297,8 @@ hit, along with their status code:
   responding. This is more common, and can be due to any number of reasons,
   including the target service having died, not finished starting, or network
   instability.
+
+[**Return to top**][]
 
 ### Setting the path for custom error pages
 
@@ -289,6 +322,8 @@ If no custom error html file exists for the error code, CHP will use the default
 `error.html`. If you specify an error path, **make sure** you also create
 a default `error.html` file.
 
+[**Return to top**][]
+
 ### Setting a target for custom error handling
 
 You can specify a target URL to use when errors occur by setting
@@ -301,6 +336,8 @@ server URL, `http://localhost:1234`, appending the status code
 `/{CODE}`, and passing the failing request's URL escaped in a URL parameter:
 
     GET /404?url=%2Fescaped%2Fpath
+
+[**Return to top**][]
 
 ## Host-based routing
 
@@ -316,6 +353,8 @@ the hostname were the first part of the URL path, e.g.:
   "/otherdomain.biz": "http://10.0.1.4:5555",
 }
 ```
+
+[**Return to top**][]
 
 ## Troubleshooting
 
@@ -339,4 +378,4 @@ Q: My proxy is not starting. What could be happening?
 [Add a new route]: #adding-new-routes
 [Remove the given route]: #deleting-routes
 [`default target`]: #setting-a-default-target
-[**Return to top**]: #configurable-http-proxy
+[**Return to top**]: #table-of-contents
