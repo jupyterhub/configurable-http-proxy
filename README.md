@@ -20,48 +20,65 @@ functionality to [JupyterHub] deployments.
 
 ## Install
 
-Prerequisite:
+Prerequisite: [Node.js](https://nodejs.org/en/download/) ≥ 4
 
-[Node.js](https://nodejs.org/en/download/) ≥ 4
-
-Note: Ubuntu < 16.04 and Debian Jessie ship with too-old versions of Node
-and must be upgraded.
-We recommend using the latest stable or LTS version of Node.
+*Note: Ubuntu < 16.04 and Debian Jessie ship with outdated versions of Node
+and must be upgraded. We recommend using the latest stable or LTS version
+of Node.*
 
 To install the `configurable-http-proxy` package globally
 using npm:
 
-```
-    npm install -g configurable-http-proxy
+```bash
+npm install -g configurable-http-proxy
 ```
 
 To install from the source code found in this GitHub repo:
 
-```
-    git clone https://github.com/jupyterhub/configurable-http-proxy
-    cd configurable-http-proxy 
-    npm install # Use 'npm install -g' for global install
+```bash
+git clone https://github.com/jupyterhub/configurable-http-proxy
+cd configurable-http-proxy 
+npm install  # Use 'npm install -g' for global install
 ```
 
 ## Usage
 
 The configurable proxy runs two HTTP(S) servers:
 
-1. The **public-facing interface to your application** (controlled by `--ip`,
-   `--port`) listens on **all interfaces** by default.
-2. The **inward-facing REST API** (`--api-ip`, `--api-port`) listens on
-   localhost by default. The REST API uses token authorization, where the
-   token is set by the `CONFIGPROXY_AUTH_TOKEN` environment variable.
+- The **public-facing interface** to your application (controlled by `--ip`,
+   `--port`)
+    - listens on **all interfaces** by default.
+- The **inward-facing REST API** (`--api-ip`, `--api-port`)
+    - listens on localhost by default
+    - The REST API uses token authorization, where the token is set in the
+      `CONFIGPROXY_AUTH_TOKEN` environment variable.
 
 ![](./doc/_static/chp.png)
 
+### Starting the proxy
+
+```bash
+configurable-http-proxy [options]
+```
+
+where `[options]` are the command-line options described below.
+
 ### Setting a default target
 
-When you start the proxy from the command line, you can set a
-**default target** (`--default-target` option) which will be used when no
-matching route is found in the proxy table:
+The **default target** is used when a client has requested a URL for which
+there is no routing target found in the proxy table. To set a 
+**default target**, pass the command line option, 
+`--default-target`, when starting the configurable proxy:
 
-    configurable-http-proxy --default-target=http://localhost:8888
+```bash
+configurable-http-proxy --default-target=proto://host[:port]
+```
+
+For example:
+
+```bash
+configurable-http-proxy --default-target=http://localhost:8888
+```
 
 ### Command-line options
 
@@ -101,6 +118,11 @@ matching route is found in the proxy table:
     --no-x-forward                     Don't add 'X-forward-' headers to proxied requests
     --no-prepend-path                  Avoid prepending target paths to proxied requests
     --no-include-prefix                Don't include the routing prefix in proxied requests
+    --auto-rewrite                     Rewrite the Location header host/port in redirect responses
+    --change-origin                    Changes the origin of the host header to the target URL
+                                       (Passthrough for node-http-proxy's changeOrigin option)
+    --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses
+                                       to the specified protocol
     --insecure                         Disable SSL cert verification
     --host-routing                     Use host routing (host as first level of path)
     --statsd-host <host>               Host to send statsd statistics to
@@ -109,10 +131,8 @@ matching route is found in the proxy table:
     --log-level <loglevel>             Log level (debug, info, warn, error)
     --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target
 
-    --change-origin                    Passthrough for node-http-proxy's changeOrigin option
     --storage-backend <storage-class>  Use for custom storage classes
 ```
-
 
 ## Using the REST API
 
@@ -121,7 +141,7 @@ The configurable-http-proxy REST API is documented and available as:
 [petstore swagger site][]
 - a [swagger specification file][] in this repo
 
-### Basics
+### REST API Basics
 
 **API Root**
 
@@ -145,18 +165,19 @@ header. The API is served under the `/api/routes` base URL.
 
 For example, this `curl` command entered in the terminal
 passes this header `"Authorization: token $CONFIGPROXY_AUTH_TOKEN"` for
-authentication and this endpoint `http://localhost:8001/api/routes` to
-retrieve the current routing table:
+authentication and retrieves the current routing table from this endpoint,
+`http://localhost:8001/api/routes`:
 
-    curl -H "Authorization: token $CONFIGPROXY_AUTH_TOKEN" http://localhost:8001/api/routes
+```bash
+curl -H "Authorization: token $CONFIGPROXY_AUTH_TOKEN" http://localhost:8001/api/routes
+```
 
 ### Getting the routing table
 
 **Request:**
 
-```
     GET /api/routes[?inactive_since=ISO8601-timestamp]
-```
+
 
 **Parameters:**
 
@@ -233,24 +254,27 @@ Removes a route from the proxy's routing table.
 
 ## Custom error pages
 
-Beginning with version 0.5, custom error pages can be provided when the proxy
-encounters an error and has no proxy target to handle a request. There are two
-typical errors that CHP may hit, along with their status code:
+Custom error pages can be provided when the proxy encounters an error and has
+no proxy target to handle a request. There are two typical errors that CHP may
+hit, along with their status code:
 
-- 404: a client has requested a URL for which there is no routing target.
-  This **can be prevented** by setting a [`default target`][] before starting
-  the configurable-http-proxy.
+- 404 error: Returned when a client has requested a URL for which there is no
+  routing target. This error **can be prevented** by setting a
+  [`default target`][] before starting the configurable-http-proxy.
 
-- 503: a route exists, but the upstream server isn't responding.
-  This is more common, and can be due to any number of reasons,
-  including the target service having died or not finished starting.
+- 503 error: Returned when a route exists, but the upstream server isn't 
+  responding. This is more common, and can be due to any number of reasons,
+  including the target service having died, not finished starting, or network
+  instability.
 
 ### Setting the path for custom error pages
 
-Specify an error path `--error-path /usr/share/chp-errors` when
-starting the CHP:
+When starting the CHP, specify an error path `--error-path /usr/share/chp-errors`
+to the location of the error page:
 
-    configurable-http-proxy --error-path /usr/share/chp-errors
+```bash
+configurable-http-proxy --error-path /usr/share/chp-errors
+```
 
 When a proxy error occurs, CHP will look in the following location for a
 custom html error page to serve:
@@ -261,21 +285,22 @@ where `{CODE}` is a status code number for an html page to serve. If there is
 a 503 error, CHP will look for a custom error page in this location
 `/usr/share/chp-errors/503.html`.
 
-If no custom error html file exists for the error code, CHP will use the
+If no custom error html file exists for the error code, CHP will use the default
 `error.html`. If you specify an error path, **make sure** you also create
-an `error.html` file.
+a default `error.html` file.
 
 ### Setting a target for custom error handling
 
-You can specify a target to use when errors occur by using `--error-target {URL}`
-when starting the CHP.
+You can specify a target URL to use when errors occur by setting
+`--error-target {URL}` when starting the CHP.
+
 If, for example, CHP starts with `--error-target http://localhost:1234`,
-then when the proxy encounters an error, it will make a GET request to
-the `error-target` server, with URL `http://localhost:1234` and status code
-`/{CODE}`, and failing request's URL escaped in a URL parameter, e.g.:
+and the proxy encounters an error, the proxy will make a GET request to
+the `error-target` server. The GET request will be sent to the `error-target`
+server URL, `http://localhost:1234`, appending the status code
+`/{CODE}`, and passing the failing request's URL escaped in a URL parameter:
 
     GET /404?url=%2Fescaped%2Fpath
-
 
 ## Host-based routing
 
@@ -298,7 +323,8 @@ Q: My proxy is not starting. What could be happening?
 
 - If this occurs on Ubuntu/Debian, check that the you are using a recent
   version of node. Some versions of Ubuntu/Debian come with a version of node
-  that is very old, and it is necessary to update node.
+  that is very old, and it is necessary to update node to a recent or `LTS`
+  version.
 
 
 [**Return to top**][]
