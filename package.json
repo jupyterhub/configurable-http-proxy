@@ -12,6 +12,7 @@
     "commander": "~2.15.0",
     "http-proxy": "~1.17.0",
     "lynx": "^0.2.0",
+    "npm": "^6.0.1",
     "strftime": "~0.10.0",
     "winston": "~2.4.0"
   },
@@ -20,7 +21,7 @@
     "jshint": "^2.9.2",
     "nyc": "^11.0.2",
     "prettier": "^1.4.4",
-    "request": "^2.81.0",
+    "request": "^2.87.0",
     "request-promise-native": "^1.0.4",
     "ws": "^5.0.0"
   },
