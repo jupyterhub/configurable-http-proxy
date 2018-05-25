@@ -164,6 +164,22 @@ describe("Proxy Tests", function() {
       });
   });
 
+  // same as above, reversed
+  it("handle %40 in URI same as @", function(done) {
+    util
+      .addTarget(proxy, "/b%40r/b r", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/b@r/b%20r/rest/of/it"))
+      .then(body => {
+        body = JSON.parse(body);
+        expect(body).toEqual(
+          jasmine.objectContaining({
+            path: "/b%40r/b r",
+            url: "/foo/b@r/b%20r/rest/of/it",
+          })
+        );
+        done();
+      });
+  });
   it("prependPath: false prevents target path from being prepended", function(done) {
     proxy.proxy.options.prependPath = false;
     util
