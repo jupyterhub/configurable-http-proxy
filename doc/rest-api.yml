@@ -1,83 +1,101 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  title: Configurable HTTP Proxy
-  description: The REST API for configurable-http-proxy.
-  version: 1.1.0
-schemes:
-  - http
+  title: "Configurable HTTP Proxy"
+  description: "The REST API for configurable-http-proxy.\n\n Find out more: https://github.com/jupyterhub/configurable-http-proxy/blob/master/README.md"
+  version: "1.1.0"
 securityDefinitions:
   token:
-    type: apiKey
-    name: Authorization
-    in: header
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
 security:
   - token: []
-basePath: /api/
+basePath: "/api/"
 produces:
-  - application/json
+  - "application/json"
+tags:
+  - name: "routes"
+    description: "Everything about configured routes"
+schemes:
+  - "http"
+  - "https"
 paths:
-  /routes/:
+  /routes:
     get:
-      summary: All routes
-      description: All routes currently in the proxy's routing table, excluding the default route
+      tags:
+        - "routes"
+      summary: "Fetches the routing table"
+      description: "All routes currently in the proxy's routing table, excluding the default route."
       parameters:
-        - name: inactive_since
-          in: query
-          description: Only return routes with last_activity before this time
+        - name: "inactive_since"
+          in: "query"
+          description: "Only return routes with last_activity before this time"
           required: false
-          type: string
-          format: ISO8601 Timestamp
+          type: "string"
+          format: "ISO8601 Timestamp"
       responses:
-        '200':
-          description: The routing table
+        200:
+          description: "The routing table"
           schema:
-              $ref: '#/definitions/RoutingTable'
+            $ref: '#/definitions/RoutingTable'
+        400:
+          description: "Invalid timestamp provided"
+        404:
+          description: "Routing table missing"
   /routes/{route_spec}:
     post:
-      summary: Create a new route
+      tags:
+        - "routes"
+      summary: "Create a new route"
       parameters:
-        - name: route_spec
-          description: Route specification to create - a path prefix if the proxy is in path mode (default) or '/' followed by hostname if it is in host mode.
-          in: path
+        - name: "route_spec"
+          description: "Route specification to create - a path prefix if the proxy is in path mode (default) or '/' followed by hostname if it is in host mode."
+          in: "path"
           required: true
-          type: string
-          format: Path
-        - name: body
-          in: body
+          type: "string"
+          format: "Path"
+        - name: "body"
+          in: "body"
           schema:
-            $ref: '#/definitions/RouteTarget'
+            $ref: "#/definitions/RouteTarget"
           required: true
       responses:
-        '201':
-          description: Successfully created
+        201:
+          description: "Successfully created"
     delete:
-      summary: Delete the given route
+      tags:
+        - "routes"
+      summary: "Delete the given route"
       parameters:
-        - name: route_spec
-          in: path
+        - name: "route_spec"
+          in: "path"
           required: true
-          type: string
-          format: Path
-          description: Route specification to create - a path prefix if the proxy is in path mode (default) or '/' followed by hostname if it is in host mode.
+          type: "string"
+          format: "Path"
+          description: >-
+            Route specification to create - a path prefix if the proxy is in
+            path mode (default) or '/' followed by hostname if it is in host
+            mode.
       responses:
-        '204':
-          description: Successfully deleted
+        204:
+          description: "Successfully deleted"
 definitions:
   RoutingTable:
-    type: object
-    description: Maps keys (route path prefixes / hostnames) to their targets
+    type: "object"
+    description: "Maps keys (route path prefixes / hostnames) to their targets"
     additionalProperties:
       $ref: '#/definitions/RouteTarget'
   RouteTarget:
-    type: object
+    type: "object"
     properties:
       target:
-        type: string
-        format: URI
-        description: 'Fully qualified URL that will be the target of proxied
-          requests that match this route'
+        type: "string"
+        format: "URI"
+        description: >-
+          Fully qualified URL that will be the target of proxied requests that
+          match this route
       last_activity:
-        type: string
-        format: ISO8601 Timestamp
+        type: "string"
+        format: "ISO8601 Timestamp"
         readOnly: true
-        description: ISO8601 Timestamp of when this route was last used to route a request
+        description: "ISO8601 Timestamp of when this route was last used to route a request"
