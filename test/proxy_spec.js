@@ -180,6 +180,24 @@ describe("Proxy Tests", function() {
         done();
       });
   });
+
+  // same as above, reversed
+  it("handle invalid url encoding", function(done) {
+    util
+      .addTarget(proxy, "/b%40r", testPort, false, "/foo")
+      .then(() => r(proxyUrl + "/b@r/b%/rest/of/it"))
+      .then(body => {
+        body = JSON.parse(body);
+        expect(body).toEqual(
+          jasmine.objectContaining({
+            path: "/b%40r",
+            url: "/foo/b@r/b%/rest/of/it",
+          })
+        );
+        done();
+      });
+  });
+
   it("prependPath: false prevents target path from being prepended", function(done) {
     proxy.proxy.options.prependPath = false;
     util
