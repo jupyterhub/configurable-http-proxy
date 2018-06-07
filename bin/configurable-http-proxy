@@ -166,7 +166,19 @@ if (args.apiSslKey || args.apiSslCert) {
     options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
   }
   if (args.apiSslCa) {
-    options.apiSsl.ca = fs.readFileSync(args.apiSslCa);
+      // When multiple CAs need to be specified, they must be broken into
+      // an array of certs unfortunately.
+      var chain = fs.readFileSync(args.apiSslCa, 'utf8');
+      var ca = [];
+      var cert = [];
+      chain.split('\n').forEach(function(line) {
+        cert.push(line);
+        if (line.match(/-END CERTIFICATE-/)) {
+          ca.push(new Buffer(cert.join('\n')));
+          cert = [];
+        }
+      });
+      options.apiSsl.ca = ca;
   }
   if (args.sslDhparam) {
     options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
