@@ -22,7 +22,7 @@
     "prettier": "^1.4.4",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.4",
-    "ws": "^5.0.0"
+    "ws": "^6.0.0"
   },
   "engines": {
     "node": ">= 4.0"
