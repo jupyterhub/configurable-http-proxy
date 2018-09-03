@@ -12,4 +12,4 @@ case "$@" in
     ARGS="--api-ip=0.0.0.0";;
 esac
 
-configurable-http-proxy $ARGS $@
+exec configurable-http-proxy $ARGS "$@"
