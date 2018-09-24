@@ -9,7 +9,7 @@
     "url": "https://github.com/jupyterhub/configurable-http-proxy.git"
   },
   "dependencies": {
-    "commander": "~2.16.0",
+    "commander": "~2.18.0",
     "http-proxy": "~1.17.0",
     "lynx": "^0.2.0",
     "strftime": "~0.10.0",
