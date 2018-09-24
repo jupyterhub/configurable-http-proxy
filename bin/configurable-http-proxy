@@ -43,6 +43,14 @@ args
     "--api-ssl-reject-unauthorized",
     "Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)"
   )
+  .option("--client-ssl-key <keyfile>", "SSL key to use, if any, for proxy to client requests")
+  .option("--client-ssl-cert <certfile>", "SSL certificate to use, if any, for proxy to client requests")
+  .option("--client-ssl-ca <ca-file>", "SSL certificate authority, if any, for proxy to client requests")
+  .option("--client-ssl-request-cert", "Request SSL certs to authenticate clients for API requests")
+  .option(
+    "--client-ssl-reject-unauthorized",
+    "Reject unauthorized SSL connections (only meaningful if --client-ssl-request-cert is given)"
+  )
   .option("--default-target <host>", "Default proxy target (proto://host[:port])")
   .option(
     "--error-target <host>",
@@ -166,7 +174,19 @@ if (args.apiSslKey || args.apiSslCert) {
     options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
   }
   if (args.apiSslCa) {
-    options.apiSsl.ca = fs.readFileSync(args.apiSslCa);
+    // When multiple CAs need to be specified, they must be broken into
+    // an array of certs unfortunately.
+    var chain = fs.readFileSync(args.apiSslCa, 'utf8');
+    var ca = [];
+    var cert = [];
+    chain.split('\n').forEach(function(line) {
+      cert.push(line);
+      if (line.match(/-END CERTIFICATE-/)) {
+        ca.push(new Buffer(cert.join('\n')));
+        cert = [];
+      }
+    });
+    options.apiSsl.ca = ca;
   }
   if (args.sslDhparam) {
     options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
@@ -178,6 +198,41 @@ if (args.apiSslKey || args.apiSslCert) {
   options.apiSsl.honorCipherOrder = true;
   options.apiSsl.requestCert = args.apiSslRequestCert;
   options.apiSsl.rejectUnauthorized = args.apiSslRejectUnauthorized;
+}
+
+if (args.clientSslKey || args.clientSslCert) {
+  options.clientSsl = {};
+  if (args.clientSslKey) {
+    options.clientSsl.key = fs.readFileSync(args.clientSslKey);
+  }
+  if (args.clientSslCert) {
+    options.clientSsl.cert = fs.readFileSync(args.clientSslCert);
+  }
+  if (args.clientSslCa) {
+    // When multiple CAs need to be specified, they must be broken into
+    // an array of certs unfortunately.
+    var chain = fs.readFileSync(args.clientSslCa, 'utf8');
+    var ca = [];
+    var cert = [];
+    chain.split('\n').forEach(function(line) {
+      cert.push(line);
+      if (line.match(/-END CERTIFICATE-/)) {
+        ca.push(new Buffer(cert.join('\n')));
+        cert = [];
+      }
+    });
+    options.clientSsl.ca = ca;
+  }
+  if (args.sslDhparam) {
+    options.clientSsl.dhparam = fs.readFileSync(args.sslDhparam);
+  }
+  if (args.sslProtocol) {
+    options.clientSsl.secureProtocol = args.sslProtocol + "_method";
+  }
+  options.clientSsl.ciphers = sslCiphers;
+  options.clientSsl.honorCipherOrder = true;
+  options.clientSsl.requestCert = args.clientSslRequestCert;
+  options.clientSsl.rejectUnauthorized = args.clientSslRejectUnauthorized;
 }
 
 // because camelCase is the js way!
