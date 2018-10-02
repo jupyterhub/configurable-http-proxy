@@ -145,6 +145,9 @@ if (args.sslKey || args.sslCert) {
   options.ssl = {};
   if (args.sslKey) {
     options.ssl.key = fs.readFileSync(args.sslKey);
+    if (process.env.CONFIGPROXY_SSL_KEY_PASSPHRASE) {
+      options.ssl.passphrase = process.env.CONFIGPROXY_SSL_KEY_PASSPHRASE;
+    }
   }
   if (args.sslCert) {
     options.ssl.cert = fs.readFileSync(args.sslCert);
@@ -169,6 +172,9 @@ if (args.apiSslKey || args.apiSslCert) {
   options.apiSsl = {};
   if (args.apiSslKey) {
     options.apiSsl.key = fs.readFileSync(args.apiSslKey);
+    if (process.env.CONFIGPROXY_API_SSL_KEY_PASSPHRASE) {
+      options.apiSsl.passphrase = process.env.CONFIGPROXY_API_SSL_KEY_PASSPHRASE;
+    }
   }
   if (args.apiSslCert) {
     options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
