@@ -7,7 +7,6 @@ node_js:
   - 10
   - 8
   - 6
-  - 4
 install:
   - npm install -g codecov
   - npm install
@@ -16,7 +15,3 @@ script:
   - travis_retry npm test
 after_success:
   - npm run codecov
-
-matrix:
-  allow_failures:
-  - node_js: 4

@@ -1,5 +1,5 @@
 {
-  "version": "3.1.2-dev",
+  "version": "4.0.0-dev",
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
@@ -25,7 +25,7 @@
     "ws": "^6.0.0"
   },
   "engines": {
-    "node": ">= 4.0"
+    "node": ">= 6.0"
   },
   "engineStrict": true,
   "main": "index.js",
