@@ -5,13 +5,13 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 //
+"use strict";
 
 var fs = require("fs"),
   pkg = require("../package.json"),
   args = require("commander"),
-  strftime = require("strftime"),
   tls = require("tls"),
-  log = require("winston");
+  winston = require("winston");
 
 args
   .version(pkg.version)
@@ -44,8 +44,14 @@ args
     "Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)"
   )
   .option("--client-ssl-key <keyfile>", "SSL key to use, if any, for proxy to client requests")
-  .option("--client-ssl-cert <certfile>", "SSL certificate to use, if any, for proxy to client requests")
-  .option("--client-ssl-ca <ca-file>", "SSL certificate authority, if any, for proxy to client requests")
+  .option(
+    "--client-ssl-cert <certfile>",
+    "SSL certificate to use, if any, for proxy to client requests"
+  )
+  .option(
+    "--client-ssl-ca <ca-file>",
+    "SSL certificate authority, if any, for proxy to client requests"
+  )
   .option("--client-ssl-request-cert", "Request SSL certs to authenticate clients for API requests")
   .option(
     "--client-ssl-reject-unauthorized",
@@ -90,19 +96,10 @@ args
 
 args.parse(process.argv);
 
-log.remove(log.transports.Console);
-log.add(log.transports.Console, {
-  colorize: process.stdout.isTTY && process.stderr.isTTY,
-  level: args.logLevel.toLowerCase(),
-  timestamp: function() {
-    return strftime("%H:%M:%S.%L", new Date());
-  },
-  label: "ConfigProxy",
-});
-
 var ConfigurableProxy = require("../lib/configproxy.js").ConfigurableProxy;
 
-var options = {};
+var log = require("../lib/log.js").defaultLogger({ level: args.logLevel.toLowerCase() });
+var options = { log: log };
 
 var sslCiphers;
 if (args.sslCiphers) {
@@ -182,13 +179,13 @@ if (args.apiSslKey || args.apiSslCert) {
   if (args.apiSslCa) {
     // When multiple CAs need to be specified, they must be broken into
     // an array of certs unfortunately.
-    var chain = fs.readFileSync(args.apiSslCa, 'utf8');
+    var chain = fs.readFileSync(args.apiSslCa, "utf8");
     var ca = [];
     var cert = [];
-    chain.split('\n').forEach(function(line) {
+    chain.split("\n").forEach(function(line) {
       cert.push(line);
       if (line.match(/-END CERTIFICATE-/)) {
-        ca.push(new Buffer(cert.join('\n')));
+        ca.push(new Buffer(cert.join("\n")));
         cert = [];
       }
     });
@@ -217,13 +214,13 @@ if (args.clientSslKey || args.clientSslCert) {
   if (args.clientSslCa) {
     // When multiple CAs need to be specified, they must be broken into
     // an array of certs unfortunately.
-    var chain = fs.readFileSync(args.clientSslCa, 'utf8');
+    var chain = fs.readFileSync(args.clientSslCa, "utf8");
     var ca = [];
     var cert = [];
-    chain.split('\n').forEach(function(line) {
+    chain.split("\n").forEach(function(line) {
       cert.push(line);
       if (line.match(/-END CERTIFICATE-/)) {
-        ca.push(new Buffer(cert.join('\n')));
+        ca.push(new Buffer(cert.join("\n")));
         cert = [];
       }
     });
