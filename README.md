@@ -82,8 +82,8 @@ where `[options]` are the command-line options described below.
 ### Setting a default target
 
 The **default target** is used when a client has requested a URL for which
-there is no routing target found in the proxy table. To set a 
-**default target**, pass the command line option, 
+there is no routing target found in the proxy table. To set a
+**default target**, pass the command line option,
 `--default-target`, when starting the configurable proxy:
 
 ```bash
@@ -101,55 +101,59 @@ configurable-http-proxy --default-target=http://localhost:8888
 ### Command-line options
 
 ```
-  Usage: configurable-http-proxy [options]
+Usage: configurable-http-proxy [options]
 
-  Options:
+Options:
 
-    -h, --help                         output usage information
-    -V, --version                      output the version number
-    --ip <ip-address>                  Public-facing IP of the proxy
-    --port <n> (defaults to 8000)      Public-facing port of the proxy
+  -V, --version                      output the version number
+  --ip <ip-address>                  Public-facing IP of the proxy
+  --port <n> (defaults to 8000)      Public-facing port of the proxy
 
-    --ssl-key <keyfile>                SSL key to use, if any
-    --ssl-cert <certfile>              SSL certificate to use, if any
-    --ssl-ca <ca-file>                 SSL certificate authority, if any
-    --ssl-request-cert                 Request SSL certs to authenticate clients
-    --ssl-reject-unauthorized          Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
-    --ssl-protocol <ssl-protocol>      Set specific HTTPS protocol, e.g. TLSv1_2, TLSv1, etc.
-    --ssl-ciphers <ciphers>            `:`-separated ssl cipher list. Default excludes RC4
-    --ssl-allow-rc4                    Allow RC4 cipher for SSL (disabled by default)
-    --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
+  --ssl-key <keyfile>                SSL key to use, if any
+  --ssl-cert <certfile>              SSL certificate to use, if any
+  --ssl-ca <ca-file>                 SSL certificate authority, if any
+  --ssl-request-cert                 Request SSL certs to authenticate clients
+  --ssl-reject-unauthorized          Reject unauthorized SSL connections(only meaningful if --ssl-request-cert is given)
+  --ssl-protocol <ssl-protocol>      Set specific SSL protocol, e.g. TLSv1.2, SSLv3
+  --ssl-ciphers <ciphers>            `:`-separated ssl cipher list. Default excludes RC4
+  --ssl-allow-rc4                    Allow RC4 cipher for SSL (disabled by default)
+  --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
 
-    --api-ip <ip>                      Inward-facing IP for API requests
-    --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
-    --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
-    --api-ssl-cert <certfile>          SSL certificate to use, if any, for API requests
-    --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
-    --api-ssl-request-cert             Request SSL certs to authenticate clients for API requests
-    --api-ssl-reject-unauthorized      Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
+  --api-ip <ip>                      Inward-facing IP for API requests (default: localhost)
+  --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
+  --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
+  --api-ssl-cert <certfile>          SSL certificate to use, if any, for API requests
+  --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
+  --api-ssl-request-cert             Request SSL certs to authenticate clients for API requests
+  --api-ssl-reject-unauthorized      Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
 
-    --default-target <host>            Default proxy target (proto://host[:port])
-    --error-target <host>              Alternate server for handling proxy errors (proto://host[:port])
-    --error-path <path>                Alternate server for handling proxy errors (proto://host[:port])
-    --redirect-port <redirect-port>    Redirect HTTP requests on this port to the server on HTTPS
-    --pid-file <pid-file>              Write our PID to a file
-    --no-x-forward                     Don't add 'X-forward-' headers to proxied requests
-    --no-prepend-path                  Avoid prepending target paths to proxied requests
-    --no-include-prefix                Don't include the routing prefix in proxied requests
-    --auto-rewrite                     Rewrite the Location header host/port in redirect responses
-    --change-origin                    Changes the origin of the host header to the target URL
-                                       (Passthrough for node-http-proxy's changeOrigin option)
-    --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses
-                                       to the specified protocol
-    --insecure                         Disable SSL cert verification
-    --host-routing                     Use host routing (host as first level of path)
-    --statsd-host <host>               Host to send statsd statistics to
-    --statsd-port <port>               Port to send statsd statistics to
-    --statsd-prefix <prefix>           Prefix to use for statsd statistics
-    --log-level <loglevel>             Log level (debug, info, warn, error)
-    --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target
+  --client-ssl-key <keyfile>         SSL key to use, if any, for proxy to client requests
+  --client-ssl-cert <certfile>       SSL certificate to use, if any, for proxy to client requests
+  --client-ssl-ca <ca-file>          SSL certificate authority, if any, for proxy to client requests
+  --client-ssl-request-cert          Request SSL certs to authenticate clients for API requests
+  --client-ssl-reject-unauthorized   Reject unauthorized SSL connections (only meaningful if --client-ssl-request-cert is given)
 
-    --storage-backend <storage-class>  Use for custom storage classes
+  --default-target <host>            Default proxy target (proto://host[:port])
+  --error-target <host>              Alternate server for handling proxy errors (proto://host[:port])
+  --error-path <path>                Alternate server for handling proxy errors (proto://host[:port])
+  --redirect-port <redirect-port>    Redirect HTTP requests on this port to the server on HTTPS
+  --pid-file <pid-file>              Write our PID to a file
+  --no-x-forward                     Don't add 'X-forward-' headers to proxied requests
+  --no-prepend-path                  Avoid prepending target paths to proxied requests
+  --no-include-prefix                Don't include the routing prefix in proxied requests
+  --auto-rewrite                     Rewrite the Location header host/port in redirect responses
+  --change-origin                    Changes the origin of the host header to the target URL
+  --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses to the specified protocol
+  --insecure                         Disable SSL cert verification
+  --host-routing                     Use host routing (host as first level of path)
+
+  --statsd-host <host>               Host to send statsd statistics to
+  --statsd-port <port>               Port to send statsd statistics to
+  --statsd-prefix <prefix>           Prefix to use for statsd statistics
+  --log-level <loglevel>             Log level (debug, info, warn, error) (default: info)
+  --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
+  --storage-backend <storage-class>  Define an external storage class. Defaults to in-MemoryStore.
+  -h, --help                         output usage information
 ```
 
 [**Return to top**][]

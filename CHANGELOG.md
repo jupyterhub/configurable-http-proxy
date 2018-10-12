@@ -4,6 +4,14 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
+## [4.0.0] - 2018-10
+
+- Add support for client SSL certificates for encrypting proxied requests.
+- Update all nodejs dependencies. Most significant is updating winston (logging) from 2 to 3. There is no longer a global logger,
+  instead use `this.log`.
+- Drop support for node 4. Minimum node version is 6.
+- Support CONFIGPROXY_SSL_KEY_PASSPHRASE env for setting the passphrase of ssl keys (API_SSL for api ssl key).
+
 ## [3.1.1] - 2018-01-15
 
 - Fix a bug when using the new custom storage backend support
