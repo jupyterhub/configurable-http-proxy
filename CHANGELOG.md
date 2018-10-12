@@ -4,7 +4,7 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [4.0.0] - 2018-10
+## [4.0.0] - 2018-10-12
 
 - Add support for client SSL certificates for encrypting proxied requests.
 - Update all nodejs dependencies. Most significant is updating winston (logging) from 2 to 3. There is no longer a global logger,
