@@ -366,4 +366,12 @@ describe("Proxy Tests", function() {
       })
       .then(done);
   });
+
+  it("health check request", function(done) {
+    r(proxyUrl + "/_chp_healthz").then(body => {
+      body = JSON.parse(body);
+      expect(body).toEqual({ status: "OK" });
+      done();
+    });
+  });
 });
