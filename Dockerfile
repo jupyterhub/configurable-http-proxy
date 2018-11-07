@@ -1,6 +1,9 @@
-FROM node:6-alpine
+FROM node:10-alpine
 
 EXPOSE 8000
+
+# Useful tools for debugging
+RUN apk add --no-cache jq curl
 
 ADD . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
