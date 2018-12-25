@@ -18,6 +18,36 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
     return(cliReady);
 }
 
+var servers = [];
+
+function addServer(name, port) {
+  var server = http.createServer(function(req, res) {
+    var reply = {};
+    reply.url = req.url;
+    reply.headers = req.headers;
+    reply.name = name;
+    res.write(JSON.stringify(reply));
+    res.end();
+  });
+
+  server.listen(port);
+  servers.push(server);
+}
+
+function teardownServers() {
+    var count = 0;
+    var onclose = function() {
+      count = count + 1;
+      if (count === servers.length) {
+        servers = [];
+        return;
+      }
+    };
+    for (var i = servers.length - 1; i >= 0; i--) {
+      servers[i].close(onclose);
+    }
+}
+
 describe("CLI Tests", function() {
   var execCmd = "bin/configurable-http-proxy"
   var port = 8902;
@@ -27,7 +57,6 @@ describe("CLI Tests", function() {
   var proxyUrl = "http://127.0.0.1:" + port;
   var apiUrl = "http://127.0.0.1:" + apiPort;
   var testUrl = "http://127.0.0.1:" + testPort;
-  var server;
 
   var r = request.defaults({
     method: "GET",
@@ -36,30 +65,43 @@ describe("CLI Tests", function() {
   });
 
   beforeEach(function(callback) {
-    server = http.createServer(function(req, res) {
-        var reply = {};
-        reply.url = req.url;
-        reply.headers = req.headers;
-        res.write(JSON.stringify(reply));
-        res.end();
-      });
-    server.listen(testPort);
+    addServer("default", testPort);
     callback();
   });
 
   afterEach(function(callback) {
-    childProcess.on('exit', (code, signal) => {
+    teardownServers();
+    childProcess.on('exit', () => {
         callback();
     });
-    server.close(() => {
-        childProcess.kill();
-    });
+    childProcess.kill();
   });
 
   it("basic HTTP request", function(done) {
     var args = [
         '--ip', '127.0.0.1',
         '--port', port,
+        '--default-target', testUrl
+    ];
+    executeCLI(execCmd, args).then((cliProcess) => {
+        childProcess = cliProcess;
+        r(proxyUrl).then(body => {
+            body = JSON.parse(body);
+            expect(body).toEqual(
+              jasmine.objectContaining({
+                name: "default",
+              })
+            );
+            done();
+          });
+    });
+  });
+
+  xit("redirect-port", function(done) {
+    var args = [
+        '--ip', '127.0.0.1',
+        '--port', port,
+        '--redirect-port', 8999,
         '--default-target', testUrl
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
