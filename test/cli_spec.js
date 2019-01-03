@@ -7,13 +7,30 @@ var request = require("request-promise-native");
 
 // utility functions
 function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
+    var defaultRouteRequested = args.includes("--default-target");
+    var redirectRequested = args.includes("--redirect-port");
+    var defaultRouteAdded = false;
+    var redirectAdded = false;
     var cliProcess = spawn(execCmd, args);
+    // uncomment the below line for debugging of tests
+    //cliProcess.stdout.pipe(process.stdout);
+    if (!defaultRouteRequested && !redirectRequested){
+      resolve(cliProcess);
+    }
     const cliReady = new Promise((resolve, reject) => {
+        var promiseResolved = false;
         cliProcess.stdout.on('data', (data) => {
             if (data.includes("Route added /")) {
-                resolve(cliProcess);
+                defaultRouteAdded = true;
             }
-        });
+            if (data.includes("Added HTTP to HTTPS redirection")) {
+              redirectAdded = true;
+            }
+            if(!promiseResolved && (defaultRouteAdded == defaultRouteRequested) && (redirectAdded == redirectRequested)) {
+              promiseResolved = true;
+              resolve(cliProcess);
+            }
+          });
     });
     return(cliReady);
 }
@@ -56,15 +73,17 @@ describe("CLI Tests", function() {
   var apiPort = port + 1;
   var testPort = port + 10;
   var redirectPort = testPort + 1;
+  var redirectToPort = redirectPort + 1;
   var childProcess;
   var proxyUrl = "http://127.0.0.1:" + port;
   var SSLproxyUrl = "https://127.0.0.1:" + port;
   var testUrl = "http://127.0.0.1:" + testPort;
   var redirectUrl = "http://127.0.0.1:" + redirectPort;
+  var redirectToUrl = "https://127.0.0.1:" + redirectToPort;
 
   var r = request.defaults({
     method: "GET",
-    url: proxyUrl,
+    //url: proxyUrl,
     followRedirect: false,
     strictSSL: false
   });
@@ -124,6 +143,7 @@ describe("CLI Tests", function() {
   });
 
   it("redirect-port", function(done) {
+    // Attempts to connect to redirectPort, and gets redirected to port
     var args = [
         '--ip', '127.0.0.1',
         '--ssl-cert', 'test/server.crt',
@@ -138,7 +158,7 @@ describe("CLI Tests", function() {
             fail('A 301 redirect should have been thrown.');
         }).catch((requestError) => {
           expect(requestError.statusCode).toEqual(301);
-          expect(requestError.response.headers.location).toEqual("https://127.0.0.1:8902/");
+          expect(requestError.response.headers.location).toContain(SSLproxyUrl);
         });
         r({url: redirectUrl, followRedirect: true}).then(body => {
           body = JSON.parse(body);
@@ -149,6 +169,29 @@ describe("CLI Tests", function() {
           );
           done();
       });
+    });
+  });
+
+  it("redirect-to", function(done) {
+    // Attempts to connect to redirectPort, and gets redirected to redirectToPort
+    var args = [
+        '--ip', '127.0.0.1',
+        '--ssl-cert', 'test/server.crt',
+        '--ssl-key', 'test/server.key',
+        '--port', port,
+        '--default-target', testUrl,
+        '--redirect-port', redirectPort,
+        '--redirect-to', redirectToPort
+    ];
+    executeCLI(execCmd, args).then((cliProcess) => {
+        childProcess = cliProcess;
+        r(redirectUrl).then(() => {
+            fail('A 301 redirect should have been thrown.');
+        }).catch((requestError) => {
+          expect(requestError.statusCode).toEqual(301);
+          expect(requestError.response.headers.location).toContain(redirectToUrl);
+          done();
+        });
     });
   });
 });
