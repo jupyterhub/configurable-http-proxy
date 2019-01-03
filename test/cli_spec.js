@@ -55,11 +55,12 @@ describe("CLI Tests", function() {
   var port = 8902;
   var apiPort = port + 1;
   var testPort = port + 10;
+  var redirectPort = testPort + 1;
   var childProcess;
   var proxyUrl = "http://127.0.0.1:" + port;
   var SSLproxyUrl = "https://127.0.0.1:" + port;
-  var apiUrl = "http://127.0.0.1:" + apiPort;
   var testUrl = "http://127.0.0.1:" + testPort;
+  var redirectUrl = "http://127.0.0.1:" + redirectPort;
 
   var r = request.defaults({
     method: "GET",
@@ -122,4 +123,32 @@ describe("CLI Tests", function() {
     });
   });
 
+  it("redirect-port", function(done) {
+    var args = [
+        '--ip', '127.0.0.1',
+        '--ssl-cert', 'test/server.crt',
+        '--ssl-key', 'test/server.key',
+        '--port', port,
+        '--default-target', testUrl,
+        '--redirect-port', redirectPort
+    ];
+    executeCLI(execCmd, args).then((cliProcess) => {
+        childProcess = cliProcess;
+        r(redirectUrl).then(() => {
+            fail('A 301 redirect should have been thrown.');
+        }).catch((requestError) => {
+          expect(requestError.statusCode).toEqual(301);
+          expect(requestError.response.headers.location).toEqual("https://127.0.0.1:8902/");
+        });
+        r({url: redirectUrl, followRedirect: true}).then(body => {
+          body = JSON.parse(body);
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              name: "default",
+            })
+          );
+          done();
+      });
+    });
+  });
 });
