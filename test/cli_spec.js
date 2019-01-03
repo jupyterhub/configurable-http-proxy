@@ -29,9 +29,11 @@ function addServer(name, port) {
     res.write(JSON.stringify(reply));
     res.end();
   });
-
-  server.listen(port);
-  servers.push(server);
+  var serverListening = new Promise((resolve) => {
+    server.listen(port, resolve);
+    servers.push(server);
+  }); 
+  return(serverListening);
 }
 
 function teardownServers() {
@@ -55,6 +57,7 @@ describe("CLI Tests", function() {
   var testPort = port + 10;
   var childProcess;
   var proxyUrl = "http://127.0.0.1:" + port;
+  var SSLproxyUrl = "https://127.0.0.1:" + port;
   var apiUrl = "http://127.0.0.1:" + apiPort;
   var testUrl = "http://127.0.0.1:" + testPort;
 
@@ -62,11 +65,11 @@ describe("CLI Tests", function() {
     method: "GET",
     url: proxyUrl,
     followRedirect: false,
+    strictSSL: false
   });
 
   beforeEach(function(callback) {
-    addServer("default", testPort);
-    callback();
+    addServer("default", testPort).then(callback);
   });
 
   afterEach(function(callback) {
@@ -97,24 +100,25 @@ describe("CLI Tests", function() {
     });
   });
 
-  xit("redirect-port", function(done) {
+  it("basic HTTPS request", function(done) {
     var args = [
         '--ip', '127.0.0.1',
+        '--ssl-cert', 'test/server.crt',
+        '--ssl-key', 'test/server.key',
         '--port', port,
-        '--redirect-port', 8999,
         '--default-target', testUrl
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
         childProcess = cliProcess;
-        r(proxyUrl).then(body => {
+        r(SSLproxyUrl).then(body => {
             body = JSON.parse(body);
             expect(body).toEqual(
               jasmine.objectContaining({
-                url: "/",
+                name: "default",
               })
             );
             done();
-          });
+        });
     });
   });
 
