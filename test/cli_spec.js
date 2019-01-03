@@ -14,9 +14,6 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
     var cliProcess = spawn(execCmd, args);
     // uncomment the below line for debugging of tests
     //cliProcess.stdout.pipe(process.stdout);
-    if (!defaultRouteRequested && !redirectRequested){
-      resolve(cliProcess);
-    }
     const cliReady = new Promise((resolve, reject) => {
         var promiseResolved = false;
         cliProcess.stdout.on('data', (data) => {
@@ -26,9 +23,11 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
             if (data.includes("Added HTTP to HTTPS redirection")) {
               redirectAdded = true;
             }
-            if(!promiseResolved && (defaultRouteAdded == defaultRouteRequested) && (redirectAdded == redirectRequested)) {
-              promiseResolved = true;
-              resolve(cliProcess);
+            if(!promiseResolved &&
+              (defaultRouteAdded === defaultRouteRequested) &&
+              (redirectAdded === redirectRequested)) {
+                promiseResolved = true;
+                resolve(cliProcess);
             }
           });
     });
@@ -68,7 +67,7 @@ function teardownServers() {
 }
 
 describe("CLI Tests", function() {
-  var execCmd = "bin/configurable-http-proxy"
+  var execCmd = "bin/configurable-http-proxy";
   var port = 8902;
   var apiPort = port + 1;
   var testPort = port + 10;
