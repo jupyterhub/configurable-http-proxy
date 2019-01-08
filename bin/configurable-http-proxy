@@ -67,6 +67,9 @@ args
     "--redirect-port <redirect-port>",
     "Redirect HTTP requests on this port to the server on HTTPS"
   )
+  .option(
+    "--redirect-to <port>",
+    "Redirect HTTP requests from --redirect-port to this port")
   .option("--pid-file <pid-file>", "Write our PID to a file")
   // passthrough http-proxy options
   .option("--no-x-forward", "Don't add 'X-forward-' headers to proxied requests")
@@ -245,6 +248,7 @@ options.errorPath = args.errorPath;
 options.hostRouting = args.hostRouting;
 options.authToken = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
+options.redirectTo = args.redirectTo;
 options.proxyTimeout = args.proxyTimeout;
 
 // statsd options
@@ -339,19 +343,25 @@ if (args.pidFile) {
 // Redirect HTTP to HTTPS on the proxy's port
 if (options.redirectPort && listen.port !== 80) {
   var http = require("http");
-
-  http
+  var redirectPort = (options.redirectTo ? options.redirectTo : listen.port);
+  var server = http
     .createServer(function(req, res) {
       var host = req.headers.host.split(":")[0];
 
       // Make sure that when we redirect, it's to the port the proxy is running on
-      if (listen.port !== 443) {
-        host = host + ":" + listen.port;
+      // or the port to which we have been instructed to forward.
+      if (redirectPort !== 443) {
+        host = host + ":" + redirectPort;
       }
       res.writeHead(301, { Location: "https://" + host + req.url });
       res.end();
     })
-    .listen(options.redirectPort);
+    .listen(options.redirectPort, ()=>{
+      log.info("Added HTTP to HTTPS redirection from "
+                + server.address().port
+                + " to "
+                + redirectPort);
+    });
 }
 
 // trigger normal exit on sigint

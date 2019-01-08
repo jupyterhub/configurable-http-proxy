@@ -45,7 +45,7 @@ describe("Proxy Tests", function() {
     });
   });
 
-  it("basic WebSocker request", function(done) {
+  it("basic WebSocket request", function(done) {
     var ws = new WebSocket("ws://127.0.0.1:" + port);
     ws.on("error", function() {
       // jasmine fail is only in master
