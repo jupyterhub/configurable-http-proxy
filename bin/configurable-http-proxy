@@ -373,5 +373,8 @@ process.on("SIGINT", function() {
 
 // log uncaught exceptions, don't exit now that setup is complete
 process.on("uncaughtException", function(e) {
-  log.error("Uncaught Exception", e.stack);
+  log.error("Uncaught Exception:" + e.message);
+  if (e.stack) {
+    log.error(e.stack);
+  }
 });
