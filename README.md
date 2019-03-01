@@ -250,12 +250,7 @@ dictionary with at least one key: `target`, the target host to be proxied.
 Example request body:
 ```json
 {
-  "/user/fred": {
-    "target": "http://localhost:8002"
-  },
-  "/user/barbara": {
-    "target": "http://localhost:8003"
-  }
+  "target": "http://localhost:8002"
 }
 ```
 
