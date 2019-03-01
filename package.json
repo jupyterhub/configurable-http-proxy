@@ -16,13 +16,13 @@
     "winston": "~3.1.0"
   },
   "devDependencies": {
-    "jasmine": "^3.0.0",
-    "jshint": "^2.9.2",
-    "nyc": "^13.2.0",
-    "prettier": "^1.4.4",
-    "request": "^2.87.0",
-    "request-promise-native": "^1.0.4",
-    "ws": "^6.0.0"
+    "jasmine": "3.1.0",
+    "jshint": "2.9.5",
+    "nyc": "13.2.0",
+    "prettier": "1.9.2",
+    "request": "2.88.0",
+    "request-promise-native": "1.0.5",
+    "ws": "6.0.0"
   },
   "engines": {
     "node": ">= 6.0"
