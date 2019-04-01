@@ -4,7 +4,19 @@ For detailed changes from the prior release, click on the version number, and
 its link will bring up a GitHub listing of changes. Use `git log` on the
 command line for details.
 
-## [4.0.0] - 2018-10-12
+## [Unreleased]
+
+
+
+## [4.1] - 2019-04-01
+
+- Add `--redirect-to` option to specify destination port when redirecting
+  http to https with `--redirect-from`.
+- Add health check endpoint at `/_chp_healthz`.
+- Docker base image is updated to `node/10-alpine` from `node/6-alpine`
+- Dependencies are updated via Renovate
+
+## [4.0] - 2018-10-12
 
 - Add support for client SSL certificates for encrypting proxied requests.
 - Update all nodejs dependencies. Most significant is updating winston (logging) from 2 to 3. There is no longer a global logger,
@@ -141,7 +153,9 @@ Improvements:
 
 ## 0.1.1 - 2014-10-01
 
-[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.1.0...HEAD
+[4.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.0.1...4.1.0
+[4.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.1...4.0.1
 [3.1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.0...3.1.1
 [3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.0.0...3.1.0
 [3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.4...3.0.0
