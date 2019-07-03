@@ -88,6 +88,11 @@ args
   .option("--statsd-prefix <prefix>", "Prefix to use for statsd statistics")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
+    "--timeout <n>",
+    "Timeout (in millis) when proxy drops connection for a request.",
+    parseInt
+  )
+  .option(
     "--proxy-timeout <n>",
     "Timeout (in millis) when proxy receives no response from target.",
     parseInt
@@ -249,6 +254,7 @@ options.hostRouting = args.hostRouting;
 options.authToken = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
 options.redirectTo = args.redirectTo;
+options.timeout = args.timeout;
 options.proxyTimeout = args.proxyTimeout;
 
 // statsd options
