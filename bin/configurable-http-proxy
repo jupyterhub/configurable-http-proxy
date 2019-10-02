@@ -82,8 +82,9 @@ args
     "Rewrite the Location header protocol in redirect responses to the specified protocol"
   )
   .option(
-    "--custom-headers <headers>",
-    "Comma separated list of custom headers to add to proxied requests (k1:v1,k2:v2,...)"
+    "--custom-header <header>",
+    "Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2)",
+    collect, []
   )
   .option("--insecure", "Disable SSL cert verification")
   .option("--host-routing", "Use host routing (host as first level of path)")
@@ -100,6 +101,10 @@ args
     "--storage-backend <storage-class>",
     "Define an external storage class. Defaults to in-MemoryStore."
   );
+
+function collect(value, previous) {
+  return previous.concat([value]);
+}
 
 args.parse(process.argv);
 
@@ -299,14 +304,14 @@ if (!options.authToken) {
 }
 
 // custom headers option
-options.customHeaders = [];
-if (args.customHeaders) {
-  options.customHeaders = args.customHeaders.toString().split(',').map(s => s.trim()).map(header => {
+options.customHeader = [];
+if (args.customHeader) {
+  options.customHeader = args.customHeader.map(s => s.trim()).map(header => {
     var i = header.indexOf(':');
     var key, value;
     if (i < 0) {
-      key = header;
-      value = '';
+      log.error("Custom header is invalid: " + header);
+      process.exit(1);
     }
     else {
       var key = header.substr(0, i).trim();
