@@ -1,11 +1,12 @@
-FROM node:10-alpine
+FROM node:12.13-alpine
 
-EXPOSE 8000
+LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 # Useful tools for debugging
 RUN apk add --no-cache jq curl
 
-ADD . /srv/configurable-http-proxy
+RUN mkdir -p /srv/configurable-http-proxy
+COPY . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
 RUN npm install -g
 
