@@ -364,10 +364,17 @@ if (options.redirectPort && listen.port !== 80) {
     });
 }
 
-// trigger normal exit on sigint
+// trigger normal exit on SIGINT
 // without this, PID cleanup won't fire on SIGINT
 process.on("SIGINT", function() {
   log.warn("Interrupted");
+  process.exit(2);
+});
+
+// trigger normal exit on SIGTERM
+// fired on `docker stop` and during Kubernetes pod container evictions
+process.on("SIGTERM", function() {
+  log.warn("Terminated");
   process.exit(2);
 });
 
