@@ -10,6 +10,6 @@ COPY . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
 RUN npm install -g
 
-USER nobody
+USER 65534
 
 ENTRYPOINT ["/srv/configurable-http-proxy/chp-docker-entrypoint"]
