@@ -216,7 +216,9 @@ describe("Proxy Tests", function() {
     };
     expect(() => {
       const cp = new ConfigurableProxy(options);
-    }).toThrow(new Error("Cannot find module 'mybackend'"));
+    }).toThrowMatching(function(e) {
+      return e.message.includes("Cannot find module 'mybackend'");
+    });
     done();
   });
 
