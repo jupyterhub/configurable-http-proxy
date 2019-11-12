@@ -1,6 +1,7 @@
-# configurable-http-proxy
+# [configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
 
 [![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
+![Docker Pulls](https://img.shields.io/docker/pulls/jupyterhub/configurable-http-proxy)
 [![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg)](https://www.npmjs.com/package/configurable-http-proxy)
 
 **configurable-http-proxy** (CHP) provides you with a way to update and manage
