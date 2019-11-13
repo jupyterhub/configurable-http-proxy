@@ -7,6 +7,20 @@ command line for details.
 ## [Unreleased]
 
 
+## [4.2] - 2019-11-14
+
+- RELEASE.md documentation and small fixes [#220](https://github.com/jupyterhub/configurable-http-proxy/pull/220) ([@consideRatio](https://github.com/consideRatio))
+- Terminate on SIGTERM [#217](https://github.com/jupyterhub/configurable-http-proxy/pull/217) ([@consideRatio](https://github.com/consideRatio))
+- Fix Vulnerabilities [#216](https://github.com/jupyterhub/configurable-http-proxy/pull/216) ([@rafael-ladislau](https://github.com/rafael-ladislau))
+- Update dependency commander to v4 [#214](https://github.com/jupyterhub/configurable-http-proxy/pull/214) ([@renovate](https://github.com/renovate))
+- chore: Udpate node, replace add with copy [#213](https://github.com/jupyterhub/configurable-http-proxy/pull/213) ([@jgwerner](https://github.com/jgwerner))
+- Update dependency http-proxy to ~1.18.0 [#212](https://github.com/jupyterhub/configurable-http-proxy/pull/212) ([@renovate](https://github.com/renovate))
+- Change user to numeric value for k8s compatibility [#211](https://github.com/jupyterhub/configurable-http-proxy/pull/211) ([@m2hofi94](https://github.com/m2hofi94))
+- Add file_env function to set the token env var [#209](https://github.com/jupyterhub/configurable-http-proxy/pull/209) ([@rcthomas](https://github.com/rcthomas))
+- Allow setting request timeout [#208](https://github.com/jupyterhub/configurable-http-proxy/pull/208) ([@archite](https://github.com/archite))
+- Command line option for custom headers [#206](https://github.com/jupyterhub/configurable-http-proxy/pull/206) ([@ivan-gomes](https://github.com/ivan-gomes))
+- chore(deps): update dependency nyc to v14 [#202](https://github.com/jupyterhub/configurable-http-proxy/pull/202) ([@renovate](https://github.com/renovate))
+- Update dependency commander to ~2.20.0 [#201](https://github.com/jupyterhub/configurable-http-proxy/pull/201) ([@renovate](https://github.com/renovate))
 
 ## [4.1] - 2019-04-01
 
