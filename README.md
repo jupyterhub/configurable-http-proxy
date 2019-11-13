@@ -143,6 +143,7 @@ Options:
   --auto-rewrite                     Rewrite the Location header host/port in redirect responses
   --change-origin                    Changes the origin of the host header to the target URL
   --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses to the specified protocol
+  --custom-headers <headers>         Comma separated list of custom headers to add to proxied requests (k1:v1,k2:v2,...)
   --insecure                         Disable SSL cert verification
   --host-routing                     Use host routing (host as first level of path)
 
