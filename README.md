@@ -1,7 +1,8 @@
-# configurable-http-proxy
+# [configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
 
-[![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
-[![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg)](https://www.npmjs.com/package/configurable-http-proxy)
+[![TravisCI Build status](https://img.shields.io/travis/jupyterhub/configurable-http-proxy/master.svg?logo=travis)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
+[![Docker Build status](https://img.shields.io/docker/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
+[![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg?logo=npm)](https://www.npmjs.com/package/configurable-http-proxy)
 
 **configurable-http-proxy** (CHP) provides you with a way to update and manage
 a proxy table using a command line interface or REST API.
@@ -102,11 +103,9 @@ configurable-http-proxy --default-target=http://localhost:8888
 Usage: configurable-http-proxy [options]
 
 Options:
-
   -V, --version                      output the version number
   --ip <ip-address>                  Public-facing IP of the proxy
   --port <n> (defaults to 8000)      Public-facing port of the proxy
-
   --ssl-key <keyfile>                SSL key to use, if any
   --ssl-cert <certfile>              SSL certificate to use, if any
   --ssl-ca <ca-file>                 SSL certificate authority, if any
@@ -116,7 +115,6 @@ Options:
   --ssl-ciphers <ciphers>            `:`-separated ssl cipher list. Default excludes RC4
   --ssl-allow-rc4                    Allow RC4 cipher for SSL (disabled by default)
   --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
-
   --api-ip <ip>                      Inward-facing IP for API requests (default: "localhost")
   --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
   --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
@@ -124,13 +122,11 @@ Options:
   --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
   --api-ssl-request-cert             Request SSL certs to authenticate clients for API requests
   --api-ssl-reject-unauthorized      Reject unauthorized SSL connections (only meaningful if --api-ssl-request-cert is given)
-
   --client-ssl-key <keyfile>         SSL key to use, if any, for proxy to client requests
   --client-ssl-cert <certfile>       SSL certificate to use, if any, for proxy to client requests
   --client-ssl-ca <ca-file>          SSL certificate authority, if any, for proxy to client requests
   --client-ssl-request-cert          Request SSL certs to authenticate clients for API requests
   --client-ssl-reject-unauthorized   Reject unauthorized SSL connections (only meaningful if --client-ssl-request-cert is given)
-
   --default-target <host>            Default proxy target (proto://host[:port])
   --error-target <host>              Alternate server for handling proxy errors (proto://host[:port])
   --error-path <path>                Alternate server for handling proxy errors (proto://host[:port])
@@ -143,14 +139,15 @@ Options:
   --auto-rewrite                     Rewrite the Location header host/port in redirect responses
   --change-origin                    Changes the origin of the host header to the target URL
   --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses to the specified protocol
-  --custom-headers <headers>         Comma separated list of custom headers to add to proxied requests (k1:v1,k2:v2,...)
+  --custom-header <header>           Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2)
+                                     (default: [])
   --insecure                         Disable SSL cert verification
   --host-routing                     Use host routing (host as first level of path)
-
   --statsd-host <host>               Host to send statsd statistics to
   --statsd-port <port>               Port to send statsd statistics to
   --statsd-prefix <prefix>           Prefix to use for statsd statistics
   --log-level <loglevel>             Log level (debug, info, warn, error) (default: "info")
+  --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
   --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
   --storage-backend <storage-class>  Define an external storage class. Defaults to in-MemoryStore.
   -h, --help                         output usage information
