@@ -1,8 +1,8 @@
 # [configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
 
-[![Build Status](https://travis-ci.org/jupyterhub/configurable-http-proxy.svg?branch=master)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
-[![Docker Automated build](https://img.shields.io/docker/automated/jupyterhub/configurable-http-proxy)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
-[![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg)](https://www.npmjs.com/package/configurable-http-proxy)
+[![TravisCI Build status](https://img.shields.io/travis/jupyterhub/configurable-http-proxy/master.svg?logo=travis)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
+[![Docker Build status](https://img.shields.io/docker/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
+[![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg?logo=npm)](https://www.npmjs.com/package/configurable-http-proxy)
 
 **configurable-http-proxy** (CHP) provides you with a way to update and manage
 a proxy table using a command line interface or REST API.
