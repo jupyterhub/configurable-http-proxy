@@ -9,6 +9,17 @@ command line for details.
 
 ## [4.2] - 2019-11-14
 
+#### Summary
+
+- Now terminates on `SIGTERM` as can be caused by `docker stop` or `kubectl delete`
+- Add `--timeout` option to configure when to drop a request
+- Add `--custom-header` option that enables proxied requests to get additional headers attached
+- Support setting of the environment variable `CONFIGPROXY_AUTH_TOKEN` using a mounted file on the Docker image's container
+- Node version bumped from 10 to 12.13.0 in the Docker image
+- Various dependencies updated and security vulnerabilities patched
+
+#### Merged PRs
+
 - RELEASE.md documentation and small fixes [#220](https://github.com/jupyterhub/configurable-http-proxy/pull/220) ([@consideRatio](https://github.com/consideRatio))
 - Terminate on SIGTERM [#217](https://github.com/jupyterhub/configurable-http-proxy/pull/217) ([@consideRatio](https://github.com/consideRatio))
 - Fix Vulnerabilities [#216](https://github.com/jupyterhub/configurable-http-proxy/pull/216) ([@rafael-ladislau](https://github.com/rafael-ladislau))
