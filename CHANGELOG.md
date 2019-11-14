@@ -16,7 +16,7 @@ command line for details.
 - Add `--custom-header` option that enables proxied requests to get additional headers attached
 - Support setting of the environment variable `CONFIGPROXY_AUTH_TOKEN` using a mounted file on the Docker image's container
 - Node version bumped from 10 to 12.13.0 in the Docker image
-- Various dependencies updated and security vulnerabilities patched
+- Various dependencies updated, including addressing security advisories from `npm audit` which do not affect CHP security itself.
 
 #### Merged PRs
 
