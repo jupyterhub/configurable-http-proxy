@@ -44,11 +44,15 @@ meet the prerequisites:
    # bump2version --no-commit minor
    # bump2version --no-commit major
    bump2version --tag release
+
+   # verify changes
+   git diff HEAD~1
    ```
 
 1. Publish to NPM.
 
    ```bash
+   npm login
    npm publish
    ```
 
@@ -56,6 +60,9 @@ meet the prerequisites:
 
    ```bash
    bump2version --no-tag patch
+
+   # verify changes
+   git diff HEAD~1
    ```
 
 1. Push your release related commits to master along with the annotated tags
