@@ -1,4 +1,4 @@
-FROM node:12.13-alpine
+FROM node:12.16.1-alpine
 # ref: https://hub.docker.com/_/node?tab=tags&name=12
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
@@ -10,7 +10,8 @@ RUN mkdir -p /srv/configurable-http-proxy
 COPY . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
 RUN npm install -g
-
+RUN npm audit fix
+RUN npm uninstall -g npm
 # Switch from the root user to the nobody user
 USER 65534
 
