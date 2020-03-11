@@ -6,8 +6,19 @@ command line for details.
 
 ## [Unreleased]
 
+## [4.2.1] - 2020-03-11
 
-## [4.2] - 2019-11-14
+#### Summary
+
+This is a security release, fixing node package dependencies to
+configurable-http-proxy, which itself was left untouched.
+
+#### Merged PRs
+
+- Security Fixes [#226](https://github.com/jupyterhub/configurable-http-proxy/pull/226) ([@rafael-ladislau](https://github.com/rafael-ladislau))
+- Update dependency commander to ~4.1.0 [#225](https://github.com/jupyterhub/configurable-http-proxy/pull/225) ([@renovate](https://github.com/renovate))
+
+## [4.2.0] - 2019-11-14
 
 #### Summary
 
@@ -33,7 +44,7 @@ command line for details.
 - chore(deps): update dependency nyc to v14 [#202](https://github.com/jupyterhub/configurable-http-proxy/pull/202) ([@renovate](https://github.com/renovate))
 - Update dependency commander to ~2.20.0 [#201](https://github.com/jupyterhub/configurable-http-proxy/pull/201) ([@renovate](https://github.com/renovate))
 
-## [4.1] - 2019-04-01
+## [4.1.0] - 2019-04-01
 
 - Add `--redirect-to` option to specify destination port when redirecting
   http to https with `--redirect-from`.
@@ -41,7 +52,7 @@ command line for details.
 - Docker base image is updated to `node/10-alpine` from `node/6-alpine`
 - Dependencies are updated via Renovate
 
-## [4.0] - 2018-10-12
+## [4.0.0] - 2018-10-12
 
 - Add support for client SSL certificates for encrypting proxied requests.
 - Update all nodejs dependencies. Most significant is updating winston (logging) from 2 to 3. There is no longer a global logger,
@@ -54,7 +65,7 @@ command line for details.
 - Fix a bug when using the new custom storage backend support
   where the body of requests could be lost.
 
-## [3.1] - 2017-11-03
+## [3.1.0] - 2017-11-03
 
 3.1 adds two new features:
 
@@ -63,7 +74,7 @@ command line for details.
   See [configurable-http-proxy-redis-backend](https://github.com/globocom/configurable-http-proxy-redis-backend)
   for an example using redis.
 
-## [3.0] - 2017-09-19
+## [3.0.0] - 2017-09-19
 
 3.0 is a major release because much of the code has been reorganized
 to adopt some javascript standards:
