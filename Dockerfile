@@ -9,9 +9,13 @@ RUN apk add --no-cache jq curl
 RUN mkdir -p /srv/configurable-http-proxy
 COPY . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
-RUN npm install -g
-RUN npm audit fix
-RUN npm uninstall -g npm
+
+# Install configurable-http-proxy, then automatically install compatible updates
+# to vulnerable dependencies, and finally uninstall npm which isn't needed.
+RUN npm install -g \
+ && npm audit fix \
+ && npm uninstall -g npm
+
 # Switch from the root user to the nobody user
 USER 65534
 
