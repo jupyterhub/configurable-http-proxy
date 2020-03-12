@@ -1,4 +1,4 @@
-FROM node:12.16.1-alpine
+FROM node:12-alpine
 # ref: https://hub.docker.com/_/node?tab=tags&name=12
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
@@ -10,11 +10,8 @@ RUN mkdir -p /srv/configurable-http-proxy
 COPY . /srv/configurable-http-proxy
 WORKDIR /srv/configurable-http-proxy
 
-# Install configurable-http-proxy, then automatically install compatible updates
-# to vulnerable dependencies, and finally uninstall npm which isn't needed.
-RUN npm install -g --production \
- && npm audit fix \
- && npm uninstall -g npm
+# Install configurable-http-proxy
+RUN npm install -g --production
 
 # Switch from the root user to the nobody user
 USER 65534
