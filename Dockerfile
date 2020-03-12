@@ -12,7 +12,7 @@ WORKDIR /srv/configurable-http-proxy
 
 # Install configurable-http-proxy, then automatically install compatible updates
 # to vulnerable dependencies, and finally uninstall npm which isn't needed.
-RUN npm install -g \
+RUN npm install -g --production \
  && npm audit fix \
  && npm uninstall -g npm
 
