@@ -19,7 +19,7 @@
     "jasmine": "^3.5.0",
     "jshint": "^2.10.2",
     "nyc": "^15.0.0",
-    "prettier": "^1.4.4",
+    "prettier": "^2.0.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.4",
     "ws": "^6.0.0"
