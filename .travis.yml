@@ -1,11 +1,11 @@
 language: node_js
-sudo: false
 branches:
   except:
     - /^greenkeeper.*/
 # Test against Long Term Support (LTS) releases in a "current", "active", and
 # "maintenance" status: https://nodejs.org/en/about/releases/
 node_js:
+  - 14
   - 12
   - 10
 install:
