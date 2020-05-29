@@ -25,7 +25,7 @@ args
     "--ssl-reject-unauthorized",
     "Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)"
   )
-  .option("--ssl-protocol <ssl-protocol>", "Set specific SSL protocol, e.g. TLSv1.2, SSLv3")
+  .option("--ssl-protocol <ssl-protocol>", "Set specific SSL protocol, e.g. TLSv1_2, SSLv3")
   .option("--ssl-ciphers <ciphers>", "`:`-separated ssl cipher list. Default excludes RC4")
   .option("--ssl-allow-rc4", "Allow RC4 cipher for SSL (disabled by default)")
   .option("--ssl-dhparam <dhparam-file>", "SSL Diffie-Helman Parameters pem file, if any")
