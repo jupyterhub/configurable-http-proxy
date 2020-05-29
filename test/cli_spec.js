@@ -193,4 +193,29 @@ describe("CLI Tests", function() {
         });
     });
   });
+
+  it("custom-header", function(done) {
+    var args = [
+        '--ip', '127.0.0.1',
+        '--ssl-cert', 'test/server.crt',
+        '--ssl-key', 'test/server.key',
+        '--port', port,
+        '--default-target', testUrl,
+        '--custom-header', 'k1: v1',
+        '--custom-header', ' k2 : v2 v2 ',
+    ];
+    executeCLI(execCmd, args).then((cliProcess) => {
+        childProcess = cliProcess;
+        r(SSLproxyUrl).then(body => {
+            body = JSON.parse(body);
+            expect(body.headers).toEqual(
+              jasmine.objectContaining({
+                k1: "v1",
+                k2: "v2 v2",
+              })
+            );
+            done();
+        });
+    });
+  });
 });
