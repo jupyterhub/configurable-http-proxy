@@ -35,8 +35,11 @@ jobs:
       install:
         - npm ci --production
       script:
-        - npm audit
+        # This audit will fail for moderate/high/critical and exclude low
+        - npm audit --production --audit-level=moderate
       after_success:
-        - echo "package-lock.json is considered secure according to 'npm audit'."
+        - echo "package-lock.json is considered at least moderately secure according to a npm audit."
       after_failure:
-        - echo "package-lock.json should be updated with 'npm audit fix'."
+        - echo "package-lock.json contain a package with a moderate or worse vulnerability!"
+        - echo "Running 'npm audit fix --production' could fix the vulnerability. Let's try..."
+        - npm audit fix --production
