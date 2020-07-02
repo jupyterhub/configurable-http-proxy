@@ -9,6 +9,7 @@ RUN apk add --no-cache jq curl
 RUN mkdir -p /srv/configurable-http-proxy
 COPY . /srv/configurable-http-proxy/
 WORKDIR /srv/configurable-http-proxy
+ENV PATH=/srv/configurable-http-proxy/bin:$PATH
 
 # Install configurable-http-proxy according to package-lock.json (ci) without
 # devDepdendencies (--production), then uninstall npm which isn't needed.
