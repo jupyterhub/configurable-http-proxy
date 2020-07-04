@@ -6,10 +6,10 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 # Useful tools for debugging
 RUN apk add --no-cache jq curl
 
+# Copy relevant (see .dockerignore)
 RUN mkdir -p /srv/configurable-http-proxy
 COPY . /srv/configurable-http-proxy/
 WORKDIR /srv/configurable-http-proxy
-ENV PATH=/srv/configurable-http-proxy/bin:$PATH
 
 # Install configurable-http-proxy according to package-lock.json (ci) without
 # devDepdendencies (--production), then uninstall npm which isn't needed.
@@ -24,4 +24,6 @@ USER 65534
 EXPOSE 8000
 EXPOSE 8001
 
+# Put configurable-http-proxy on path for chp-docker-entrypoint
+ENV PATH=/srv/configurable-http-proxy/bin:$PATH
 ENTRYPOINT ["/srv/configurable-http-proxy/chp-docker-entrypoint"]
