@@ -1,9 +1,2 @@
-# Ignore everything...
-*
-# ... except:
-!bin/
-!lib/
-!chp-docker-entrypoint
-!index.js
-!package*.json
-!LICENSE
+# ignore local assets from development
+node_modules
