@@ -5,6 +5,9 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 # Useful tools for debugging
 RUN apk add --no-cache jq curl
+RUN apk update
+RUN apk add --upgrade libgcc
+RUN apk add --upgrade libstdc++
 
 # Copy relevant (see .dockerignore)
 RUN mkdir -p /srv/configurable-http-proxy
