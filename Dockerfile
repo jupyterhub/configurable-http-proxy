@@ -1,13 +1,10 @@
-FROM node:12.18.3-alpine
+FROM node:lts-alpine3.12
 # ref: https://hub.docker.com/_/node?tab=tags&name=12
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 # Useful tools for debugging
 RUN apk add --no-cache jq curl
-RUN apk update
-RUN apk add --upgrade libgcc
-RUN apk add --upgrade libstdc++
 
 # Copy relevant (see .dockerignore)
 RUN mkdir -p /srv/configurable-http-proxy
