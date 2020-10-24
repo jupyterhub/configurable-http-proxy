@@ -6,6 +6,58 @@ command line for details.
 
 ## [Unreleased]
 
+## [4.2.2] - 2020-10-25
+
+This release contains bugfixes, notably the `--custom-header` implementation.
+
+#### Bugs fixed
+* Emit proxyRequestWs events correctly, and some inline docs [#248](https://github.com/jupyterhub/configurable-http-proxy/pull/248) ([@consideRatio](https://github.com/consideRatio))
+* fix: --custom-header flag implementation [#242](https://github.com/jupyterhub/configurable-http-proxy/pull/242) ([@consideRatio](https://github.com/consideRatio))
+* Fix incorrect this/that on logging statement [#234](https://github.com/jupyterhub/configurable-http-proxy/pull/234) ([@jmartell7](https://github.com/jmartell7))
+
+#### Maintenance and upkeep improvements
+* Security patches of known vulnerabilities in docker image [#270](https://github.com/jupyterhub/configurable-http-proxy/pull/270) ([@wongannaw](https://github.com/wongannaw))
+* try dependabot for updates [#256](https://github.com/jupyterhub/configurable-http-proxy/pull/256) ([@minrk](https://github.com/minrk))
+* simplify dockerignore to exclude node_modules [#255](https://github.com/jupyterhub/configurable-http-proxy/pull/255) ([@minrk](https://github.com/minrk))
+* CI: npm audit cronjob details [#246](https://github.com/jupyterhub/configurable-http-proxy/pull/246) ([@consideRatio](https://github.com/consideRatio))
+* Docker image: use package-lock.json and only include relevant parts [#241](https://github.com/jupyterhub/configurable-http-proxy/pull/241) ([@consideRatio](https://github.com/consideRatio))
+* CI: fix .travis.yml syntax for cronjob [#240](https://github.com/jupyterhub/configurable-http-proxy/pull/240) ([@consideRatio](https://github.com/consideRatio))
+* CI: npm-audit cronjob in travis [#239](https://github.com/jupyterhub/configurable-http-proxy/pull/239) ([@consideRatio](https://github.com/consideRatio))
+* CI: test against node 14 [#237](https://github.com/jupyterhub/configurable-http-proxy/pull/237) ([@consideRatio](https://github.com/consideRatio))
+* Stop installing development dependencies in Docker image [#227](https://github.com/jupyterhub/configurable-http-proxy/pull/227) ([@consideRatio](https://github.com/consideRatio))
+
+#### Documentation improvements
+* Documentation changes #235 [#236](https://github.com/jupyterhub/configurable-http-proxy/pull/236) ([@suryag10](https://github.com/suryag10))
+
+#### Dependency bumps
+* Bump jasmine from 3.6.1 to 3.6.2 [#268](https://github.com/jupyterhub/configurable-http-proxy/pull/268) ([@dependabot](https://github.com/dependabot))
+* Bump prettier from 2.1.1 to 2.1.2 [#266](https://github.com/jupyterhub/configurable-http-proxy/pull/266) ([@dependabot](https://github.com/dependabot))
+* Bump request from 2.88.0 to 2.88.2 [#265](https://github.com/jupyterhub/configurable-http-proxy/pull/265) ([@dependabot](https://github.com/dependabot))
+* Bump ws from 7.3.0 to 7.3.1 [#264](https://github.com/jupyterhub/configurable-http-proxy/pull/264) ([@dependabot](https://github.com/dependabot))
+* Bump request-promise-native from 1.0.5 to 1.0.9 [#263](https://github.com/jupyterhub/configurable-http-proxy/pull/263) ([@dependabot](https://github.com/dependabot))
+* Bump prettier from 2.0.0 to 2.1.1 [#262](https://github.com/jupyterhub/configurable-http-proxy/pull/262) ([@dependabot](https://github.com/dependabot))
+* Bump nyc from 15.0.0 to 15.1.0 [#261](https://github.com/jupyterhub/configurable-http-proxy/pull/261) ([@dependabot](https://github.com/dependabot))
+* Bump jasmine from 3.5.0 to 3.6.1 [#260](https://github.com/jupyterhub/configurable-http-proxy/pull/260) ([@dependabot](https://github.com/dependabot))
+* Bump commander from 5.1.0 to 6.1.0 [#259](https://github.com/jupyterhub/configurable-http-proxy/pull/259) ([@dependabot](https://github.com/dependabot))
+* Bump jshint from 2.10.2 to 2.12.0 [#258](https://github.com/jupyterhub/configurable-http-proxy/pull/258) ([@dependabot](https://github.com/dependabot))
+* Bump winston from 3.3.0 to 3.3.3 [#257](https://github.com/jupyterhub/configurable-http-proxy/pull/257) ([@dependabot](https://github.com/dependabot))
+* Update node Docker tag to v12.18.3 [#253](https://github.com/jupyterhub/configurable-http-proxy/pull/253) ([@renovate](https://github.com/renovate))
+* Bump lodash from 4.17.15 to 4.17.19 [#250](https://github.com/jupyterhub/configurable-http-proxy/pull/250) ([@dependabot](https://github.com/dependabot))
+* chore(deps): update dependency ws to v7 [#247](https://github.com/jupyterhub/configurable-http-proxy/pull/247) ([@renovate](https://github.com/renovate))
+* Update dependency winston to ~3.3.0 [#245](https://github.com/jupyterhub/configurable-http-proxy/pull/245) ([@renovate](https://github.com/renovate))
+* Update node Docker tag to v12.18.2 [#243](https://github.com/jupyterhub/configurable-http-proxy/pull/243) ([@renovate](https://github.com/renovate))
+* Deps: npm audit fix to bump patch versions [#238](https://github.com/jupyterhub/configurable-http-proxy/pull/238) ([@consideRatio](https://github.com/consideRatio))
+* Update node Docker tag to v12.17.0 [#233](https://github.com/jupyterhub/configurable-http-proxy/pull/233) ([@renovate](https://github.com/renovate))
+* Update node Docker tag to v12.16.3 [#231](https://github.com/jupyterhub/configurable-http-proxy/pull/231) ([@renovate](https://github.com/renovate))
+* Update dependency prettier to v2 [#230](https://github.com/jupyterhub/configurable-http-proxy/pull/230) ([@renovate](https://github.com/renovate))
+* Update dependency commander to v5 [#229](https://github.com/jupyterhub/configurable-http-proxy/pull/229) ([@renovate](https://github.com/renovate))
+
+## Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2020-03-11&to=2020-10-24&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2020-03-11..2020-10-24&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2020-03-11..2020-10-24&type=Issues) | [@jmartell7](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ajmartell7+updated%3A2020-03-11..2020-10-24&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2020-03-11..2020-10-24&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2020-03-11..2020-10-24&type=Issues) | [@renovate](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Arenovate+updated%3A2020-03-11..2020-10-24&type=Issues) | [@rgbkrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Argbkrk+updated%3A2020-03-11..2020-10-24&type=Issues) | [@suryag10](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Asuryag10+updated%3A2020-03-11..2020-10-24&type=Issues) | [@welcome](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awelcome+updated%3A2020-03-11..2020-10-24&type=Issues) | [@wongannaw](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awongannaw+updated%3A2020-03-11..2020-10-24&type=Issues)
+
 ## [4.2.1] - 2020-03-11
 
 #### Summary
