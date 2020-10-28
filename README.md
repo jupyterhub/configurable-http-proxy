@@ -1,6 +1,6 @@
 # [configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
 
-[![TravisCI Build status](https://img.shields.io/travis/jupyterhub/configurable-http-proxy/master.svg?logo=travis)](https://travis-ci.org/jupyterhub/configurable-http-proxy)
+[![TravisCI Build status](https://img.shields.io/travis/com/jupyterhub/configurable-http-proxy?logo=travis)](https://travis-ci.com/jupyterhub/configurable-http-proxy)
 [![Docker Build status](https://img.shields.io/docker/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
 [![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg?logo=npm)](https://www.npmjs.com/package/configurable-http-proxy)
 
