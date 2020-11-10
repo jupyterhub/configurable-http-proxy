@@ -67,9 +67,7 @@ args
     "--redirect-port <redirect-port>",
     "Redirect HTTP requests on this port to the server on HTTPS"
   )
-  .option(
-    "--redirect-to <port>",
-    "Redirect HTTP requests from --redirect-port to this port")
+  .option("--redirect-to <port>", "Redirect HTTP requests from --redirect-port to this port")
   .option("--pid-file <pid-file>", "Write our PID to a file")
   // passthrough http-proxy options
   .option("--no-x-forward", "Don't add 'X-forward-' headers to proxied requests")
@@ -84,7 +82,8 @@ args
   .option(
     "--custom-header <header>",
     "Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2)",
-    collectHeadersIntoObject, {}
+    collectHeadersIntoObject,
+    {}
   )
   .option("--insecure", "Disable SSL cert verification")
   .option("--host-routing", "Use host routing (host as first level of path)")
@@ -110,12 +109,12 @@ args
 // collects multiple flags to an object
 // --custom-header "k1:v1" --custom-header " k2 : v2 " --> {"k1":"v1","k2":"v2"}
 function collectHeadersIntoObject(value, previous) {
-  var headerParts = value.split(":").map(p => p.trim())
+  var headerParts = value.split(":").map((p) => p.trim());
   if (headerParts.length != 2) {
     log.error("A single colon was expected in custom header: " + value);
     process.exit(1);
   }
-  previous[headerParts[0]] = headerParts[1]
+  previous[headerParts[0]] = headerParts[1];
 }
 
 args.parse(process.argv);
@@ -206,7 +205,7 @@ if (args.apiSslKey || args.apiSslCert) {
     var chain = fs.readFileSync(args.apiSslCa, "utf8");
     var ca = [];
     var cert = [];
-    chain.split("\n").forEach(function(line) {
+    chain.split("\n").forEach(function (line) {
       cert.push(line);
       if (line.match(/-END CERTIFICATE-/)) {
         ca.push(new Buffer(cert.join("\n")));
@@ -241,7 +240,7 @@ if (args.clientSslKey || args.clientSslCert) {
     var chain = fs.readFileSync(args.clientSslCa, "utf8");
     var ca = [];
     var cert = [];
-    chain.split("\n").forEach(function(line) {
+    chain.split("\n").forEach(function (line) {
       cert.push(line);
       if (line.match(/-END CERTIFICATE-/)) {
         ca.push(new Buffer(cert.join("\n")));
@@ -357,7 +356,7 @@ if (args.pidFile) {
   var fd = fs.openSync(args.pidFile, "w");
   fs.writeSync(fd, process.pid.toString());
   fs.closeSync(fd);
-  process.on("exit", function() {
+  process.on("exit", function () {
     log.debug("Removing %s", args.pidFile);
     fs.unlinkSync(args.pidFile);
   });
@@ -366,9 +365,9 @@ if (args.pidFile) {
 // Redirect HTTP to HTTPS on the proxy's port
 if (options.redirectPort && listen.port !== 80) {
   var http = require("http");
-  var redirectPort = (options.redirectTo ? options.redirectTo : listen.port);
+  var redirectPort = options.redirectTo ? options.redirectTo : listen.port;
   var server = http
-    .createServer(function(req, res) {
+    .createServer(function (req, res) {
       var host = req.headers.host.split(":")[0];
 
       // Make sure that when we redirect, it's to the port the proxy is running on
@@ -379,30 +378,29 @@ if (options.redirectPort && listen.port !== 80) {
       res.writeHead(301, { Location: "https://" + host + req.url });
       res.end();
     })
-    .listen(options.redirectPort, ()=>{
-      log.info("Added HTTP to HTTPS redirection from "
-                + server.address().port
-                + " to "
-                + redirectPort);
+    .listen(options.redirectPort, () => {
+      log.info(
+        "Added HTTP to HTTPS redirection from " + server.address().port + " to " + redirectPort
+      );
     });
 }
 
 // trigger normal exit on SIGINT
 // without this, PID cleanup won't fire on SIGINT
-process.on("SIGINT", function() {
+process.on("SIGINT", function () {
   log.warn("Interrupted");
   process.exit(2);
 });
 
 // trigger normal exit on SIGTERM
 // fired on `docker stop` and during Kubernetes pod container evictions
-process.on("SIGTERM", function() {
+process.on("SIGTERM", function () {
   log.warn("Terminated");
   process.exit(2);
 });
 
 // log uncaught exceptions, don't exit now that setup is complete
-process.on("uncaughtException", function(e) {
+process.on("uncaughtException", function (e) {
   log.error("Uncaught Exception: " + e.message);
   if (e.stack) {
     log.error(e.stack);
