@@ -3,8 +3,8 @@
 
 var URLTrie = require("../lib/trie").URLTrie;
 
-describe("URLTrie", function() {
-  var fullTrie = function() {
+describe("URLTrie", function () {
+  var fullTrie = function () {
     // return a simple trie for testing
     var trie = new URLTrie();
     var paths = ["/1", "/2", "/a/b/c/d", "/a/b/d", "/a/b/e", "/b", "/b/c", "/b/c/d"];
@@ -15,7 +15,7 @@ describe("URLTrie", function() {
     return trie;
   };
 
-  it("trie.init", function(done) {
+  it("trie.init", function (done) {
     var trie = new URLTrie();
     expect(trie.prefix).toEqual("/");
     expect(trie.size).toEqual(0);
@@ -31,7 +31,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie.root", function(done) {
+  it("trie.root", function (done) {
     var trie = new URLTrie();
     trie.add("/", -1);
     var node = trie.get("/1/etc/etc/");
@@ -51,7 +51,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie.add", function(done) {
+  it("trie.add", function (done) {
     var trie = new URLTrie();
 
     trie.add("foo", 1);
@@ -92,7 +92,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie.get", function(done) {
+  it("trie.get", function (done) {
     var trie = fullTrie();
     expect(trie.get("/not/found")).toBe(undefined);
 
@@ -126,7 +126,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie.remove", function(done) {
+  it("trie.remove", function (done) {
     var trie = fullTrie();
     var size = trie.size;
     var node;
@@ -155,7 +155,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("trie.subPaths", function(done) {
+  it("trie.subPaths", function (done) {
     var trie = new URLTrie(),
       node;
     trie.add("/", {
@@ -200,7 +200,7 @@ describe("URLTrie", function() {
     done();
   });
 
-  it("remove first leaf doesn't remove root", function(done) {
+  it("remove first leaf doesn't remove root", function (done) {
     var trie = new URLTrie(),
       node;
     trie.add("/", {

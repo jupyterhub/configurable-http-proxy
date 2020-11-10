@@ -8,7 +8,7 @@ var log = require("winston");
 // disable logging during tests
 log.remove(log.transports.Console);
 
-describe("API Tests", function() {
+describe("API Tests", function () {
   var port = 8902;
   var apiPort = port + 1;
   var proxy;
@@ -16,13 +16,13 @@ describe("API Tests", function() {
 
   var r;
 
-  beforeEach(function(callback) {
+  beforeEach(function (callback) {
     util
       .setupProxy(port)
-      .then(function(newProxy) {
+      .then(function (newProxy) {
         proxy = newProxy;
       })
-      .then(function() {
+      .then(function () {
         r = request.defaults({
           method: "GET",
           headers: { Authorization: "token " + proxy.authToken },
@@ -30,20 +30,20 @@ describe("API Tests", function() {
           url: apiUrl,
         });
       })
-      .then(function() {
+      .then(function () {
         callback();
       });
   });
 
-  afterEach(function(callback) {
+  afterEach(function (callback) {
     util.teardownServers(callback);
   });
 
-  it("Basic proxy constructor", function() {
+  it("Basic proxy constructor", function () {
     expect(proxy).toBeDefined();
     expect(proxy.defaultTarget).toBe(undefined);
 
-    return proxy.targetForReq({ url: "/" }).then(function(route) {
+    return proxy.targetForReq({ url: "/" }).then(function (route) {
       expect(route).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -51,8 +51,8 @@ describe("API Tests", function() {
     });
   });
 
-  it("Default target is used for /any/random/url", function(done) {
-    proxy.targetForReq({ url: "/any/random/url" }).then(function(target) {
+  it("Default target is used for /any/random/url", function (done) {
+    proxy.targetForReq({ url: "/any/random/url" }).then(function (target) {
       expect(target).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -62,8 +62,8 @@ describe("API Tests", function() {
     });
   });
 
-  it("Default target is used for /", function(done) {
-    proxy.targetForReq({ url: "/" }).then(function(target) {
+  it("Default target is used for /", function (done) {
+    proxy.targetForReq({ url: "/" }).then(function (target) {
       expect(target).toEqual({
         prefix: "/",
         target: "http://127.0.0.1:" + (port + 2),
@@ -73,9 +73,9 @@ describe("API Tests", function() {
     });
   });
 
-  it("GET /api/routes fetches the routing table", function(done) {
+  it("GET /api/routes fetches the routing table", function (done) {
     r(apiUrl)
-      .then(function(body) {
+      .then(function (body) {
         var reply = JSON.parse(body);
         var keys = Object.keys(reply);
         expect(keys.length).toEqual(1);
@@ -84,15 +84,15 @@ describe("API Tests", function() {
       .then(done);
   });
 
-  it("GET /api/routes[/path] fetches a single route", function(done) {
+  it("GET /api/routes[/path] fetches a single route", function (done) {
     var path = "/path";
     var url = "https://127.0.0.1:54321";
     proxy
       .addRoute(path, { target: url })
-      .then(function() {
+      .then(function () {
         return r(apiUrl + path);
       })
-      .then(function(body) {
+      .then(function (body) {
         var reply = JSON.parse(body);
         var keys = Object.keys(reply);
         expect(keys).toContain("target");
@@ -101,80 +101,77 @@ describe("API Tests", function() {
       .then(done);
   });
 
-  it("GET /api/routes[/path] fetches a single route (404 if missing)", function(done) {
+  it("GET /api/routes[/path] fetches a single route (404 if missing)", function (done) {
     r(apiUrl + "/path")
-      .then(body => {
+      .then((body) => {
         done.fail("Expected a 404");
       })
-      .catch(error => {
+      .catch((error) => {
         expect(error.statusCode).toEqual(404);
       })
       .then(done);
   });
 
-  it("POST /api/routes[/path] creates a new route", function(done) {
+  it("POST /api/routes[/path] creates a new route", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
 
-    r
-      .post({
-        url: apiUrl + "/user/foo",
-        body: JSON.stringify({ target: target }),
-      })
-      .then(body => {
+    r.post({
+      url: apiUrl + "/user/foo",
+      body: JSON.stringify({ target: target }),
+    })
+      .then((body) => {
         expect(body).toEqual("");
       })
       .then(() => proxy._routes.get("/user/foo"))
-      .then(route => {
+      .then((route) => {
         expect(route.target).toEqual(target);
         expect(typeof route.last_activity).toEqual("object");
       })
       .then(done);
   });
 
-  it("POST /api/routes[/foo%20bar] handles URI escapes", function(done) {
+  it("POST /api/routes[/foo%20bar] handles URI escapes", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
-    r
-      .post({
-        url: apiUrl + "/user/foo%40bar",
-        body: JSON.stringify({ target: target }),
-      })
-      .then(body => {
+    r.post({
+      url: apiUrl + "/user/foo%40bar",
+      body: JSON.stringify({ target: target }),
+    })
+      .then((body) => {
         expect(body).toEqual("");
       })
       .then(() => proxy._routes.get("/user/foo@bar"))
-      .then(route => {
+      .then((route) => {
         expect(route.target).toEqual(target);
         expect(typeof route.last_activity).toEqual("object");
       })
       .then(() => proxy.targetForReq({ url: "/user/foo@bar/path" }))
-      .then(proxyTarget => {
+      .then((proxyTarget) => {
         expect(proxyTarget.target).toEqual(target);
       })
       .then(done);
   });
 
-  it("POST /api/routes creates a new root route", function(done) {
+  it("POST /api/routes creates a new root route", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
-    r
-      .post({
-        url: apiUrl,
-        body: JSON.stringify({ target: target }),
-      })
-      .then(body => {
+    r.post({
+      url: apiUrl,
+      body: JSON.stringify({ target: target }),
+    })
+      .then((body) => {
         expect(body).toEqual("");
         return proxy._routes.get("/");
       })
-      .then(route => {
+      .then((route) => {
         expect(route.target).toEqual(target);
         expect(typeof route.last_activity).toEqual("object");
         done();
       });
   });
 
-  it("DELETE /api/routes[/path] deletes a route", function(done) {
+  it("DELETE /api/routes[/path] deletes a route", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
     var path = "/user/bar";
@@ -182,23 +179,22 @@ describe("API Tests", function() {
     util
       .addTarget(proxy, path, port, null, null)
       .then(() => proxy._routes.get(path))
-      .then(route => expect(route.target).toEqual(target))
+      .then((route) => expect(route.target).toEqual(target))
       .then(() => r.del(apiUrl + path))
-      .then(body => expect(body).toEqual(""))
+      .then((body) => expect(body).toEqual(""))
       .then(() => proxy._routes.get(path))
-      .then(deletedRoute => expect(deletedRoute).toBe(undefined))
+      .then((deletedRoute) => expect(deletedRoute).toBe(undefined))
       .then(done);
   });
 
-  it("GET /api/routes?inactiveSince= with bad value returns a 400", function(done) {
-    r
-      .get(apiUrl + "?inactiveSince=endoftheuniverse")
+  it("GET /api/routes?inactiveSince= with bad value returns a 400", function (done) {
+    r.get(apiUrl + "?inactiveSince=endoftheuniverse")
       .then(() => done.fail("Expected 400"))
-      .catch(err => expect(err.statusCode).toEqual(400))
+      .catch((err) => expect(err.statusCode).toEqual(400))
       .then(done);
   });
 
-  it("GET /api/routes?inactiveSince= filters inactive entries", function(done) {
+  it("GET /api/routes?inactiveSince= filters inactive entries", function (done) {
     var port = 8998;
     var path = "/yesterday";
 
@@ -230,19 +226,19 @@ describe("API Tests", function() {
     ];
 
     var seen = 0;
-    var doReq = function(i) {
+    var doReq = function (i) {
       var t = tests[i];
-      return r.get(apiUrl + "?inactiveSince=" + t.since.toISOString()).then(function(body) {
+      return r.get(apiUrl + "?inactiveSince=" + t.since.toISOString()).then(function (body) {
         var routes = JSON.parse(body);
         var routeKeys = Object.keys(routes);
         var expectedKeys = Object.keys(t.expected);
 
-        routeKeys.forEach(function(key) {
+        routeKeys.forEach(function (key) {
           // check that all routes are expected
           expect(expectedKeys).toContain(key);
         });
 
-        expectedKeys.forEach(function(key) {
+        expectedKeys.forEach(function (key) {
           // check that all expected routes are found
           expect(routeKeys).toContain(key);
         });
