@@ -8,6 +8,8 @@ var WebSocket = require("ws");
 
 var ConfigurableProxy = require("../lib/configproxy").ConfigurableProxy;
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
 describe("Proxy Tests", function () {
   var port = 8902;
   var testPort = port + 10;
@@ -268,10 +270,10 @@ describe("Proxy Tests", function () {
   });
 
   it("custom error target", function (done) {
-    var port = 55555;
+    var proxyPort = 55550;
     util
-      .setupProxy(port, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => r("http://127.0.0.1:" + port + "/foo/bar"))
+      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => r("http://127.0.0.1:" + proxyPort + "/foo/bar"))
       .then((body) => done.fail("Expected 404"))
       .catch((err) => {
         expect(err.statusCode).toEqual(404);
@@ -338,7 +340,7 @@ describe("Proxy Tests", function () {
   });
 
   it("Redirect location with rewriting", function (done) {
-    var proxyPort = 55555;
+    var proxyPort = 55556;
     var options = {
       protocolRewrite: "https",
       autoRewrite: true,
