@@ -1,8 +1,11 @@
 # [configurable-http-proxy](https://github.com/jupyterhub/configurable-http-proxy)
 
-[![TravisCI Build status](https://img.shields.io/travis/com/jupyterhub/configurable-http-proxy?logo=travis)](https://travis-ci.com/jupyterhub/configurable-http-proxy)
-[![Docker Build status](https://img.shields.io/docker/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
 [![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg?logo=npm)](https://www.npmjs.com/package/configurable-http-proxy)
+[![Docker Build status](https://img.shields.io/docker/cloud/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
+[![GitHub Workflow Status - Test](https://img.shields.io/github/workflow/status/jupyterhub/configurable-http-proxy/Test%20chart?logo=github&label=tests)](https://github.com/jupyterhub/configurable-http-proxy/actions)
+[![GitHub](https://img.shields.io/badge/issue_tracking-github-blue?logo=github)](https://github.com/jupyterhub/configurable-http-proxy/issues)
+[![Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/c/jupyterhub/z2jh-k8s)
+[![Gitter](https://img.shields.io/badge/social_chat-gitter-blue?logo=gitter)](https://gitter.im/jupyterhub/jupyterhub)
 
 **configurable-http-proxy** (CHP) provides you with a way to update and manage
 a proxy table using a command line interface or REST API.
