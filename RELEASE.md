@@ -10,8 +10,6 @@ repository as is configured
 
 To make a tagged release follow the instructions below, but first make sure you
 meet the prerequisites:
-- To be a collaborator of the [npmjs
-  project](https://www.npmjs.com/package/configurable-http-proxy).
 - To have push rights to the [configurable-http-proxy GitHub
   repository](https://github.com/jupyterhub/configurable-http-proxy).
 - To have [`bump2version`](https://github.com/c4urself/bump2version) installed
@@ -49,13 +47,6 @@ meet the prerequisites:
    git diff HEAD~1
    ```
 
-1. Publish to NPM.
-
-   ```bash
-   npm login
-   npm publish
-   ```
-
 1. Reset the version to the next development version with `bump2version`.
 
    ```bash
@@ -70,4 +61,38 @@ meet the prerequisites:
 
    ```
    git push --follow-tags $ORIGIN master
+   ```
+
+1. Visit [GitHub: create new
+   release](https://github.com/jupyterhub/configurable-http-proxy/releases/new)
+   and reference your tag.
+
+   This will trigger a workflow to publish the NPM package.
+
+1. Verify [the automated
+   workflow](https://github.com/jupyterhub/configurable-http-proxy/actions?query=workflow%3A%22Publish+to+npm%22)
+   succeeded.
+
+## Manual release to npm
+
+1. Verify you are a collaborator of the [npmjs
+   project](https://www.npmjs.com/package/configurable-http-proxy).
+
+1. Checkout the git tag.
+
+   ```
+   git checkout <tag>
+   ```
+
+1. Cleanup old node_modules etc.
+
+   ```
+   git clean -xfd
+   ```
+
+1. Publish to NPM.
+
+   ```bash
+   npm login
+   npm publish
    ```

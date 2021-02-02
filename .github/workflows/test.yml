@@ -5,7 +5,7 @@
 # - https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow
 # - https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
 
-name: test
+name: Test
 
 on:
   - push
