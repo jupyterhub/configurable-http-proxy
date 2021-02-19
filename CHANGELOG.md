@@ -6,7 +6,36 @@ command line for details.
 
 ## [Unreleased]
 
-## [4.2.2] - 2020-10-25
+## [4.2]
+
+### [4.2.3] - 2021-02-19
+
+#### Bugs fixed
+
+* lib: Use client ssl config to access error target [#254](https://github.com/jupyterhub/configurable-http-proxy/pull/254) ([@chancez](https://github.com/chancez))
+
+#### Documentation improvements
+
+* docs: update release instructions and readme badges [#285](https://github.com/jupyterhub/configurable-http-proxy/pull/285) ([@consideRatio](https://github.com/consideRatio))
+
+#### Continuous integration
+
+* travis -> github actions [#275](https://github.com/jupyterhub/configurable-http-proxy/pull/275) ([@minrk](https://github.com/minrk))
+
+#### Dependency bumps
+
+* Bump ws from 7.4.2 to 7.4.3 [#288](https://github.com/jupyterhub/configurable-http-proxy/pull/288) ([@dependabot](https://github.com/dependabot))
+* Bump ws from 7.4.1 to 7.4.2 [#282](https://github.com/jupyterhub/configurable-http-proxy/pull/282) ([@dependabot](https://github.com/dependabot))
+* Bump ws from 7.4.0 to 7.4.1 [#280](https://github.com/jupyterhub/configurable-http-proxy/pull/280) ([@dependabot](https://github.com/dependabot))
+* Bump ws from 7.3.1 to 7.4.0 [#273](https://github.com/jupyterhub/configurable-http-proxy/pull/273) ([@dependabot](https://github.com/dependabot))
+* Bump commander from 6.2.0 to 6.2.1 [#281](https://github.com/jupyterhub/configurable-http-proxy/pull/281) ([@dependabot](https://github.com/dependabot))
+* Bump commander from 6.1.0 to 6.2.0 [#271](https://github.com/jupyterhub/configurable-http-proxy/pull/271) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+[@chancez](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Achancez+updated%3A2020-10-24..2021-02-19&type=Issues) | [@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2020-10-24..2021-02-19&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2020-10-24..2021-02-19&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2020-10-24..2021-02-19&type=Issues)
+
+### [4.2.2] - 2020-10-25
 
 This release contains bugfixes, notably the `--custom-header` implementation.
 
@@ -52,13 +81,13 @@ This release contains bugfixes, notably the `--custom-header` implementation.
 * Update dependency prettier to v2 [#230](https://github.com/jupyterhub/configurable-http-proxy/pull/230) ([@renovate](https://github.com/renovate))
 * Update dependency commander to v5 [#229](https://github.com/jupyterhub/configurable-http-proxy/pull/229) ([@renovate](https://github.com/renovate))
 
-## Contributors to this release
+#### Contributors to this release
 
 ([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2020-03-11&to=2020-10-24&type=c))
 
 [@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2020-03-11..2020-10-24&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2020-03-11..2020-10-24&type=Issues) | [@jmartell7](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ajmartell7+updated%3A2020-03-11..2020-10-24&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2020-03-11..2020-10-24&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2020-03-11..2020-10-24&type=Issues) | [@renovate](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Arenovate+updated%3A2020-03-11..2020-10-24&type=Issues) | [@rgbkrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Argbkrk+updated%3A2020-03-11..2020-10-24&type=Issues) | [@suryag10](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Asuryag10+updated%3A2020-03-11..2020-10-24&type=Issues) | [@welcome](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awelcome+updated%3A2020-03-11..2020-10-24&type=Issues) | [@wongannaw](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awongannaw+updated%3A2020-03-11..2020-10-24&type=Issues)
 
-## [4.2.1] - 2020-03-11
+### [4.2.1] - 2020-03-11
 
 #### Summary
 
@@ -70,7 +99,7 @@ configurable-http-proxy, which itself was left untouched.
 - Security Fixes [#226](https://github.com/jupyterhub/configurable-http-proxy/pull/226) ([@rafael-ladislau](https://github.com/rafael-ladislau))
 - Update dependency commander to ~4.1.0 [#225](https://github.com/jupyterhub/configurable-http-proxy/pull/225) ([@renovate](https://github.com/renovate))
 
-## [4.2.0] - 2019-11-14
+### [4.2.0] - 2019-11-14
 
 #### Summary
 
@@ -96,7 +125,9 @@ configurable-http-proxy, which itself was left untouched.
 - chore(deps): update dependency nyc to v14 [#202](https://github.com/jupyterhub/configurable-http-proxy/pull/202) ([@renovate](https://github.com/renovate))
 - Update dependency commander to ~2.20.0 [#201](https://github.com/jupyterhub/configurable-http-proxy/pull/201) ([@renovate](https://github.com/renovate))
 
-## [4.1.0] - 2019-04-01
+
+### [4.1]
+### [4.1.0] - 2019-04-01
 
 - Add `--redirect-to` option to specify destination port when redirecting
   http to https with `--redirect-from`.
@@ -104,7 +135,10 @@ configurable-http-proxy, which itself was left untouched.
 - Docker base image is updated to `node/10-alpine` from `node/6-alpine`
 - Dependencies are updated via Renovate
 
-## [4.0.0] - 2018-10-12
+
+## [4.0]
+
+### [4.0.0] - 2018-10-12
 
 - Add support for client SSL certificates for encrypting proxied requests.
 - Update all nodejs dependencies. Most significant is updating winston (logging) from 2 to 3. There is no longer a global logger,
@@ -112,12 +146,14 @@ configurable-http-proxy, which itself was left untouched.
 - Drop support for node 4. Minimum node version is 6.
 - Support CONFIGPROXY_SSL_KEY_PASSPHRASE env for setting the passphrase of ssl keys (API_SSL for api ssl key).
 
-## [3.1.1] - 2018-01-15
+## [3.1]
+
+### [3.1.1] - 2018-01-15
 
 - Fix a bug when using the new custom storage backend support
   where the body of requests could be lost.
 
-## [3.1.0] - 2017-11-03
+### [3.1.0] - 2017-11-03
 
 3.1 adds two new features:
 
@@ -126,7 +162,9 @@ configurable-http-proxy, which itself was left untouched.
   See [configurable-http-proxy-redis-backend](https://github.com/globocom/configurable-http-proxy-redis-backend)
   for an example using redis.
 
-## [3.0.0] - 2017-09-19
+## [3.0]
+
+### [3.0.0] - 2017-09-19
 
 3.0 is a major release because much of the code has been reorganized
 to adopt some javascript standards:
@@ -151,7 +189,7 @@ Improvements:
 - The docker image for `jupyterhub/configurable-http-proxy`
   is now based on `node:6-alpine`.
 
-## [2.0] - 2017-04-05
+## [2.0]
 
 ### 2.0.4 - 2017-06-21
 
@@ -191,14 +229,14 @@ Improvements:
 - Fix closure reference when serving custom error pages [\#91](https://github.com/jupyterhub/configurable-http-proxy/pull/91)
 - Improved all-interfaces warning message when `ip='*'`  [\#94](https://github.com/jupyterhub/configurable-http-proxy/pull/94)
 
-## [1.3] - 2016-08-01
+## [1.3]
 
-### 1.3.1
+### [1.3.1] - 2016-10-12
 
 - small fixes for node 6 support
 - fix `--no-x-forward` again (for real, this time)
 
-### 1.3.0
+### [1.3.0] - 2016-08-01
 
 - add `--ssl-protocol`, so that one can restrict to TLS, e.g. `--ssl-protocol=TLSv1`
 - fix handling of ``--no-x-forward`
@@ -239,7 +277,7 @@ Improvements:
 
 ## [0.2.0] - 2014-11-14
 
-## 0.1.1 - 2014-10-01
+## [0.1.1] - 2014-10-01
 
 [Unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.1.0...HEAD
 [4.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.0.1...4.1.0
