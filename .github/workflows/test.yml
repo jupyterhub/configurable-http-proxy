@@ -8,8 +8,9 @@
 name: Test
 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   # Job to run linter / autoformat
