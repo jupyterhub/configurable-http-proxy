@@ -14,3 +14,8 @@ repos:
           - "--trailing-comma=es5"
           - "--print-width=100"
 
+  # Lint
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v7.21.0
+    hooks:
+      - id: eslint
