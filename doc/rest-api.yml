@@ -37,7 +37,7 @@ paths:
         200:
           description: "The routing table"
           schema:
-            $ref: '#/definitions/RoutingTable'
+            $ref: "#/definitions/RoutingTable"
         400:
           description: "Invalid timestamp provided"
         404:
@@ -84,7 +84,7 @@ definitions:
     type: "object"
     description: "Maps keys (route path prefixes / hostnames) to their targets"
     additionalProperties:
-      $ref: '#/definitions/RouteTarget'
+      $ref: "#/definitions/RouteTarget"
   RouteTarget:
     type: "object"
     properties:

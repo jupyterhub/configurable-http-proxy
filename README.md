@@ -19,15 +19,15 @@ functionality to [JupyterHub] deployments.
 
 - [Install](#install)
 - [Usage](#usage)
-    - [Starting the proxy](#starting-the-proxy)
-    - [Setting a default target](#setting-a-default-target)
-    - [Command-line options](#command-line-options)
+  - [Starting the proxy](#starting-the-proxy)
+  - [Setting a default target](#setting-a-default-target)
+  - [Command-line options](#command-line-options)
 - [Using the REST API](#using-the-rest-api)
-    - [REST API Basics](#REST-api-basics)
-    - [Authenticating via passing a token](#authenticating-via-passing-a-token)
-    - [Getting the routing table](#getting-the-routing-table)
-    - [Adding new routes](#adding-new-routes)
-    - [Deleting routes](#deleting-routes)
+  - [REST API Basics](#REST-api-basics)
+  - [Authenticating via passing a token](#authenticating-via-passing-a-token)
+  - [Getting the routing table](#getting-the-routing-table)
+  - [Adding new routes](#adding-new-routes)
+  - [Deleting routes](#deleting-routes)
 - [Custom error pages](#custom-error-pages)
 - [Host-based routing](#host-based-routing)
 - [Troubleshooting](#troubleshooting)
@@ -49,7 +49,7 @@ To install from the source code found in this GitHub repo:
 
 ```bash
 git clone https://github.com/jupyterhub/configurable-http-proxy
-cd configurable-http-proxy 
+cd configurable-http-proxy
 npm install  # Use 'npm install -g' for global install
 ```
 
@@ -60,12 +60,12 @@ npm install  # Use 'npm install -g' for global install
 The configurable proxy runs two HTTP(S) servers:
 
 - The **public-facing interface** to your application (controlled by `--ip`,
-   `--port`)
-    - listens on **all interfaces** by default.
+  `--port`)
+  - listens on **all interfaces** by default.
 - The **inward-facing REST API** (`--api-ip`, `--api-port`)
-    - listens on localhost by default
-    - The REST API uses token authorization, where the token is set in the
-      `CONFIGPROXY_AUTH_TOKEN` environment variable.
+  - listens on localhost by default
+  - The REST API uses token authorization, where the token is set in the
+    `CONFIGPROXY_AUTH_TOKEN` environment variable.
 
 ![](./doc/_static/chp.png)
 
@@ -161,8 +161,9 @@ Options:
 ## Using the REST API
 
 The configurable-http-proxy REST API is documented and available as:
+
 - a nicely rendered, interactive version at the
-[petstore swagger site][]
+  [petstore swagger site][]
 - a [swagger specification file][] in this repo
 
 [**Return to top**][]
@@ -172,14 +173,13 @@ The configurable-http-proxy REST API is documented and available as:
 **API Root**
 
 | HTTP method | Endpoint | Function |
-|-------------|----------|----------|
+| ----------- | -------- | -------- |
 | GET         | /api/    | API Root |
-
 
 **Routes**
 
 | HTTP method | Endpoint                 | Function                            |
-|-------------|--------------------------|-------------------------------------|
+| ----------- | ------------------------ | ----------------------------------- |
 | GET         | /api/routes              | [Get all routes in routing table][] |
 | POST        | /api/routes/{route_spec} | [Add a new route][]                 |
 | DELETE      | /api/routes/{route_spec} | [Remove the given route][]          |
@@ -208,7 +208,6 @@ curl -H "Authorization: token $CONFIGPROXY_AUTH_TOKEN" http://localhost:8001/api
 
     GET /api/routes[?inactive_since=ISO8601-timestamp]
 
-
 **Parameters:**
 
 `inactive_since`: If the `inactive_since` URL
@@ -219,14 +218,14 @@ passes data to or from the proxy target.
 
 **Response:**
 
-*Status code*
+_Status code_
 
     status: 200 OK
 
-*Response body*
+_Response body_
 
 A JSON dictionary of the current routing table. This JSON
-dictionary *excludes* the default route.
+dictionary _excludes_ the default route.
 
 **Behavior:**
 
@@ -249,6 +248,7 @@ dictionary with at least one key: `target`, the target host to be proxied.
 `target`: The host URL
 
 Example request body:
+
 ```json
 {
   "target": "http://localhost:8002"
@@ -292,7 +292,7 @@ hit, along with their status code:
   routing target. This error **can be prevented** by setting a
   [`default target`][] before starting the configurable-http-proxy.
 
-- 503 error: Returned when a route exists, but the upstream server isn't 
+- 503 error: Returned when a route exists, but the upstream server isn't
   responding. This is more common, and can be due to any number of reasons,
   including the target service having died, not finished starting, or network
   instability.
@@ -364,17 +364,14 @@ Q: My proxy is not starting. What could be happening?
   that is very old, and it is necessary to update node to a recent or `LTS`
   version.
 
-
 [**Return to top**][]
 
-
-
 [node-http-proxy]: https://github.com/nodejitsu/node-http-proxy
-[JupyterHub]: https://github.com/jupyterhub/jupyterhub
+[jupyterhub]: https://github.com/jupyterhub/jupyterhub
 [petstore swagger site]: http://petstore.swagger.io/?url=https://raw.githubusercontent.com/jupyterhub/configurable-http-proxy/master/doc/rest-api.yml#/default
 [swagger specification file]: https://github.com/jupyterhub/configurable-http-proxy/blob/master/doc/rest-api.yml
-[Get all routes in routing table]: #getting-the-routing-table
-[Add a new route]: #adding-new-routes
-[Remove the given route]: #deleting-routes
+[get all routes in routing table]: #getting-the-routing-table
+[add a new route]: #adding-new-routes
+[remove the given route]: #deleting-routes
 [`default target`]: #setting-a-default-target
-[**Return to top**]: #table-of-contents
+[**return to top**]: #table-of-contents
