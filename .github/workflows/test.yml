@@ -41,12 +41,10 @@ jobs:
         run: |
           npm ci
 
-      - name: "`npm run fmt` and check for changes"
-        run: |
-          # If this fails, run `npm run fmt` and push the result
-          # amend if you feel so inclined.
-          npm run fmt
-          git diff --exit-code
+      # Run the pre-commit action
+      # Repo: https://github.com/pre-commit/action
+      - uses: actions/setup-python@v2
+      - uses: pre-commit/action@v2.0.0
 
       - name: npm audit
         run: |
