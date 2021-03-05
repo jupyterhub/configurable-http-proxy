@@ -41,12 +41,10 @@ jobs:
         run: |
           npm ci
 
-      - name: "`npm run fmt` and check for changes"
-        run: |
-          # If this fails, run `npm run fmt` and push the result
-          # amend if you feel so inclined.
-          npm run fmt
-          git diff --exit-code
+      # Run the pre-commit action
+      # Repo: https://github.com/pre-commit/action
+      - uses: actions/setup-python@v2
+      - uses: pre-commit/action@v2.0.0
 
       - name: npm audit
         run: |
@@ -59,7 +57,7 @@ jobs:
     runs-on: ubuntu-20.04
     # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategy
     strategy:
-      fail-fast: false  # Do not cancel all jobs if one fails
+      fail-fast: false # Do not cancel all jobs if one fails
       matrix:
         node_version:
           - "10"

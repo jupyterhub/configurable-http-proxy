@@ -10,6 +10,7 @@ repository as is configured
 
 To make a tagged release follow the instructions below, but first make sure you
 meet the prerequisites:
+
 - To have push rights to the [configurable-http-proxy GitHub
   repository](https://github.com/jupyterhub/configurable-http-proxy).
 - To have [`bump2version`](https://github.com/c4urself/bump2version) installed

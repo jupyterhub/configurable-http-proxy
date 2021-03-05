@@ -19,7 +19,6 @@
     "jasmine": "^3.5.0",
     "jshint": "^2.10.2",
     "nyc": "^15.0.0",
-    "prettier": "^2.0.0",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.4",
     "ws": "^7.0.0"
@@ -40,7 +39,7 @@
   },
   "scripts": {
     "lint": "jshint bin/ lib/ test/",
-    "fmt": "prettier --write *.js bin/* lib/*.js test/*.js --trailing-comma es5 --print-width 100",
+    "fmt": "pre-commit run --all-files",
     "test": "nyc jasmine JASMINE_CONFIG_PATH=test/jasmine.json",
     "coverage-html": "nyc report --reporter=html",
     "codecov": "nyc report --reporter=lcov && codecov"
