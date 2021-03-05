@@ -361,6 +361,16 @@ if (options.redirectPort && listen.port !== 80) {
   var redirectPort = options.redirectTo ? options.redirectTo : listen.port;
   var server = http
     .createServer(function (req, res) {
+      if (typeof req.headers.host === "undefined") {
+        res.statusCode = 400;
+        res.write(
+          "This server is HTTPS-only on port " +
+            redirectPort +
+            ", but an HTTP request was made and the host could not be determined from the request."
+        );
+        res.end();
+        return;
+      }
       var host = req.headers.host.split(":")[0];
 
       // Make sure that when we redirect, it's to the port the proxy is running on
