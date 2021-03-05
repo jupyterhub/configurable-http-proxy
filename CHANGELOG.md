@@ -6,7 +6,41 @@ command line for details.
 
 ## [Unreleased]
 
-## [4.2]
+## 4.3
+
+### [4.3.0] - 2021-03-05
+
+4.3 is a small release that should mostly improve behavior
+when things are going wrong,
+especially when endpoints are unavailable and clients are still trying to talk to them.
+
+In particular:
+
+- requests to unavailable endpoints no longer register as activity
+- improved error handling and quieter logging in these cases,
+  especially when running on node >= 12.9.
+
+#### Enhancements made
+
+- Do not update activity on failed requests [#292](https://github.com/jupyterhub/configurable-http-proxy/pull/292) ([@minrk](https://github.com/minrk))
+
+#### Bugs fixed
+
+- Improvements when things go wrong [#290](https://github.com/jupyterhub/configurable-http-proxy/pull/290) ([@minrk](https://github.com/minrk))
+
+#### Maintenance and upkeep improvements
+
+- Add tests for last-activity updates [#293](https://github.com/jupyterhub/configurable-http-proxy/pull/293) ([@minrk](https://github.com/minrk))
+- adopt pre-commit [#291](https://github.com/jupyterhub/configurable-http-proxy/pull/291) ([@minrk](https://github.com/minrk))
+- Bump commander from 6.2.1 to 7.1.0 [#289](https://github.com/jupyterhub/configurable-http-proxy/pull/289) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-02-20&to=2021-03-05&type=c))
+
+[@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2021-02-20..2021-03-05&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-02-20..2021-03-05&type=Issues)
+
+## 4.2
 
 ### [4.2.3] - 2021-02-19
 
@@ -139,7 +173,7 @@ configurable-http-proxy, which itself was left untouched.
 - Docker base image is updated to `node/10-alpine` from `node/6-alpine`
 - Dependencies are updated via Renovate
 
-## [4.0]
+## 4.0
 
 ### [4.0.0] - 2018-10-12
 
@@ -281,9 +315,14 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.1.0...HEAD
-[4.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.0.1...4.1.0
-[4.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.1...4.0.1
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.0...HEAD
+[4.3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.3...4.3.0
+[4.2.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.2...4.2.3
+[4.2.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.1...4.2.2
+[4.2.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.0...4.2.1
+[4.2.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.1.0...4.2.0
+[4.1.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.0.1...4.1.0
+[4.0.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.1...4.0.1
 [3.1.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.1.0...3.1.1
 [3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/3.0.0...3.1.0
 [3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/2.0.4...3.0.0
