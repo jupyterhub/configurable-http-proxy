@@ -9,11 +9,11 @@
 
 var fs = require("fs"),
   pkg = require("../package.json"),
-  args = require("commander"),
+  cli = require("commander"),
   tls = require("tls"),
   winston = require("winston");
 
-args
+cli
   .version(pkg.version)
   .option("--ip <ip-address>", "Public-facing IP of the proxy")
   .option("--port <n> (defaults to 8000)", "Public-facing port of the proxy", parseInt)
@@ -117,7 +117,8 @@ function collectHeadersIntoObject(value, previous) {
   previous[headerParts[0]] = headerParts[1];
 }
 
-args.parse(process.argv);
+cli.parse(process.argv);
+var args = cli.opts();
 
 var ConfigurableProxy = require("../lib/configproxy.js").ConfigurableProxy;
 
