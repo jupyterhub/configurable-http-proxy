@@ -160,6 +160,22 @@ if (args.sslCiphers) {
   ].join(":");
 }
 
+function _loadSslCa(caFile) {
+  // When multiple CAs need to be specified, they must be broken into
+  // an array of certs unfortunately.
+  var chain = fs.readFileSync(caFile, "utf8");
+  var ca = [];
+  var cert = [];
+  chain.split("\n").forEach(function (line) {
+    cert.push(line);
+    if (line.match(/-END CERTIFICATE-/)) {
+      ca.push(new Buffer(cert.join("\n")));
+      cert = [];
+    }
+  });
+  return ca;
+}
+
 // ssl options
 if (args.sslKey || args.sslCert) {
   options.ssl = {};
@@ -200,19 +216,7 @@ if (args.apiSslKey || args.apiSslCert) {
     options.apiSsl.cert = fs.readFileSync(args.apiSslCert);
   }
   if (args.apiSslCa) {
-    // When multiple CAs need to be specified, they must be broken into
-    // an array of certs unfortunately.
-    var chain = fs.readFileSync(args.apiSslCa, "utf8");
-    var ca = [];
-    var cert = [];
-    chain.split("\n").forEach(function (line) {
-      cert.push(line);
-      if (line.match(/-END CERTIFICATE-/)) {
-        ca.push(new Buffer(cert.join("\n")));
-        cert = [];
-      }
-    });
-    options.apiSsl.ca = ca;
+    options.apiSsl.ca = _loadSslCa(args.apiSslCa);
   }
   if (args.sslDhparam) {
     options.apiSsl.dhparam = fs.readFileSync(args.sslDhparam);
@@ -235,19 +239,7 @@ if (args.clientSslKey || args.clientSslCert) {
     options.clientSsl.cert = fs.readFileSync(args.clientSslCert);
   }
   if (args.clientSslCa) {
-    // When multiple CAs need to be specified, they must be broken into
-    // an array of certs unfortunately.
-    var chain = fs.readFileSync(args.clientSslCa, "utf8");
-    var ca = [];
-    var cert = [];
-    chain.split("\n").forEach(function (line) {
-      cert.push(line);
-      if (line.match(/-END CERTIFICATE-/)) {
-        ca.push(new Buffer(cert.join("\n")));
-        cert = [];
-      }
-    });
-    options.clientSsl.ca = ca;
+    options.clientSsl.ca = _loadSslCa(args.clientSslCa);
   }
   if (args.sslDhparam) {
     options.clientSsl.dhparam = fs.readFileSync(args.sslDhparam);
