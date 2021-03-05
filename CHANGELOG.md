@@ -8,6 +8,18 @@ command line for details.
 
 ## 4.3
 
+### [4.3.1]
+
+#### Bugs fixed
+
+- informative error when host cannot be determined for http->https redirect [#295](https://github.com/jupyterhub/configurable-http-proxy/pull/295) ([@minrk](https://github.com/minrk))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-03-05&to=2021-03-05&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2021-03-05..2021-03-05&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2021-03-05..2021-03-05&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-03-05..2021-03-05&type=Issues)
+
 ### [4.3.0] - 2021-03-05
 
 4.3 is a small release that should mostly improve behavior
@@ -27,6 +39,10 @@ In particular:
 #### Bugs fixed
 
 - Improvements when things go wrong [#290](https://github.com/jupyterhub/configurable-http-proxy/pull/290) ([@minrk](https://github.com/minrk))
+
+#### Documentation improvements
+
+- changelog for 4.3 [#294](https://github.com/jupyterhub/configurable-http-proxy/pull/294) ([@minrk](https://github.com/minrk))
 
 #### Maintenance and upkeep improvements
 
@@ -315,7 +331,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.0...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...HEAD
+[4.3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.3...4.3.0
 [4.2.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.2...4.2.3
 [4.2.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.1...4.2.2
