@@ -9,6 +9,9 @@ name: Test
 
 on:
   push:
+    branches-ignore:
+      # don't double-build dependabot PRs
+      - dependabot/**
   pull_request:
   workflow_dispatch:
 
