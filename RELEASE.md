@@ -13,8 +13,7 @@ meet the prerequisites:
 
 - To have push rights to the [configurable-http-proxy GitHub
   repository](https://github.com/jupyterhub/configurable-http-proxy).
-- To have [`bump2version`](https://github.com/c4urself/bump2version) installed
-  (`pip install bump2version`).
+- To have [Node.js](https://nodejs.org) installed.
 
 ## Steps to make a release
 
@@ -22,59 +21,53 @@ meet the prerequisites:
    [README.md](README.md) has an updated output of running `--help`. Make a PR
    to review the CHANGELOG notes.
 
-1. Once the changelog is up to date, checkout main and make sure it is up to
+1. Once the changelog is up to date, checkout the main branch and make sure it is up to
    date and clean.
 
    ```bash
    ORIGIN=${ORIGIN:-origin} # set to the canonical remote, e.g. 'upstream' if 'origin' is not the official repo
    git checkout main
-   git fetch $ORIGIN main
-   git reset --hard $ORIGIN/main
-   # WARNING! This next command deletes any untracked files in the repo
-   git clean -xfd
+   git branch --set-upstream-to=$ORIGIN/main main
+   git pull
    ```
 
-1. Update the version with `bump2version` to not include the -dev suffix and let
-   it make a git commit and tag as well for us.
+1. Update the version with [`npm version`](https://docs.npmjs.com/cli/v6/commands/npm-version)
+   and let it make a git commit and tag as well for us.
 
    ```bash
-   # optionally first bump a minor or major version, but
-   # don't bump the patch version, that's already done.
-   # bump2version --no-commit minor
-   # bump2version --no-commit major
-   bump2version --tag release
+   # specify the new version here,
+   # which should already have been chosen when updating the changelog.
+   npm version 1.2.3
 
    # verify changes
    git diff HEAD~1
    ```
 
-1. Reset the version to the next development version with `bump2version`.
+1. Reset the version to the next development version with `npm version`,
+   without creating a tag:
 
    ```bash
-   bump2version --no-tag patch
+   npm version --no-git-tag-version prerelease --preid=dev
+   git commit -am "back to dev"
 
    # verify changes
    git diff HEAD~1
    ```
 
-1. Push your release related commits to main along with the annotated tags
-   referencing commits on the main branch.
+1. Push your new tag and commits to GitHub.
 
-   ```
+   ```bash
    git push --follow-tags $ORIGIN main
    ```
-
-1. Visit [GitHub: create new
-   release](https://github.com/jupyterhub/configurable-http-proxy/releases/new)
-   and reference your tag.
-
-   This will trigger a workflow to publish the NPM package.
 
 1. Verify [the automated
    workflow](https://github.com/jupyterhub/configurable-http-proxy/actions?query=workflow%3A%22Publish+to+npm%22)
    succeeded.
 
 ## Manual release to npm
+
+A manual release should not generally be required,
+but might be needed in the event of a problem in the automated publishing workflow.
 
 1. Verify you are a collaborator of the [npmjs
    project](https://www.npmjs.com/package/configurable-http-proxy).
