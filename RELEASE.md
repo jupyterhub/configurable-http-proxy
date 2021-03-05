@@ -22,14 +22,14 @@ meet the prerequisites:
    [README.md](README.md) has an updated output of running `--help`. Make a PR
    to review the CHANGELOG notes.
 
-1. Once the changelog is up to date, checkout master and make sure it is up to
+1. Once the changelog is up to date, checkout main and make sure it is up to
    date and clean.
 
    ```bash
    ORIGIN=${ORIGIN:-origin} # set to the canonical remote, e.g. 'upstream' if 'origin' is not the official repo
-   git checkout master
-   git fetch $ORIGIN master
-   git reset --hard $ORIGIN/master
+   git checkout main
+   git fetch $ORIGIN main
+   git reset --hard $ORIGIN/main
    # WARNING! This next command deletes any untracked files in the repo
    git clean -xfd
    ```
@@ -57,11 +57,11 @@ meet the prerequisites:
    git diff HEAD~1
    ```
 
-1. Push your release related commits to master along with the annotated tags
-   referencing commits on the master branch.
+1. Push your release related commits to main along with the annotated tags
+   referencing commits on the main branch.
 
    ```
-   git push --follow-tags $ORIGIN master
+   git push --follow-tags $ORIGIN main
    ```
 
 1. Visit [GitHub: create new
