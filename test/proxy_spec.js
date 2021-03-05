@@ -43,7 +43,12 @@ describe("Proxy Tests", function () {
           path: "/",
         })
       );
-      done();
+
+      // check last_activity was updated
+      return proxy._routes.get("/").then((route) => {
+        expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+        done();
+      });
     });
   });
 
@@ -66,8 +71,12 @@ describe("Proxy Tests", function () {
             message: "hi",
           })
         );
-        ws.close();
-        done();
+        // check last_activity was updated
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          ws.close();
+          done();
+        });
       }
       nmsgs++;
     });
@@ -267,6 +276,50 @@ describe("Proxy Tests", function () {
         );
       })
       .then(done);
+  });
+
+  it("last_activity not updated on errors", function (done) {
+    let now = new Date();
+    // mock timestamp in the past
+    let firstActivity = new Date(now.getTime() - 60000);
+
+    function expectNoActivity() {
+      return proxy._routes.get("/missing", (route) => {
+        expect(route.last_activity).toEqual(proxy._setup_timestamp);
+      });
+    }
+
+    proxy
+      .removeRoute("/")
+      // add a route to nowhere
+      .then(() => proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" }))
+      .then(() => {
+        // set last_activity into the past
+        proxy._routes.update("/missing", { last_activity: firstActivity });
+      })
+      // fail a web request
+      .then(() => r(hostUrl + "/missing/prefix"))
+      .then((body) => done.fail("Expected 503"))
+      .catch((err) => {
+        expect(err.statusCode).toEqual(503);
+      })
+      // check that activity was not updated
+      .then(expectNoActivity)
+      // fail a websocket request
+      .then(() => {
+        var ws = new WebSocket("ws://127.0.0.1:" + port + "/missing/ws");
+        ws.on("error", () => {
+          // expect this, since there is no websocket handler
+          // check last_activity was not updated
+          expectNoActivity().then((route) => {
+            ws.close();
+            done();
+          });
+        });
+        ws.on("open", () => {
+          done.fail("Expected websocket error");
+        });
+      });
   });
 
   it("custom error target", function (done) {
