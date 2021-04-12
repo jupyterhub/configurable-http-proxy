@@ -8,7 +8,29 @@ command line for details.
 
 ## 4.3
 
-### [4.3.1]
+### [4.3.2] - 2021-04-12
+
+#### Enhancements made
+
+- Build and publish Docker Hub image for amd64 and arm64 [#304](https://github.com/jupyterhub/configurable-http-proxy/pull/304) ([@manics](https://github.com/manics))
+
+#### Maintenance and upkeep improvements
+
+- Bump jasmine from 3.6.4 to 3.7.0 [#302](https://github.com/jupyterhub/configurable-http-proxy/pull/302) ([@dependabot](https://github.com/dependabot))
+- Bump commander from 7.1.0 to 7.2.0 [#301](https://github.com/jupyterhub/configurable-http-proxy/pull/301) ([@dependabot](https://github.com/dependabot))
+- Bump ws from 7.4.3 to 7.4.4 [#299](https://github.com/jupyterhub/configurable-http-proxy/pull/299) ([@dependabot](https://github.com/dependabot))
+
+#### Documentation improvements
+
+- Simplify RELEASE.md with npm version [#298](https://github.com/jupyterhub/configurable-http-proxy/pull/298) ([@minrk](https://github.com/minrk))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-03-05&to=2021-04-12&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2021-03-05..2021-04-12&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2021-03-05..2021-04-12&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2021-03-05..2021-04-12&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-03-05..2021-04-12&type=Issues)
+
+### [4.3.1] - 2021-03-05
 
 #### Bugs fixed
 
@@ -332,6 +354,7 @@ Improvements:
 ## [0.1.1] - 2014-10-01
 
 [unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...HEAD
+[4.3.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...4.3.2
 [4.3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.3...4.3.0
 [4.2.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.2...4.2.3
