@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # https://github.com/manics/action-major-minor-tag-calculator-test
+      # https://github.com/jupyterhub/action-major-minor-tag-calculator
       # If this is a tagged build this will return additional parent tags.
       # E.g. 1.2.3 is expanded to Docker tags
       # [{prefix}:1.2.3, {prefix}:1.2, {prefix}:1, {prefix}:latest] unless
@@ -57,7 +57,7 @@ jobs:
       - name: Get list of tags
         id: gettags
         # TODO: Move to org?
-        uses: manics/action-major-minor-tag-calculator@main
+        uses: jupyterhub/action-major-minor-tag-calculator@main
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           prefix: "jupyterhub/configurable-http-proxy:"
