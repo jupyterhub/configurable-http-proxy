@@ -6,6 +6,7 @@ var MemoryStore = require("../lib/store.js").MemoryStore;
 describe("MemoryStore", function () {
   beforeEach(function () {
     this.subject = new MemoryStore();
+    this.subject.connection.query('DELETE FROM routes')
   });
 
   describe("get", function () {
@@ -82,25 +83,33 @@ describe("MemoryStore", function () {
 
   describe("update", function () {
     it("merges supplied data with existing data", function (done) {
-      this.subject.add("/myRoute", { version: 1, test: "value" });
-      this.subject.update("/myRoute", { version: 2 });
-
-      this.subject.get("/myRoute").then(function (route) {
-        expect(route.version).toEqual(2);
-        expect(route.test).toEqual("value");
-        done();
-      });
+      this.subject.add("/myRoute", { version: 1, test: "value" }).then(
+        () => {
+          this.subject.update("/myRoute", { version: 2 }).then(
+            () => {
+              this.subject.get("/myRoute").then(function (route) {
+                console.log('got route', route)
+                expect(route.version).toEqual(2);
+                expect(route.test).toEqual("value");
+                done();
+              });
+            }
+          )
+    
+        }
+      )
     });
   });
 
   describe("remove", function () {
     it("removes a route from the table", function (done) {
-      this.subject.add("/myRoute", { test: "value" });
-      this.subject.remove("/myRoute");
-
-      this.subject.get("/myRoute").then(function (route) {
-        expect(route).toBe(undefined);
-        done();
+      this.subject.add("/myRoute", { test: "value" }).then(() => {
+        this.subject.remove("/myRoute").then(() => {
+          this.subject.get("/myRoute").then(function (route) {
+            expect(route).toBe(undefined);
+            done();
+          });    
+        });
       });
     });
 
