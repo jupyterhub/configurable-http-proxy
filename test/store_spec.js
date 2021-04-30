@@ -6,7 +6,6 @@ var MemoryStore = require("../lib/store.js").MemoryStore;
 describe("MemoryStore", function () {
   beforeEach(function () {
     this.subject = new MemoryStore();
-    this.subject.connection.query("DELETE FROM routes");
   });
 
   describe("get", function () {
