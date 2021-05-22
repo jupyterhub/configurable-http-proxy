@@ -87,9 +87,6 @@ cli
   )
   .option("--insecure", "Disable SSL cert verification")
   .option("--host-routing", "Use host routing (host as first level of path)")
-  .option("--statsd-host <host>", "Host to send statsd statistics to")
-  .option("--statsd-port <port>", "Port to send statsd statistics to", parseInt)
-  .option("--statsd-prefix <prefix>", "Prefix to use for statsd statistics")
   .option("--disable-metrics", "Disable metrics endpoint")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
@@ -266,15 +263,6 @@ options.redirectTo = args.redirectTo;
 options.headers = args.customHeader;
 options.timeout = args.timeout;
 options.proxyTimeout = args.proxyTimeout;
-
-// statsd options
-if (args.statsdHost) {
-  var lynx = require("lynx");
-  options.statsd = new lynx(args.statsdHost, args.statsdPort || 8125, {
-    scope: args.statsdPrefix || "chp",
-  });
-  log.info("Sending metrics to statsd at " + args.statsdHost + ":" + args.statsdPort || 8125);
-}
 
 // prometheus options
 options.disableMetrics = args.disableMetrics;
