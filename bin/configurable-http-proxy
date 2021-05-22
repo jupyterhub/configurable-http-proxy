@@ -90,6 +90,7 @@ cli
   .option("--statsd-host <host>", "Host to send statsd statistics to")
   .option("--statsd-port <port>", "Port to send statsd statistics to", parseInt)
   .option("--statsd-prefix <prefix>", "Prefix to use for statsd statistics")
+  .option("--disable-metrics", "Disable metrics endpoint")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
     "--timeout <n>",
@@ -274,6 +275,9 @@ if (args.statsdHost) {
   });
   log.info("Sending metrics to statsd at " + args.statsdHost + ":" + args.statsdPort || 8125);
 }
+
+// prometheus options
+options.disableMetrics = args.disableMetrics;
 
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {

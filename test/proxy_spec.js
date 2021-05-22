@@ -438,4 +438,11 @@ describe("Proxy Tests", function () {
       done();
     });
   });
+
+  it("disabled metrics request", function (done) {
+    proxy.proxy.options.disableMetrics = true;
+    r(proxyUrl + "/metrics")
+      .then((body) => done.fail("Expected 404"))
+      .then(done);
+  });
 });
