@@ -13,6 +13,7 @@ describe("API Tests", function () {
   var apiPort = port + 1;
   var proxy;
   var apiUrl = "http://127.0.0.1:" + apiPort + "/api/routes";
+  var metricsUrl = "http://127.0.0.1:" + apiPort + "/metrics";
 
   var r;
 
@@ -259,5 +260,22 @@ describe("API Tests", function () {
       .then(() => proxy._routes.update("/yesterday", { last_activity: yesterday }))
       .then(() => doReq(0))
       .then();
+  });
+
+  it("GET /metrics", function (done) {
+    r(metricsUrl).then((body) => {
+      expect(body).toContain("process_cpu_user_seconds_total");
+      done();
+    });
+  });
+
+  it("GET /metrics (disabled)", function (done) {
+    proxy.options.disableMetrics = true;
+    r(metricsUrl)
+      .then((body) => done.fail("Expected 404"))
+      .catch((error) => {
+        expect(error.statusCode).toEqual(404);
+      })
+      .then(done);
   });
 });

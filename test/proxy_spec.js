@@ -431,18 +431,4 @@ describe("Proxy Tests", function () {
       done();
     });
   });
-
-  it("metrics request", function (done) {
-    r(proxyUrl + "/metrics").then((body) => {
-      expect(body).toContain("process_cpu_user_seconds_total");
-      done();
-    });
-  });
-
-  it("disabled metrics request", function (done) {
-    proxy.proxy.options.disableMetrics = true;
-    r(proxyUrl + "/metrics")
-      .then((body) => done.fail("Expected 404"))
-      .then(done);
-  });
 });
