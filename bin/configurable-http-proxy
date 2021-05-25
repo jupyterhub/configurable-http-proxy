@@ -342,12 +342,7 @@ log.info(
   listen.apiPort
 );
 if (listen.metricsPort) {
-  log.info(
-    "Serve metrics at %s://%s:%s/metrics",
-    "http",
-    listen.metricsIp,
-    listen.metricsPort
-  );
+  log.info("Serve metrics at %s://%s:%s/metrics", "http", listen.metricsIp, listen.metricsPort);
 }
 
 if (args.pidFile) {
