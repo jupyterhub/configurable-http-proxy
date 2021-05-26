@@ -6,6 +6,33 @@ command line for details.
 
 ## [Unreleased]
 
+## 4.4
+
+### [4.4.0] - 2021-05-26
+
+#### New features added
+
+- Support prometheus metrics [#314](https://github.com/jupyterhub/configurable-http-proxy/pull/314) ([@dtaniwaki](https://github.com/dtaniwaki))
+
+#### Documentation improvements
+
+- readme: update --help output [#315](https://github.com/jupyterhub/configurable-http-proxy/pull/315) ([@consideRatio](https://github.com/consideRatio))
+
+#### Dependency bumps
+
+- Bump lodash from 4.17.20 to 4.17.21 [#312](https://github.com/jupyterhub/configurable-http-proxy/pull/312) ([@dependabot](https://github.com/dependabot))
+- Bump ws from 7.4.4 to 7.4.5 [#306](https://github.com/jupyterhub/configurable-http-proxy/pull/306) ([@dependabot](https://github.com/dependabot))
+
+#### Continuous integration
+
+- ci: github actions security [#307](https://github.com/jupyterhub/configurable-http-proxy/pull/307) ([@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-04-12&to=2021-05-26&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2021-04-12..2021-05-26&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2021-04-12..2021-05-26&type=Issues) | [@dtaniwaki](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adtaniwaki+updated%3A2021-04-12..2021-05-26&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-04-12..2021-05-26&type=Issues)
+
 ## 4.3
 
 ### [4.3.2] - 2021-04-12
