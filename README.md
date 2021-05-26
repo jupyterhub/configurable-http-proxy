@@ -114,7 +114,7 @@ Options:
   --ssl-ca <ca-file>                 SSL certificate authority, if any
   --ssl-request-cert                 Request SSL certs to authenticate clients
   --ssl-reject-unauthorized          Reject unauthorized SSL connections (only meaningful if --ssl-request-cert is given)
-  --ssl-protocol <ssl-protocol>      Set specific SSL protocol, e.g. TLSv1.2, SSLv3
+  --ssl-protocol <ssl-protocol>      Set specific SSL protocol, e.g. TLSv1_2, SSLv3
   --ssl-ciphers <ciphers>            `:`-separated ssl cipher list. Default excludes RC4
   --ssl-allow-rc4                    Allow RC4 cipher for SSL (disabled by default)
   --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
@@ -142,18 +142,16 @@ Options:
   --auto-rewrite                     Rewrite the Location header host/port in redirect responses
   --change-origin                    Changes the origin of the host header to the target URL
   --protocol-rewrite <proto>         Rewrite the Location header protocol in redirect responses to the specified protocol
-  --custom-header <header>           Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2)
-                                     (default: [])
+  --custom-header <header>           Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2) (default: {})
   --insecure                         Disable SSL cert verification
   --host-routing                     Use host routing (host as first level of path)
-  --statsd-host <host>               Host to send statsd statistics to
-  --statsd-port <port>               Port to send statsd statistics to
-  --statsd-prefix <prefix>           Prefix to use for statsd statistics
+  --metrics-ip <ip>                  IP for metrics server (default: "0.0.0.0")
+  --metrics-port <n>                 Port of metrics server. Defaults to no metrics server
   --log-level <loglevel>             Log level (debug, info, warn, error) (default: "info")
   --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
   --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
   --storage-backend <storage-class>  Define an external storage class. Defaults to in-MemoryStore.
-  -h, --help                         output usage information
+  -h, --help                         display help for command
 ```
 
 [**Return to top**][]
