@@ -50,7 +50,7 @@ jobs:
         #    https://github.com/jupyterhub/configurable-http-proxy/settings/secrets/actions
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
+          docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
 
       # https://github.com/jupyterhub/action-major-minor-tag-calculator
       # If this is a tagged build this will return additional parent tags.
