@@ -12,9 +12,9 @@ command line for details.
 
 #### Breaking change
 
-By mistake we released this as version 4.4.0 instead of 5.0.0 even we introduced
-a breaking change by dropping support for using
-[statsd](https://github.com/statsd/statsd#readme) metrics.
+- By mistake we released this as version 4.4.0 instead of 5.0.0 even though we introduced
+  a breaking change in [#314](https://github.com/jupyterhub/configurable-http-proxy/pull/314) by
+  dropping support for using [statsd](https://github.com/statsd/statsd#readme) metrics.
 
 #### New features added
 
