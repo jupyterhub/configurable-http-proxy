@@ -24,7 +24,7 @@
     "ws": "^7.0.0"
   },
   "engines": {
-    "node": ">= 6.0"
+    "node": ">= 12.0"
   },
   "engineStrict": true,
   "main": "index.js",
