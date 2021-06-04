@@ -62,8 +62,9 @@ jobs:
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
+        # IMPORTANT: Make sure to update package.json's enginges.node field to
+        #            always require at least the oldest version.
         node_version:
-          - "10"
           - "12"
           - "14"
           - "15"
