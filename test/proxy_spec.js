@@ -379,6 +379,20 @@ describe("Proxy Tests", function () {
       .then(done);
   });
 
+  it("backend error", function (done) {
+    var proxyPort = 55550;
+    util
+      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => r("http://127.0.0.1:" + proxyPort + "/%"))
+      .then((body) => done.fail("Expected 500"))
+      .catch((err) => {
+        expect(err.statusCode).toEqual(500);
+        expect(err.response.headers["content-type"]).toEqual("text/plain");
+        expect(err.response.body).toEqual("/%");
+      })
+      .then(done);
+  });
+
   it("Redirect location untouched without rewrite options", function (done) {
     var redirectTo = "http://foo.com:12345/whatever";
     util
