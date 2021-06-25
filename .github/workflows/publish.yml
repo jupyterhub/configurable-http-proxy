@@ -3,7 +3,12 @@ name: Release
 
 on:
   push:
+    branches-ignore:
+      # don't double-build dependabot PRs
+      - dependabot/**
+    tags:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   # Run tests using node, publish a package when tagged
