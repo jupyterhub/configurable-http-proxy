@@ -18,7 +18,6 @@ on:
 
 jobs:
   # Job to run linter / autoformat
-
   lint:
     runs-on: ubuntu-20.04
     steps:
@@ -56,8 +55,6 @@ jobs:
           npm audit --production --audit-level=moderate
 
   test:
-    # no need to wait for lint
-    # needs: lint
     runs-on: ubuntu-20.04
     # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategy
     strategy:
