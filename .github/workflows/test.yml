@@ -12,6 +12,7 @@ on:
     branches-ignore:
       # don't double-build dependabot PRs
       - dependabot/**
+    tags: ["**"]
   pull_request:
   workflow_dispatch:
 
