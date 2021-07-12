@@ -230,7 +230,7 @@ if (args.apiSslKey || args.apiSslCert) {
   options.apiSsl.rejectUnauthorized = args.apiSslRejectUnauthorized;
 }
 
-if (args.clientSslKey || args.clientSslCert) {
+if (args.clientSslKey || args.clientSslCert || args.clientSslCa) {
   options.clientSsl = {};
   if (args.clientSslKey) {
     options.clientSsl.key = fs.readFileSync(args.clientSslKey);
