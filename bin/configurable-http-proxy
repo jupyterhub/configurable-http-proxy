@@ -87,7 +87,7 @@ cli
   )
   .option("--insecure", "Disable SSL cert verification")
   .option("--host-routing", "Use host routing (host as first level of path)")
-  .option("--metrics-ip <ip>", "IP for metrics server", "0.0.0.0")
+  .option("--metrics-ip <ip>", "IP for metrics server", "")
   .option("--metrics-port <n>", "Port of metrics server. Defaults to no metrics server")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
