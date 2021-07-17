@@ -317,9 +317,9 @@ if (args.ip === "*") {
   args.ip = "";
 }
 listen.ip = args.ip;
-listen.apiIp = args.apiIp || "localhost";
+listen.apiIp = args.apiIp;
 listen.apiPort = args.apiPort || listen.port + 1;
-listen.metricsIp = args.metricsIp || "0.0.0.0";
+listen.metricsIp = args.metricsIp;
 listen.metricsPort = args.metricsPort;
 
 proxy.proxyServer.listen(listen.port, listen.ip);
