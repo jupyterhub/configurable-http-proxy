@@ -61,11 +61,14 @@ jobs:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
         # IMPORTANT: Make sure to update package.json's enginges.node field to
-        #            always require at least the oldest version.
+        #            always require at least the oldest version, as well as our
+        #            README.md file under the install section.
         node_version:
-          - "12"
+          - "12" # Remove 2022-04-30, its end-of-life.
           - "14"
-          - "15"
+          - "15" # Remove about when 17 is available?
+          - "16"
+          # - "17" # Add 2021-10-19, its initial release date.
 
     steps:
       - name: "Checkout repo"
