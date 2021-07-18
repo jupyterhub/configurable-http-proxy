@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   title: "Configurable HTTP Proxy"
-  description: "The REST API for configurable-http-proxy.\n\n Find out more: https://github.com/jupyterhub/configurable-http-proxy/blob/master/README.md"
+  description: "The REST API for configurable-http-proxy.\n\n Find out more: https://github.com/jupyterhub/configurable-http-proxy/blob/HEAD/README.md"
   version: "1.1.0"
 securityDefinitions:
   token:

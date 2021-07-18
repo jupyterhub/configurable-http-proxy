@@ -366,8 +366,8 @@ Q: My proxy is not starting. What could be happening?
 
 [node-http-proxy]: https://github.com/nodejitsu/node-http-proxy
 [jupyterhub]: https://github.com/jupyterhub/jupyterhub
-[petstore swagger site]: http://petstore.swagger.io/?url=https://raw.githubusercontent.com/jupyterhub/configurable-http-proxy/master/doc/rest-api.yml#/default
-[swagger specification file]: https://github.com/jupyterhub/configurable-http-proxy/blob/master/doc/rest-api.yml
+[petstore swagger site]: http://petstore.swagger.io/?url=https://raw.githubusercontent.com/jupyterhub/configurable-http-proxy/HEAD/doc/rest-api.yml#/default
+[swagger specification file]: https://github.com/jupyterhub/configurable-http-proxy/blob/HEAD/doc/rest-api.yml
 [get all routes in routing table]: #getting-the-routing-table
 [add a new route]: #adding-new-routes
 [remove the given route]: #deleting-routes
