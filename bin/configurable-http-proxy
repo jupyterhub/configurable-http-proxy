@@ -87,7 +87,7 @@ cli
   )
   .option("--insecure", "Disable SSL cert verification")
   .option("--host-routing", "Use host routing (host as first level of path)")
-  .option("--metrics-ip <ip>", "IP for metrics server", "0.0.0.0")
+  .option("--metrics-ip <ip>", "IP for metrics server", "")
   .option("--metrics-port <n>", "Port of metrics server. Defaults to no metrics server")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
@@ -317,9 +317,9 @@ if (args.ip === "*") {
   args.ip = "";
 }
 listen.ip = args.ip;
-listen.apiIp = args.apiIp || "localhost";
+listen.apiIp = args.apiIp;
 listen.apiPort = args.apiPort || listen.port + 1;
-listen.metricsIp = args.metricsIp || "0.0.0.0";
+listen.metricsIp = args.metricsIp;
 listen.metricsPort = args.metricsPort;
 
 proxy.proxyServer.listen(listen.port, listen.ip);
