@@ -6,6 +6,41 @@ command line for details.
 
 ## [Unreleased]
 
+## 4.5
+
+### [4.5.0] - 2021-07-19
+
+This minor release will only be available for you if you have node version 12
+and higher as we have explicitly dropped support for lower versions.
+
+#### Bugs fixed
+
+- Fix to flags configuring ip addresses for ipv4+ipv6 compatebility [#333](https://github.com/jupyterhub/configurable-http-proxy/pull/333) ([@consideRatio](https://github.com/consideRatio))
+- Handle store backend errors [#325](https://github.com/jupyterhub/configurable-http-proxy/pull/325) ([@dtaniwaki](https://github.com/dtaniwaki))
+- Require node 12+ explicitly [#323](https://github.com/jupyterhub/configurable-http-proxy/pull/323) ([@consideRatio](https://github.com/consideRatio))
+- Set client SSL on only CA case [#319](https://github.com/jupyterhub/configurable-http-proxy/pull/319) ([@dtaniwaki](https://github.com/dtaniwaki))
+
+#### Documentation improvements
+
+- docs: update outdated requirement of node [#335](https://github.com/jupyterhub/configurable-http-proxy/pull/335) ([@consideRatio](https://github.com/consideRatio))
+- Amend changelog about dropping statsd [#317](https://github.com/jupyterhub/configurable-http-proxy/pull/317) ([@consideRatio](https://github.com/consideRatio))
+
+#### Continuous integration improvements
+
+- ci: add tests of node 16 [#334](https://github.com/jupyterhub/configurable-http-proxy/pull/334) ([@consideRatio](https://github.com/consideRatio))
+- ci: fix details in workflows causing duplicated builds and a failure [#326](https://github.com/jupyterhub/configurable-http-proxy/pull/326) ([@consideRatio](https://github.com/consideRatio))
+
+#### Dependency updates
+
+- Bump ws from 7.4.5 to 7.5.3 [#324](https://github.com/jupyterhub/configurable-http-proxy/pull/324) [#328](https://github.com/jupyterhub/configurable-http-proxy/pull/328) [#332](https://github.com/jupyterhub/configurable-http-proxy/pull/332), [#331](https://github.com/jupyterhub/configurable-http-proxy/pull/331) ([@dependabot](https://github.com/dependabot))
+- Bump commander from 7.2.0 to 8.0.0 [#329](https://github.com/jupyterhub/configurable-http-proxy/pull/329) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-05-26&to=2021-07-19&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2021-05-26..2021-07-19&type=Issues) | [@dtaniwaki](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adtaniwaki+updated%3A2021-05-26..2021-07-19&type=Issues) | [@Icare2000](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AIcare2000+updated%3A2021-05-26..2021-07-19&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2021-05-26..2021-07-19&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-05-26..2021-07-19&type=Issues)
+
 ## 4.4
 
 ### [4.4.0] - 2021-05-26
@@ -386,7 +421,9 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...HEAD
+[4.5.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.4.4...4.5.0
+[4.4.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.2...4.4.4
 [4.3.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...4.3.2
 [4.3.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.0...4.3.1
 [4.3.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.2.3...4.3.0
