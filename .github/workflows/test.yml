@@ -60,11 +60,13 @@ jobs:
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
-        # IMPORTANT: Make sure to update package.json's enginges.node field to
+        # IMPORTANT: Make sure to update package.json's engines.node field to
         #            always require at least the oldest version, as well as our
         #            README.md file under the install section.
         node_version:
-          - "12" # Remove 2022-04-30, its end-of-life.
+          # Removing node 10 is dropping support for ubuntu 20.04 LTS
+          - "10"
+          - "12"
           - "14"
           - "15" # Remove about when 17 is available?
           - "16"
