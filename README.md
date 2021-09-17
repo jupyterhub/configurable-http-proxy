@@ -34,7 +34,7 @@ functionality to [JupyterHub] deployments.
 
 ## Install
 
-Prerequisite: [Node.js](https://nodejs.org/en/download/) ≥ 12
+Prerequisite: [Node.js](https://nodejs.org/en/download/) ≥ 10
 
 If you're installing `configurable-http-proxy` in Linux, you can follow [the instruction of nodesource](https://github.com/nodesource/distributions#installation-instructions) to install arbitrary version of Node.js.
 

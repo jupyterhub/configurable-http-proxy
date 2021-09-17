@@ -9,7 +9,7 @@
     "url": "https://github.com/jupyterhub/configurable-http-proxy.git"
   },
   "dependencies": {
-    "commander": "~8.2.0",
+    "commander": "~7.2",
     "http-proxy": "^1.18.1",
     "prom-client": "13.2.0",
     "strftime": "~0.10.0",
@@ -24,7 +24,7 @@
     "ws": "^7.0.0"
   },
   "engines": {
-    "node": ">= 12.0"
+    "node": ">= 10.0"
   },
   "engineStrict": true,
   "main": "index.js",
