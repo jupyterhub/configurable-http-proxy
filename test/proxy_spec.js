@@ -61,6 +61,7 @@ describe("Proxy Tests", function () {
     });
     var nmsgs = 0;
     ws.on("message", function (msg) {
+      msg = msg.toString();
       if (nmsgs === 0) {
         expect(msg).toEqual("connected");
       } else {
