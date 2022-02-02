@@ -111,7 +111,7 @@ function collectHeadersIntoObject(value, previous) {
   value = value.trim();
   var colon = value.indexOf(":");
   if (colon <= 0) {
-    log.error("A colon was expected in custom header: " + value);
+    console.error("A colon was expected in custom header: " + value);
     process.exit(1);
   }
   var headerName = value.slice(0, colon).trim();

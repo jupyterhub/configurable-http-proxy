@@ -16,15 +16,19 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
   //cliProcess.stdout.pipe(process.stdout);
   const cliReady = new Promise((resolve, reject) => {
     var promiseResolved = false;
+    var stderrBuf = [];
     cliProcess.stderr.on("data", (data) => {
       console.log(data.toString());
+      stderrBuf.push(data.toString());
     });
     cliProcess.on("exit", (code) => {
       if (!promiseResolved) {
         console.log(
           "process configurable-http-proxy " + args.join(" ") + "exited with code: " + code
         );
-        reject();
+        cliProcess._failedStderr = stderrBuf.join("");
+        promiseResolved = true;
+        reject(cliProcess);
       }
     });
     cliProcess.stdout.on("data", (data) => {
@@ -101,15 +105,20 @@ describe("CLI Tests", function () {
   });
 
   beforeEach(function (callback) {
+    childProcess = null;
     addServer("default", testPort).then(callback);
   });
 
   afterEach(function (callback) {
     teardownServers();
-    childProcess.on("exit", () => {
+    if (childProcess) {
+      childProcess.on("exit", () => {
+        callback();
+      });
+      childProcess.kill();
+    } else {
       callback();
-    });
-    childProcess.kill();
+    }
   });
 
   it("basic HTTP request", function (done) {
@@ -255,5 +264,26 @@ describe("CLI Tests", function () {
         done();
       });
     });
+  });
+  it("invalid-custom-header", function (done) {
+    var args = [
+      "--ip",
+      "127.0.0.1",
+      "--port",
+      port,
+      "--default-target",
+      testUrl,
+      "--custom-header",
+      "invalid",
+    ];
+    executeCLI(execCmd, args)
+      .then((cliProcess) => {
+        fail("CLI should have exited");
+        done();
+      })
+      .catch((cliProcess) => {
+        expect(cliProcess._failedStderr).toContain("colon was expected");
+        done();
+      });
   });
 });
