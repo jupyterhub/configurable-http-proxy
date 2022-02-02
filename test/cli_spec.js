@@ -16,6 +16,21 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
   //cliProcess.stdout.pipe(process.stdout);
   const cliReady = new Promise((resolve, reject) => {
     var promiseResolved = false;
+    var stderrBuf = [];
+    cliProcess.stderr.on("data", (data) => {
+      console.log(data.toString());
+      stderrBuf.push(data.toString());
+    });
+    cliProcess.on("exit", (code) => {
+      if (!promiseResolved) {
+        console.log(
+          "process configurable-http-proxy " + args.join(" ") + "exited with code: " + code
+        );
+        cliProcess._failedStderr = stderrBuf.join("");
+        promiseResolved = true;
+        reject(cliProcess);
+      }
+    });
     cliProcess.stdout.on("data", (data) => {
       if (data.includes("Route added /")) {
         defaultRouteAdded = true;
@@ -90,15 +105,20 @@ describe("CLI Tests", function () {
   });
 
   beforeEach(function (callback) {
+    childProcess = null;
     addServer("default", testPort).then(callback);
   });
 
   afterEach(function (callback) {
     teardownServers();
-    childProcess.on("exit", () => {
+    if (childProcess) {
+      childProcess.on("exit", () => {
+        callback();
+      });
+      childProcess.kill();
+    } else {
       callback();
-    });
-    childProcess.kill();
+    }
   });
 
   it("basic HTTP request", function (done) {
@@ -229,7 +249,7 @@ describe("CLI Tests", function () {
       "--custom-header",
       "k1: v1",
       "--custom-header",
-      " k2 : v2 v2 ",
+      " k2 : host:123 ",
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
@@ -238,11 +258,32 @@ describe("CLI Tests", function () {
         expect(body.headers).toEqual(
           jasmine.objectContaining({
             k1: "v1",
-            k2: "v2 v2",
+            k2: "host:123",
           })
         );
         done();
       });
     });
+  });
+  it("invalid-custom-header", function (done) {
+    var args = [
+      "--ip",
+      "127.0.0.1",
+      "--port",
+      port,
+      "--default-target",
+      testUrl,
+      "--custom-header",
+      "invalid",
+    ];
+    executeCLI(execCmd, args)
+      .then((cliProcess) => {
+        fail("CLI should have exited");
+        done();
+      })
+      .catch((cliProcess) => {
+        expect(cliProcess._failedStderr).toContain("colon was expected");
+        done();
+      });
   });
 });
