@@ -108,12 +108,17 @@ cli
 // collects multiple flags to an object
 // --custom-header "k1:v1" --custom-header " k2 : v2 " --> {"k1":"v1","k2":"v2"}
 function collectHeadersIntoObject(value, previous) {
-  var headerParts = value.split(":").map((p) => p.trim());
-  if (headerParts.length != 2) {
-    log.error("A single colon was expected in custom header: " + value);
+  value = value.trim();
+  var colon = value.indexOf(":");
+  if (colon <= 0) {
+    log.error("A colon was expected in custom header: " + value);
     process.exit(1);
   }
-  previous[headerParts[0]] = headerParts[1];
+  var headerName = value.slice(0, colon).trim();
+  var headerValue = value.slice(colon + 1).trim();
+
+  previous[headerName] = headerValue;
+  return previous;
 }
 
 cli.parse(process.argv);

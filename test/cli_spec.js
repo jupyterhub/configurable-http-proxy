@@ -16,6 +16,17 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
   //cliProcess.stdout.pipe(process.stdout);
   const cliReady = new Promise((resolve, reject) => {
     var promiseResolved = false;
+    cliProcess.stderr.on("data", (data) => {
+      console.log(data.toString());
+    });
+    cliProcess.on("exit", (code) => {
+      if (!promiseResolved) {
+        console.log(
+          "process configurable-http-proxy " + args.join(" ") + "exited with code: " + code
+        );
+        reject();
+      }
+    });
     cliProcess.stdout.on("data", (data) => {
       if (data.includes("Route added /")) {
         defaultRouteAdded = true;
@@ -229,7 +240,7 @@ describe("CLI Tests", function () {
       "--custom-header",
       "k1: v1",
       "--custom-header",
-      " k2 : v2 v2 ",
+      " k2 : host:123 ",
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
@@ -238,7 +249,7 @@ describe("CLI Tests", function () {
         expect(body.headers).toEqual(
           jasmine.objectContaining({
             k1: "v1",
-            k2: "v2 v2",
+            k2: "host:123",
           })
         );
         done();
