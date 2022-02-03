@@ -1,4 +1,8 @@
+# This is a GitHub workflow defining a set of jobs with a set of steps.
+# ref: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+#
 # Publish NPM package and Docker image
+#
 name: Release
 
 on:
