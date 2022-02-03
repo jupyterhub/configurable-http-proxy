@@ -8,6 +8,38 @@ command line for details.
 
 ## 4.5
 
+### [4.5.1] - 2022-02-02
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1))
+
+#### Bugs fixed
+
+- fix custom-header [#369](https://github.com/jupyterhub/configurable-http-proxy/pull/369) ([@minrk](https://github.com/minrk))
+- Restore node 10 as base supported engine [#349](https://github.com/jupyterhub/configurable-http-proxy/pull/349) ([@minrk](https://github.com/minrk))
+
+#### Continuous integration improvements
+
+- ci: test against node 17, rely on pre-commit.ci, tweak workflow triggers and comments [#372](https://github.com/jupyterhub/configurable-http-proxy/pull/372) ([@consideratio](https://github.com/consideratio))
+
+#### Dependency updates
+
+- image: use latest alpine (3.12 -> 3.15) [#371](https://github.com/jupyterhub/configurable-http-proxy/pull/371) ([@consideRatio](https://github.com/consideRatio))
+- npm audit fix [#370](https://github.com/jupyterhub/configurable-http-proxy/pull/370) ([@minrk](https://github.com/minrk))
+- Bump winston from 3.4.0 to 3.5.0 [#367](https://github.com/jupyterhub/configurable-http-proxy/pull/367) ([@dependabot](https://github.com/dependabot))
+- Bump winston from 3.3.4 to 3.4.0 [#364](https://github.com/jupyterhub/configurable-http-proxy/pull/364) ([@dependabot](https://github.com/dependabot))
+- Bump winston from 3.3.3 to 3.3.4 [#360](https://github.com/jupyterhub/configurable-http-proxy/pull/360) ([@dependabot](https://github.com/dependabot))
+- Bump ws from 8.4.0 to 8.4.2 [#362](https://github.com/jupyterhub/configurable-http-proxy/pull/362) ([@dependabot](https://github.com/dependabot))
+- Bump ws from 7.5.3 to 8.4.0 [#361](https://github.com/jupyterhub/configurable-http-proxy/pull/361) ([@dependabot](https://github.com/dependabot))
+- Bump strftime from 0.10.0 to 0.10.1 [#355](https://github.com/jupyterhub/configurable-http-proxy/pull/355) ([@dependabot](https://github.com/dependabot))
+- Bump prom-client from 13.2.0 to 14.0.1 [#354](https://github.com/jupyterhub/configurable-http-proxy/pull/354) ([@dependabot](https://github.com/dependabot))
+- Bump prom-client from 13.1.0 to 13.2.0 [#340](https://github.com/jupyterhub/configurable-http-proxy/pull/340) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2021-07-19&to=2022-02-03&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2021-07-19..2022-02-03&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2021-07-19..2022-02-03&type=Issues)
+
 ### [4.5.0] - 2021-07-19
 
 This minor release will only be available for you if you have node version 12
@@ -421,7 +453,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...HEAD
+[4.5.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1
 [4.5.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.4.4...4.5.0
 [4.4.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.2...4.4.4
 [4.3.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.1...4.3.2
