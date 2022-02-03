@@ -1,35 +1,35 @@
-# Useful GitHub Actions docs:
+# This is a GitHub workflow defining a set of jobs with a set of steps.
+# ref: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 #
-# - https://help.github.com/en/actions
-# - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
-# - https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow
-# - https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
-
 name: Test
 
 on:
-  push:
-    branches-ignore:
-      # don't double-build dependabot PRs
-      - dependabot/**
-    tags: ["**"]
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - ".github/workflows/*"
+      - "!.github/workflows/publish.yml"
+  push:
+    paths-ignore:
+      - "**.md"
+      - ".github/workflows/*"
+      - "!.github/workflows/publish.yml"
+    branches-ignore:
+      - "dependabot/**"
+      - "pre-commit-ci-update-config"
+    tags:
+      - "**"
   workflow_dispatch:
 
 jobs:
-  # Job to run linter / autoformat
-  lint:
+  # Audit dependencies for known vulnerabilities
+  audit-dependencies:
     runs-on: ubuntu-20.04
     steps:
-      # Action Repo: https://github.com/actions/checkout
-      - name: "Checkout repo"
-        uses: actions/checkout@v2
-
-      # Action Repo: https://github.com/actions/setup-node
-      - name: "Setup Node"
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: "16"
 
       # Action Repo: https://github.com/actions/cache
       - name: "Cache node_modules"
@@ -40,14 +40,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - name: "Install"
+      - name: "Install dependencies (npm ci)"
         run: |
           npm ci
-
-      # Run the pre-commit action
-      # Repo: https://github.com/pre-commit/action
-      - uses: actions/setup-python@v2
-      - uses: pre-commit/action@v2.0.0
 
       - name: npm audit
         run: |
@@ -56,7 +51,6 @@ jobs:
 
   test:
     runs-on: ubuntu-20.04
-    # - https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategy
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
@@ -68,17 +62,12 @@ jobs:
           - "10"
           - "12"
           - "14"
-          - "15" # Remove about when 17 is available?
           - "16"
-          # - "17" # Add 2021-10-19, its initial release date.
+          - "17"
 
     steps:
-      - name: "Checkout repo"
-        uses: actions/checkout@v2
-
-      # Action Repo: https://github.com/actions/setup-node
-      - name: "Setup Node"
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
 
@@ -91,7 +80,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - name: "Install dependencies"
+      - name: "Install dependencies (npm ci)"
         run: |
           npm ci
 
