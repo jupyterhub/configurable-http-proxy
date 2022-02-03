@@ -2,12 +2,21 @@
 name: Release
 
 on:
-  push:
-    branches-ignore:
-      # don't double-build dependabot PRs
-      - dependabot/**
-    tags: ["**"]
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - ".github/workflows/*"
+      - "!.github/workflows/publish.yml"
+  push:
+    paths-ignore:
+      - "**.md"
+      - ".github/workflows/*"
+      - "!.github/workflows/publish.yml"
+    branches-ignore:
+      - "dependabot/**"
+      - "pre-commit-ci-update-config"
+    tags:
+      - "**"
   workflow_dispatch:
 
 jobs:
