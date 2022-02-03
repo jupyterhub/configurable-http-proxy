@@ -68,9 +68,8 @@ jobs:
           - "10"
           - "12"
           - "14"
-          - "15" # Remove about when 17 is available?
           - "16"
-          # - "17" # Add 2021-10-19, its initial release date.
+          - "17"
 
     steps:
       - name: "Checkout repo"
