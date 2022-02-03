@@ -70,6 +70,7 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           prefix: "jupyterhub/configurable-http-proxy:"
+          defaultTag: jupyterhub/configurable-http-proxy:noref
 
       - name: Display tags
         run: echo "Docker tags ${{ steps.gettags.outputs.tags }}"
