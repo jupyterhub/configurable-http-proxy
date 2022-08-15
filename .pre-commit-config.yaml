@@ -26,6 +26,6 @@ repos:
 
   # Lint
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.21.0
+    rev: v8.22.0
     hooks:
       - id: eslint
