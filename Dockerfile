@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.15
+FROM node:lts-alpine3.16
 # ref: https://hub.docker.com/_/node?tab=tags&name=lts-alpine
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
