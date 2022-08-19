@@ -8,6 +8,34 @@ command line for details.
 
 ## 4.5
 
+### [4.5.2] - 2022-08-19
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2))
+
+#### Maintenance and upkeep improvements
+
+- Updated alpine base image to 3.16 [#416](https://github.com/jupyterhub/configurable-http-proxy/pull/416) ([@Christian-Nunnally](https://github.com/Christian-Nunnally))
+
+#### Dependency updates
+
+- build(deps): bump winston from 3.8.0 to 3.8.1 [#406](https://github.com/jupyterhub/configurable-http-proxy/pull/406) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump winston from 3.7.2 to 3.8.0 [#405](https://github.com/jupyterhub/configurable-http-proxy/pull/405) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump winston from 3.6.0 to 3.7.2 [#390](https://github.com/jupyterhub/configurable-http-proxy/pull/390) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump minimist from 1.2.5 to 1.2.6 [#389](https://github.com/jupyterhub/configurable-http-proxy/pull/389) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump follow-redirects from 1.14.7 to 1.14.8 [#378](https://github.com/jupyterhub/configurable-http-proxy/pull/378) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump winston from 3.5.1 to 3.6.0 [#377](https://github.com/jupyterhub/configurable-http-proxy/pull/377) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump winston from 3.5.0 to 3.5.1 [#374](https://github.com/jupyterhub/configurable-http-proxy/pull/374) ([@dependabot](https://github.com/dependabot))
+
+#### Continuous integration improvements
+
+- tests: fix associated with going from ws 7 to ws 8 [#403](https://github.com/jupyterhub/configurable-http-proxy/pull/403) ([@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2022-02-03&to=2022-08-18&type=c))
+
+[@Christian-Nunnally](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AChristian-Nunnally+updated%3A2022-02-03..2022-08-18&type=Issues) | [@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2022-02-03..2022-08-18&type=Issues) | [@manics](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2022-02-03..2022-08-18&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2022-02-03..2022-08-18&type=Issues) | [@snickell](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Asnickell+updated%3A2022-02-03..2022-08-18&type=Issues)
+
 ### [4.5.1] - 2022-02-02
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1))
@@ -453,7 +481,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...HEAD
+[4.5.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2
 [4.5.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1
 [4.5.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.4.4...4.5.0
 [4.4.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.3.2...4.4.4
