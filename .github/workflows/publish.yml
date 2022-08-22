@@ -89,7 +89,7 @@ jobs:
         run: echo "Docker tags ${{ steps.gettags.outputs.tags }}"
 
       - name: Build and push
-        uses: docker/build-push-action@e1b7f96249f2e4c8e4ac1519b9608c0d48944a1f # associated tag: v2.4.0
+        uses: docker/build-push-action@c84f38281176d4c9cdb1626ffafcd6b3911b5d94 # associated tag: v2.4.0
         with:
           platforms: linux/amd64,linux/arm64
           push: ${{ startsWith(github.ref, 'refs/tags/') }}
