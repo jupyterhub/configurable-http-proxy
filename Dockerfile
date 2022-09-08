@@ -4,6 +4,7 @@ FROM node:lts-alpine3.16
 # Set labels based on the Open Containers Initiative (OCI):
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
 #
+LABEL org.opencontainers.image.authors="Jupyter Project <jupyter@googlegroups.com>"
 LABEL org.opencontainers.image.source="https://github.com/jupyterhub/configurable-http-proxy"
 LABEL org.opencontainers.image.url="https://github.com/jupyterhub/configurable-http-proxy/blob/HEAD/Dockerfile"
 
