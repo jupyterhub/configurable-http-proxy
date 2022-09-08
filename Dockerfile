@@ -1,10 +1,19 @@
 FROM node:lts-alpine3.16
 # ref: https://hub.docker.com/_/node?tab=tags&name=lts-alpine
 
-LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
+# Set labels based on the Open Containers Initiative (OCI):
+# https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
+#
+LABEL org.opencontainers.image.authors="Jupyter Project <jupyter@googlegroups.com>"
+LABEL org.opencontainers.image.source="https://github.com/jupyterhub/configurable-http-proxy"
+LABEL org.opencontainers.image.url="https://github.com/jupyterhub/configurable-http-proxy/blob/HEAD/Dockerfile"
 
-# Useful tools for debugging
-RUN apk add --no-cache jq curl
+# Add tools useful for debugging and update packages to patch known
+# vulnerabilities if needed.
+RUN apk upgrade --no-cache \
+ && apk add --no-cache \
+        curl \
+        jq
 
 # Copy relevant (see .dockerignore)
 RUN mkdir -p /srv/configurable-http-proxy
