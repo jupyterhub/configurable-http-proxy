@@ -8,6 +8,18 @@ command line for details.
 
 ## 4.5
 
+### [4.5.3] - 2022-09-09
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3))
+
+#### Dependency updates
+
+- build(deps): bump prom-client from 14.0.1 to 14.1.0 [#428](https://github.com/jupyterhub/configurable-http-proxy/pull/428) ([@dependabot](https://github.com/dependabot))
+
+#### Continuous integration improvements
+
+- ci: add dependabot bumping of github actions [#418](https://github.com/jupyterhub/configurable-http-proxy/pull/418) ([@consideRatio](https://github.com/consideRatio))
+
 ### [4.5.2] - 2022-08-19
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2))
@@ -481,7 +493,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...HEAD
+[4.5.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3
 [4.5.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2
 [4.5.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1
 [4.5.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.4.4...4.5.0
