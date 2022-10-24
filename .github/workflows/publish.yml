@@ -28,7 +28,7 @@ jobs:
   # https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 
   publish-npm:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
