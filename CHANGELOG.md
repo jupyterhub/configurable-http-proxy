@@ -8,6 +8,27 @@ command line for details.
 
 ## 4.5
 
+### [4.5.4] - 2022-12-06
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4))
+
+#### Dependency updates
+
+- build(deps): bump winston from 3.8.1 to 3.8.2 [#432](https://github.com/jupyterhub/configurable-http-proxy/pull/432) ([@dependabot](https://github.com/dependabot))
+
+#### Continuous integration
+
+- ci: small updates to workflows, updating misc versions [#439](https://github.com/jupyterhub/configurable-http-proxy/pull/439) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump docker/build-push-action from 3.1.1 to 3.2.0 [#437](https://github.com/jupyterhub/configurable-http-proxy/pull/437) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump docker/setup-buildx-action from 2.0.0 to 2.1.0 [#436](https://github.com/jupyterhub/configurable-http-proxy/pull/436) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump docker/setup-qemu-action from 2.0.0 to 2.1.0 [#435](https://github.com/jupyterhub/configurable-http-proxy/pull/435) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2022-09-09&to=2022-12-05&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2022-09-09..2022-12-05&type=Issues) | [@yuvipanda](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayuvipanda+updated%3A2022-09-09..2022-12-05&type=Issues)
+
 ### [4.5.3] - 2022-09-09
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3))
@@ -493,7 +514,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...HEAD
+[4.5.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4
 [4.5.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3
 [4.5.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2
 [4.5.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.0...4.5.1
