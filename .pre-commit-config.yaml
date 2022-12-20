@@ -29,3 +29,7 @@ repos:
     rev: v8.30.0
     hooks:
       - id: eslint
+
+# pre-commit.ci config reference: https://pre-commit.ci/#configuration
+ci:
+  autoupdate_schedule: monthly
