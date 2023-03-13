@@ -11,7 +11,7 @@
   "dependencies": {
     "commander": "~7.2",
     "http-proxy": "^1.18.1",
-    "prom-client": "14.1.1",
+    "prom-client": "14.2.0",
     "strftime": "~0.10.0",
     "winston": "~3.8.0"
   },
