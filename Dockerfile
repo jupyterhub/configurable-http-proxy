@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.16
+FROM node:lts-alpine3.17
 # ref: https://hub.docker.com/_/node?tab=tags&name=lts-alpine
 
 # Set labels based on the Open Containers Initiative (OCI):
