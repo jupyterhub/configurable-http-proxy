@@ -8,6 +8,35 @@ command line for details.
 
 ## 4.5
 
+### [4.5.5] - 2023-04-03
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5))
+
+#### Maintenance and upkeep improvements
+
+- Update base image to node:lts-alpine3.17 [#470](https://github.com/jupyterhub/configurable-http-proxy/pull/470) ([@stefanc18](https://github.com/stefanc18))
+
+#### Dependency updates
+
+- build(deps): bump prom-client from 14.1.1 to 14.2.0 [#468](https://github.com/jupyterhub/configurable-http-proxy/pull/468) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump json5 from 2.2.0 to 2.2.3 [#458](https://github.com/jupyterhub/configurable-http-proxy/pull/458) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump prom-client from 14.1.0 to 14.1.1 [#456](https://github.com/jupyterhub/configurable-http-proxy/pull/456) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump qs from 6.5.2 to 6.5.3 [#454](https://github.com/jupyterhub/configurable-http-proxy/pull/454) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump minimatch from 3.0.4 to 3.0.8 [#452](https://github.com/jupyterhub/configurable-http-proxy/pull/452) ([@dependabot](https://github.com/dependabot))
+
+#### Continuous integration
+
+- build(deps-dev): bump ws from 8.12.1 to 8.13.0 [#467](https://github.com/jupyterhub/configurable-http-proxy/pull/467) ([@dependabot](https://github.com/dependabot))
+- build(deps-dev): bump ws from 8.12.0 to 8.12.1 [#464](https://github.com/jupyterhub/configurable-http-proxy/pull/464) ([@dependabot](https://github.com/dependabot))
+- build(deps): bump docker/build-push-action from 3 to 4 [#462](https://github.com/jupyterhub/configurable-http-proxy/pull/462) ([@dependabot](https://github.com/dependabot))
+- build(deps-dev): bump ws from 8.11.0 to 8.12.0 [#459](https://github.com/jupyterhub/configurable-http-proxy/pull/459) ([@dependabot](https://github.com/dependabot))
+
+#### Contributors to this release
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2022-12-05&to=2023-04-01&type=c))
+
+[@consideRatio](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2022-12-05..2023-04-01&type=Issues) | [@dependabot](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adependabot+updated%3A2022-12-05..2023-04-01&type=Issues) | [@minrk](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2022-12-05..2023-04-01&type=Issues) | [@pre-commit-ci](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Apre-commit-ci+updated%3A2022-12-05..2023-04-01&type=Issues) | [@stefanc18](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Astefanc18+updated%3A2022-12-05..2023-04-01&type=Issues) | [@welcome](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awelcome+updated%3A2022-12-05..2023-04-01&type=Issues)
+
 ### [4.5.4] - 2022-12-06
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4))
@@ -514,7 +543,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...HEAD
+[4.5.5]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5
 [4.5.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4
 [4.5.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3
 [4.5.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.1...4.5.2
