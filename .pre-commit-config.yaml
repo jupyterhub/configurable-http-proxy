@@ -17,7 +17,7 @@ repos:
 
   # Autoformat: markdown, javacsript
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0-alpha.6
+    rev: v3.0.0-alpha.9-for-vscode
     hooks:
       - id: prettier
         args:
@@ -26,7 +26,7 @@ repos:
 
   # Lint
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.37.0
+    rev: v8.39.0
     hooks:
       - id: eslint
 
