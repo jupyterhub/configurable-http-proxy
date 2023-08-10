@@ -14,9 +14,10 @@ command line for details.
 
 #### Maintenance and upkeep improvements
 
+- Update alpine from 3.17 to 3.18 and refreeze package-lock.json [#490](https://github.com/jupyterhub/configurable-http-proxy/pull/490) ([@consideRatio](https://github.com/consideRatio))
 - dependabot: monthly updates of github actions [#474](https://github.com/jupyterhub/configurable-http-proxy/pull/474) ([@consideRatio](https://github.com/consideRatio))
 
-#### #### Dependency updates
+#### Dependency updates
 
 - build(deps): bump winston from 3.9.0 to 3.10.0 [#486](https://github.com/jupyterhub/configurable-http-proxy/pull/486) ([@manics](https://github.com/manics))
 - build(deps): bump winston from 3.8.2 to 3.9.0 [#479](https://github.com/jupyterhub/configurable-http-proxy/pull/479) ([@consideRatio](https://github.com/consideRatio))
