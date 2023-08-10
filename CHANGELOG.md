@@ -8,6 +8,29 @@ command line for details.
 
 ## 4.5
 
+### [4.5.6] - 2023-08-10
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.5.6))
+
+#### Maintenance and upkeep improvements
+
+- dependabot: monthly updates of github actions [#474](https://github.com/jupyterhub/configurable-http-proxy/pull/474) ([@consideRatio](https://github.com/consideRatio))
+
+#### #### Dependency updates
+
+- build(deps): bump winston from 3.9.0 to 3.10.0 [#486](https://github.com/jupyterhub/configurable-http-proxy/pull/486) ([@manics](https://github.com/manics))
+- build(deps): bump winston from 3.8.2 to 3.9.0 [#479](https://github.com/jupyterhub/configurable-http-proxy/pull/479) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump strftime from 0.10.1 to 0.10.2 [#478](https://github.com/jupyterhub/configurable-http-proxy/pull/478) ([@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2023-04-03&to=2023-08-10&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2023-04-03..2023-08-10&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2023-04-03..2023-08-10&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2023-04-03..2023-08-10&type=Issues))
+
 ### [4.5.5] - 2023-04-03
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5))
@@ -543,7 +566,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.6...HEAD
+[4.5.6]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.5.6
 [4.5.5]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5
 [4.5.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4
 [4.5.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.2...4.5.3
