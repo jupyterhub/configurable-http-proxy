@@ -11,7 +11,8 @@ var fs = require("fs"),
   pkg = require("../package.json"),
   cli = require("commander"),
   tls = require("tls"),
-  winston = require("winston");
+  winston = require("winston"),
+  Agent = require("agentkeepalive");
 
 cli
   .version(pkg.version)
@@ -103,6 +104,16 @@ cli
   .option(
     "--storage-backend <storage-class>",
     "Define an external storage class. Defaults to in-MemoryStore."
+  ) 
+  .option(
+    "--server-keep-alive-timeout <n>",
+    "The number of milliseconds of inactivity a server needs to wait for additional incoming data, after it has finished writing the last response, before a socket will be destroyed. Default: 5000",
+    parseInt
+  )
+  .option(
+    "--agent-free-socket-timeout <n>",
+    "Sets the free socket to timeout after freeSocketTimeout milliseconds of inactivity on the free socket. The default server-side timeout is 5000 milliseconds, to avoid ECONNRESET exceptions, we set the default value to 4000 milliseconds. Only relevant if keepAlive is set to true",
+    parseInt
   );
 
 // collects multiple flags to an object
@@ -310,6 +321,12 @@ if (!options.authToken) {
 // external backend class
 options.storageBackend = args.storageBackend;
 
+if (args.agentFreeSocketTimeout) {
+  options.agent = new Agent({
+    freeSocketTimeout: args.agentFreeSocketTimeout,
+  });
+}
+
 var proxy = new ConfigurableProxy(options);
 
 var listen = {};
@@ -326,6 +343,11 @@ listen.apiIp = args.apiIp;
 listen.apiPort = args.apiPort || listen.port + 1;
 listen.metricsIp = args.metricsIp;
 listen.metricsPort = args.metricsPort;
+
+if (args.serverKeepAliveTimeout) {
+  proxy.proxyServer.keepAliveTimeout = args.serverKeepAliveTimeout;
+  proxy.proxyServer.headersTimeout = args.serverKeepAliveTimeout + 1000;
+}
 
 proxy.proxyServer.listen(listen.port, listen.ip);
 proxy.apiServer.listen(listen.apiPort, listen.apiIp);
