@@ -107,12 +107,12 @@ cli
   ) 
   .option(
     "--server-keep-alive-timeout <n>",
-    "The number of milliseconds of inactivity a server needs to wait for additional incoming data, after it has finished writing the last response, before a socket will be destroyed. Default: 5000",
+    "The number of milliseconds of inactivity a server needs to wait for additional incoming data, after it has finished writing the last response, before a socket will be destroyed.",
     parseInt
   )
   .option(
     "--agent-free-socket-timeout <n>",
-    "Sets the free socket to timeout after freeSocketTimeout milliseconds of inactivity on the free socket. The default server-side timeout is 5000 milliseconds, to avoid ECONNRESET exceptions, we set the default value to 4000 milliseconds. Only relevant if keepAlive is set to true",
+    "Sets the free socket to timeout after freeSocketTimeout milliseconds of inactivity on the free socket.",
     parseInt
   );
 
