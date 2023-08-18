@@ -1,6 +1,7 @@
 // jshint jasmine: true
 "use strict";
 
+var http = require("http");
 var path = require("path");
 var util = require("../lib/testutil");
 var request = require("request-promise-native");
@@ -83,6 +84,21 @@ describe("Proxy Tests", function () {
     });
     ws.on("open", function () {
       ws.send("hi");
+    });
+  });
+
+  it("keep-alive proxy request", function (done) {
+    var agent = new http.Agent({ keepAlive: true });
+    r(proxyUrl, { agent: agent, resolveWithFullResponse: true }).then((res) => {
+      agent.destroy();
+      var body = JSON.parse(res.body);
+      expect(body).toEqual(
+        jasmine.objectContaining({
+          path: "/",
+        })
+      );
+      expect(res.headers["connection"]).toEqual("keep-alive");
+      done();
     });
   });
 
