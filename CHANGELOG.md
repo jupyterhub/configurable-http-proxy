@@ -6,6 +6,25 @@ command line for details.
 
 ## [Unreleased]
 
+## 4.6
+
+### [4.6.0] - 2023-08-21
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.6...4.6.0))
+
+#### New features added
+
+- Enable keep-alive, `--keep-alive-timeout` flag added (default: 5000ms) [#492](https://github.com/jupyterhub/configurable-http-proxy/pull/492) ([@minrk](https://github.com/minrk), [@a3626a](https://github.com/a3626a), [@consideRatio](https://github.com/consideRatio), [@davidxia](https://github.com/davidxia))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2023-08-10&to=2023-08-21&type=c))
+
+@a3626a ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aa3626a+updated%3A2023-08-10..2023-08-21&type=Issues)) | @consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2023-08-10..2023-08-21&type=Issues)) | @davidxia ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adavidxia+updated%3A2023-08-10..2023-08-21&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2023-08-10..2023-08-21&type=Issues))
+
 ## 4.5
 
 ### [4.5.6] - 2023-08-10
@@ -567,7 +586,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.6...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...HEAD
+[4.6.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.6.0
 [4.5.6]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.5.6
 [4.5.5]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5
 [4.5.4]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.3...4.5.4
