@@ -103,6 +103,11 @@ cli
   .option(
     "--storage-backend <storage-class>",
     "Define an external storage class. Defaults to in-MemoryStore."
+  )
+  .option(
+    "--keep-alive-timeout <timeout>",
+    "Set timeout (in milliseconds) for Keep-Alive connections",
+    parseInt
   );
 
 // collects multiple flags to an object
@@ -269,6 +274,7 @@ options.redirectTo = args.redirectTo;
 options.headers = args.customHeader;
 options.timeout = args.timeout;
 options.proxyTimeout = args.proxyTimeout;
+options.keepAliveTimeout = args.keepAliveTimeout;
 
 // metrics options
 options.enableMetrics = !!args.metricsPort;
