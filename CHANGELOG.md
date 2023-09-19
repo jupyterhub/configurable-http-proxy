@@ -8,7 +8,7 @@ command line for details.
 
 ## 4.6
 
-### [4.6.0] - 2023-08-21
+### [4.6.0] - 2023-09-19
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.6...4.6.0))
 
