@@ -23,12 +23,14 @@ functionality to [JupyterHub] deployments.
   - [Setting a default target](#setting-a-default-target)
   - [Command-line options](#command-line-options)
 - [Using the REST API](#using-the-rest-api)
-  - [REST API Basics](#REST-api-basics)
+  - [REST API Basics](#rest-api-basics)
   - [Authenticating via passing a token](#authenticating-via-passing-a-token)
   - [Getting the routing table](#getting-the-routing-table)
   - [Adding new routes](#adding-new-routes)
   - [Deleting routes](#deleting-routes)
 - [Custom error pages](#custom-error-pages)
+  - [Setting the path for custom error pages](#setting-the-path-for-custom-error-pages)
+  - [Setting a target for custom error handling](#setting-a-target-for-custom-error-handling)
 - [Host-based routing](#host-based-routing)
 - [Troubleshooting](#troubleshooting)
 
@@ -145,7 +147,7 @@ Options:
   --custom-header <header>           Custom header to add to proxied requests. Use same option for multiple headers (--custom-header k1:v1 --custom-header k2:v2) (default: {})
   --insecure                         Disable SSL cert verification
   --host-routing                     Use host routing (host as first level of path)
-  --metrics-ip <ip>                  IP for metrics server (default: "0.0.0.0")
+  --metrics-ip <ip>                  IP for metrics server (default: "")
   --metrics-port <n>                 Port of metrics server. Defaults to no metrics server
   --log-level <loglevel>             Log level (debug, info, warn, error) (default: "info")
   --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
