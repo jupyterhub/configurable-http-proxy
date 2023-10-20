@@ -68,7 +68,7 @@ jobs:
         #    https://github.com/jupyterhub/configurable-http-proxy/settings/secrets/actions
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
+          docker login -u "${{ secrets.QUAY_USERNAME }}" -p "${{ secrets.QUAY_PASSWORD }}" quay.io
 
       # https://github.com/jupyterhub/action-major-minor-tag-calculator
       # If this is a tagged build this will return additional parent tags.
@@ -82,8 +82,8 @@ jobs:
         uses: jupyterhub/action-major-minor-tag-calculator@v2
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          prefix: "jupyterhub/configurable-http-proxy:"
-          defaultTag: jupyterhub/configurable-http-proxy:noref
+          prefix: "quay.io/jupyterhub/configurable-http-proxy:"
+          defaultTag: quay.io/jupyterhub/configurable-http-proxy:noref
 
       - name: Display tags
         run: echo "Docker tags ${{ steps.gettags.outputs.tags }}"
