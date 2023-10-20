@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/configurable-http-proxy.svg?logo=npm)](https://www.npmjs.com/package/configurable-http-proxy)
 [![Docker Build status](https://img.shields.io/docker/cloud/build/jupyterhub/configurable-http-proxy?logo=docker&label=build)](https://hub.docker.com/r/jupyterhub/configurable-http-proxy/tags)
-[![GitHub Workflow Status - Test](https://img.shields.io/github/workflow/status/jupyterhub/configurable-http-proxy/Test?logo=github&label=tests)](https://github.com/jupyterhub/configurable-http-proxy/actions)
+[![GitHub Workflow Status - Test](https://img.shields.io/github/actions/workflow/status/jupyterhub/configurable-http-proxy/test.yml?branch=main&logo=github&label=tests)](https://github.com/jupyterhub/configurable-http-proxy/actions)
 [![GitHub](https://img.shields.io/badge/issue_tracking-github-blue?logo=github)](https://github.com/jupyterhub/configurable-http-proxy/issues)
 [![Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/c/jupyterhub/z2jh-k8s)
 [![Gitter](https://img.shields.io/badge/social_chat-gitter-blue?logo=gitter)](https://gitter.im/jupyterhub/jupyterhub)
