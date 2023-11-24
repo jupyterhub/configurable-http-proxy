@@ -69,6 +69,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           docker login -u "${{ secrets.QUAY_USERNAME }}" -p "${{ secrets.QUAY_PASSWORD }}" quay.io
+          docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}" docker.io
 
       # https://github.com/jupyterhub/action-major-minor-tag-calculator
       # If this is a tagged build this will return additional parent tags.
@@ -82,7 +83,9 @@ jobs:
         uses: jupyterhub/action-major-minor-tag-calculator@v3
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          prefix: "quay.io/jupyterhub/configurable-http-proxy:"
+          prefix: >-
+            quay.io/jupyterhub/configurable-http-proxy:
+            jupyterhub/configurable-http-proxy:
           defaultTag: quay.io/jupyterhub/configurable-http-proxy:noref
 
       - name: Display tags
