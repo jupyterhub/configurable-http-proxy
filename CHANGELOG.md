@@ -6,6 +6,44 @@ command line for details.
 
 ## [Unreleased]
 
+### 4.6.1 - 2023-11-27
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...4.6.1))
+
+#### Maintenance and upkeep improvements
+
+- Colorize test output and run tests for node 20 and "current" [#515](https://github.com/jupyterhub/configurable-http-proxy/pull/515) ([@consideRatio](https://github.com/consideRatio), [@minrk](https://github.com/minrk))
+- Publish to Docker Hub alongside Quay.io [#514](https://github.com/jupyterhub/configurable-http-proxy/pull/514) ([@consideRatio](https://github.com/consideRatio), [@minrk](https://github.com/minrk))
+- Move from DockerHub to quay.io [#508](https://github.com/jupyterhub/configurable-http-proxy/pull/508) ([@yuvipanda](https://github.com/yuvipanda), [@minrk](https://github.com/minrk))
+
+#### Documentation improvements
+
+- fix GitHub workflow badge URL [#509](https://github.com/jupyterhub/configurable-http-proxy/pull/509) ([@shoito](https://github.com/shoito), [@consideRatio](https://github.com/consideRatio))
+
+#### Continuous integration improvements
+
+- build(deps): bump jupyterhub/action-major-minor-tag-calculator from 2 to 3 [#513](https://github.com/jupyterhub/configurable-http-proxy/pull/513) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump actions/setup-node from 3 to 4 [#511](https://github.com/jupyterhub/configurable-http-proxy/pull/511) ([@manics](https://github.com/manics))
+- build(deps): bump docker/setup-buildx-action from 2 to 3 [#500](https://github.com/jupyterhub/configurable-http-proxy/pull/500) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump docker/build-push-action from 4 to 5 [#499](https://github.com/jupyterhub/configurable-http-proxy/pull/499) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump actions/checkout from 3 to 4 [#498](https://github.com/jupyterhub/configurable-http-proxy/pull/498) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump docker/setup-qemu-action from 2 to 3 [#497](https://github.com/jupyterhub/configurable-http-proxy/pull/497) ([@consideRatio](https://github.com/consideRatio))
+
+#### Dependency updates
+
+- Revert "build(deps): bump prom-client from 14.2.0 to 15.0.0" [#507](https://github.com/jupyterhub/configurable-http-proxy/pull/507) ([@manics](https://github.com/manics))
+- build(deps): bump prom-client from 14.2.0 to 15.0.0 [#505](https://github.com/jupyterhub/configurable-http-proxy/pull/505) ([@manics](https://github.com/manics), [@consideRatio](https://github.com/consideRatio))
+- build(deps): bump winston from 3.10.0 to 3.11.0 [#503](https://github.com/jupyterhub/configurable-http-proxy/pull/503) ([@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2023-09-19&to=2023-11-27&type=c))
+
+@0xETHengineer ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3A0xETHengineer+updated%3A2023-09-19..2023-11-27&type=Issues)) | @consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2023-09-19..2023-11-27&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2023-09-19..2023-11-27&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2023-09-19..2023-11-27&type=Issues)) | @shoito ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ashoito+updated%3A2023-09-19..2023-11-27&type=Issues)) | @yuvipanda ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayuvipanda+updated%3A2023-09-19..2023-11-27&type=Issues))
+
 ## 4.6
 
 ### [4.6.0] - 2023-09-19
