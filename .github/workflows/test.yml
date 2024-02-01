@@ -92,4 +92,4 @@ jobs:
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
