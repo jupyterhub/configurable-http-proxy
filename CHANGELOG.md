@@ -6,6 +6,34 @@ command line for details.
 
 ## [Unreleased]
 
+### 4.6.2 - 2024-06-10
+
+4.6.2 switches the unmaintained `http-proxy` dependency to the `http-proxy-node16` fork,
+which improves behavior around leaking sockets.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.1...4.6.2))
+
+#### Dependency updates
+
+- switch dependency to http-proxy-node16 fork [#539](https://github.com/jupyterhub/configurable-http-proxy/pull/539) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
+- build(deps-dev): bump ws from 8.16.0 to 8.17.0 [#535](https://github.com/jupyterhub/configurable-http-proxy/pull/535) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump winston from 3.12.0 to 3.13.0 [#530](https://github.com/jupyterhub/configurable-http-proxy/pull/530) ([@manics](https://github.com/manics))
+- build(deps): bump follow-redirects from 1.15.4 to 1.15.6 [#529](https://github.com/jupyterhub/configurable-http-proxy/pull/529) ([@manics](https://github.com/manics))
+- build(deps): bump winston from 3.11.0 to 3.12.0 [#528](https://github.com/jupyterhub/configurable-http-proxy/pull/528) ([@manics](https://github.com/manics))
+- build(deps): bump actions/cache from 3 to 4 [#526](https://github.com/jupyterhub/configurable-http-proxy/pull/526) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump codecov/codecov-action from 3 to 4 [#525](https://github.com/jupyterhub/configurable-http-proxy/pull/525) ([@consideRatio](https://github.com/consideRatio))
+- build(deps): bump follow-redirects from 1.14.8 to 1.15.4 [#524](https://github.com/jupyterhub/configurable-http-proxy/pull/524) ([@manics](https://github.com/manics))
+- build(deps-dev): bump ws from 8.14.2 to 8.16.0 [#523](https://github.com/jupyterhub/configurable-http-proxy/pull/523) ([@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2023-11-27&to=2024-06-10&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2023-11-27..2024-06-10&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2023-11-27..2024-06-10&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2023-11-27..2024-06-10&type=Issues))
+
 ### 4.6.1 - 2023-11-27
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...4.6.1))
