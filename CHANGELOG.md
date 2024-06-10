@@ -13,7 +13,7 @@ which improves behavior around leaking sockets.
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.1...4.6.2))
 
-## Dependency updates
+#### Dependency updates
 
 - switch dependency to http-proxy-node16 fork [#539](https://github.com/jupyterhub/configurable-http-proxy/pull/539) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
 - build(deps-dev): bump ws from 8.16.0 to 8.17.0 [#535](https://github.com/jupyterhub/configurable-http-proxy/pull/535) ([@consideRatio](https://github.com/consideRatio))
@@ -25,7 +25,7 @@ which improves behavior around leaking sockets.
 - build(deps): bump follow-redirects from 1.14.8 to 1.15.4 [#524](https://github.com/jupyterhub/configurable-http-proxy/pull/524) ([@manics](https://github.com/manics))
 - build(deps-dev): bump ws from 8.14.2 to 8.16.0 [#523](https://github.com/jupyterhub/configurable-http-proxy/pull/523) ([@consideRatio](https://github.com/consideRatio))
 
-## Contributors to this release
+#### Contributors to this release
 
 The following people contributed discussions, new ideas, code and documentation contributions, and review.
 See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
