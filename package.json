@@ -19,8 +19,6 @@
     "jasmine": "^3.5.0",
     "jshint": "^2.10.2",
     "nyc": "^15.0.0",
-    "request": "^2.87.0",
-    "request-promise-native": "^1.0.4",
     "ws": "^8.4.0"
   },
   "engines": {
