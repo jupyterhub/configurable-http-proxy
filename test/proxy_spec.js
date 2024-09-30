@@ -4,7 +4,6 @@
 var http = require("http");
 var path = require("path");
 var util = require("../lib/testutil");
-var request = require("request-promise-native");
 var WebSocket = require("ws");
 
 var ConfigurableProxy = require("../lib/configproxy").ConfigurableProxy;
@@ -19,11 +18,6 @@ describe("Proxy Tests", function () {
   var hostTest = "test.localhost.jovyan.org";
   var hostUrl = "http://" + hostTest + ":" + port;
 
-  var r = request.defaults({
-    method: "GET",
-    url: proxyUrl,
-    followRedirect: false,
-  });
 
   beforeEach(function (callback) {
     util.setupProxy(port).then(function (newProxy) {
@@ -37,8 +31,7 @@ describe("Proxy Tests", function () {
   });
 
   it("basic HTTP request", function (done) {
-    r(proxyUrl).then((body) => {
-      body = JSON.parse(body);
+    fetch(proxyUrl).then(res => res.json()).then((body) => {
       expect(body).toEqual(
         jasmine.objectContaining({
           path: "/",

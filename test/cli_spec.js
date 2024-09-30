@@ -3,7 +3,6 @@
 
 const http = require("http");
 var spawn = require("child_process").spawn;
-var request = require("request-promise-native");
 
 // utility functions
 function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
@@ -97,12 +96,6 @@ describe("CLI Tests", function () {
   var redirectUrl = "http://127.0.0.1:" + redirectPort;
   var redirectToUrl = "https://127.0.0.1:" + redirectToPort;
 
-  var r = request.defaults({
-    method: "GET",
-    //url: proxyUrl,
-    followRedirect: false,
-    strictSSL: false,
-  });
 
   beforeEach(function (callback) {
     childProcess = null;
@@ -125,8 +118,7 @@ describe("CLI Tests", function () {
     var args = ["--ip", "127.0.0.1", "--port", port, "--default-target", testUrl];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(proxyUrl).then((body) => {
-        body = JSON.parse(body);
+      fetch(proxyUrl).then((res) => res.json()).then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
             name: "default",
@@ -152,8 +144,7 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(SSLproxyUrl).then((body) => {
-        body = JSON.parse(body);
+      fetch(SSLproxyUrl).then((res) => res.json()).then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
             name: "default",
@@ -182,16 +173,12 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(redirectUrl)
-        .then(() => {
-          fail("A 301 redirect should have been thrown.");
-        })
-        .catch((requestError) => {
-          expect(requestError.statusCode).toEqual(301);
-          expect(requestError.response.headers.location).toContain(SSLproxyUrl);
+      fetch(redirectUrl)
+        .then((res) => {
+          expect(res.statusCode).toEqual(301);
+          expect(res.response.headers.location).toContain(SSLproxyUrl);
         });
-      r({ url: redirectUrl, followRedirect: true }).then((body) => {
-        body = JSON.parse(body);
+      fetch({ url: redirectUrl, redirect: 'follow' }).then(res => res.json()).then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
             name: "default",
@@ -222,13 +209,10 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(redirectUrl)
-        .then(() => {
-          fail("A 301 redirect should have been thrown.");
-        })
-        .catch((requestError) => {
-          expect(requestError.statusCode).toEqual(301);
-          expect(requestError.response.headers.location).toContain(redirectToUrl);
+      fetch(redirectUrl)
+        .then((res) => {
+          expect(res.statusCode).toEqual(301);
+          expect(res.response.headers.location).toContain(redirectToUrl);
           done();
         });
     });
@@ -253,8 +237,7 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(SSLproxyUrl).then((body) => {
-        body = JSON.parse(body);
+      fetch(SSLproxyUrl).then(res => res.json()).then((body) => {
         expect(body.headers).toEqual(
           jasmine.objectContaining({
             k1: "v1",
