@@ -18,7 +18,6 @@ describe("Proxy Tests", function () {
   var hostTest = "test.localhost.jovyan.org";
   var hostUrl = "http://" + hostTest + ":" + port;
 
-
   beforeEach(function (callback) {
     util.setupProxy(port).then(function (newProxy) {
       proxy = newProxy;
@@ -31,19 +30,21 @@ describe("Proxy Tests", function () {
   });
 
   it("basic HTTP request", function (done) {
-    fetch(proxyUrl).then(res => res.json()).then((body) => {
-      expect(body).toEqual(
-        jasmine.objectContaining({
-          path: "/",
-        })
-      );
+    fetch(proxyUrl)
+      .then((res) => res.json())
+      .then((body) => {
+        expect(body).toEqual(
+          jasmine.objectContaining({
+            path: "/",
+          })
+        );
 
-      // check last_activity was updated
-      return proxy._routes.get("/").then((route) => {
-        expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
-        done();
+        // check last_activity was updated
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          done();
+        });
       });
-    });
   });
 
   it("basic WebSocket request", function (done) {
@@ -81,17 +82,19 @@ describe("Proxy Tests", function () {
   });
 
   it("keep-alive proxy request", function (done) {
-    fetch(proxyUrl).then(res => {
-      expect(res.headers.get("connection")).toEqual("keep-alive");
-      return res.json();
-    }).then((body) => {
-      expect(body).toEqual(
-        jasmine.objectContaining({
-          path: "/",
-        })
-      );
-      done();
-    });
+    fetch(proxyUrl)
+      .then((res) => {
+        expect(res.headers.get("connection")).toEqual("keep-alive");
+        return res.json();
+      })
+      .then((body) => {
+        expect(body).toEqual(
+          jasmine.objectContaining({
+            path: "/",
+          })
+        );
+        done();
+      });
   });
 
   it("proxyRequest event can modify headers", function (done) {
@@ -102,7 +105,7 @@ describe("Proxy Tests", function () {
     });
 
     fetch(proxyUrl)
-      .then(res => {
+      .then((res) => {
         expect(res.status).toBe(200);
         return res.json();
       })
@@ -126,7 +129,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -142,7 +145,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/bar", testPort, null, "/foo")
       .then(() => fetch(proxyUrl + "/bar?query=foo"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -159,7 +162,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/b%40r/b%20r/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -175,7 +178,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/b@r/b%20r/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -192,7 +195,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -209,7 +212,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -261,7 +264,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
       .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -278,7 +281,7 @@ describe("Proxy Tests", function () {
     util
       .addTarget(proxy, "/" + hostTest, testPort, false, null)
       .then(() => fetch(hostUrl + "/some/path"))
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
@@ -342,7 +345,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(404);
         expect(res.headers.get("content-type")).toEqual("text/plain");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toEqual("/foo/bar");
       })
       .then(done);
@@ -358,7 +362,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(404);
         expect(res.headers.get("content-type")).toEqual("text/html");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toMatch(/404'D/);
       })
       .then(() => fetch(hostUrl + "/missing/prefix"))
@@ -366,7 +371,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(503);
         expect(res.headers.get("content-type")).toEqual("text/html");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toMatch(/UNKNOWN/);
       })
       .then(done);
@@ -381,7 +387,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(404);
         expect(res.headers.get("content-type")).toEqual("text/html");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toMatch(/404:/);
       })
       .then(() => fetch(hostUrl + "/missing/prefix"))
@@ -389,7 +396,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(503);
         expect(res.headers.get("content-type")).toEqual("text/html");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toMatch(/503:/);
       })
       .then(done);
@@ -404,7 +412,8 @@ describe("Proxy Tests", function () {
         expect(res.status).toEqual(500);
         expect(res.headers.get("content-type")).toEqual("text/plain");
         return res.text();
-      }).then(body => {
+      })
+      .then((body) => {
         expect(body).toEqual("/%");
       })
       .then(done);
@@ -414,10 +423,10 @@ describe("Proxy Tests", function () {
     var redirectTo = "http://foo.com:12345/whatever";
     util
       .addTargetRedirecting(proxy, "/external/urlpath/", testPort, "/internal/urlpath/", redirectTo)
-      .then(() => fetch(proxyUrl + "/external/urlpath/rest/of/it", { redirect: 'manual'}))
+      .then(() => fetch(proxyUrl + "/external/urlpath/rest/of/it", { redirect: "manual" }))
       .then((res) => {
         expect(res.status).toEqual(301);
-        expect(res.headers.get('location')).toEqual(redirectTo);
+        expect(res.headers.get("location")).toEqual(redirectTo);
       })
       .then(done);
   });
@@ -445,21 +454,25 @@ describe("Proxy Tests", function () {
           redirectTo
         )
       )
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/external/urlpath/", { redirect: 'manual'}))
+      .then(() =>
+        fetch("http://127.0.0.1:" + proxyPort + "/external/urlpath/", { redirect: "manual" })
+      )
       .then((res) => {
         expect(res.status).toEqual(301);
-        expect(res.headers.get('location')).toEqual(expectedRedirect);
+        expect(res.headers.get("location")).toEqual(expectedRedirect);
       })
-      .catch(err => {
+      .catch((err) => {
         done.fail(err);
       })
       .then(done);
   });
 
   it("health check request", function (done) {
-    fetch(proxyUrl + "/_chp_healthz").then(res => res.json()).then((body) => {
-      expect(body).toEqual({ status: "OK" });
-      done();
-    });
+    fetch(proxyUrl + "/_chp_healthz")
+      .then((res) => res.json())
+      .then((body) => {
+        expect(body).toEqual({ status: "OK" });
+        done();
+      });
   });
 });

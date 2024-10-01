@@ -24,7 +24,7 @@ describe("API Tests", function () {
       .then(function () {
         r = (path, options) => {
           options = options || {};
-          path = path || '';
+          path = path || "";
           const url = `${options.url || apiUrl}${path}`;
           delete options.url;
           const fetchOptions = {
@@ -81,7 +81,9 @@ describe("API Tests", function () {
   });
 
   it("GET /api/routes fetches the routing table", function (done) {
-    r().then(res => res.json()).then(function (reply) {
+    r()
+      .then((res) => res.json())
+      .then(function (reply) {
         var keys = Object.keys(reply);
         expect(keys.length).toEqual(1);
         expect(keys).toContain("/");
@@ -97,7 +99,7 @@ describe("API Tests", function () {
       .then(function () {
         return r(path);
       })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(function (reply) {
         var keys = Object.keys(reply);
         expect(keys).toContain("target");
@@ -120,10 +122,10 @@ describe("API Tests", function () {
     var target = "http://127.0.0.1:" + port;
 
     r("/user/foo", {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ target: target }),
     })
-      .then(res => res.text())
+      .then((res) => res.text())
       .then((body) => {
         expect(body).toEqual("");
       })
@@ -143,7 +145,7 @@ describe("API Tests", function () {
       method: "POST",
       body: JSON.stringify({ target: target }),
     })
-      .then(res => res.text())
+      .then((res) => res.text())
       .then((body) => {
         expect(body).toEqual("");
       })
@@ -162,11 +164,11 @@ describe("API Tests", function () {
   it("POST /api/routes creates a new root route", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
-    r('', {
+    r("", {
       method: "POST",
       body: JSON.stringify({ target: target }),
     })
-      .then(res => res.text())
+      .then((res) => res.text())
       .then((body) => {
         expect(body).toEqual("");
         return proxy._routes.get("/");
@@ -188,7 +190,7 @@ describe("API Tests", function () {
       .then(() => proxy._routes.get(path))
       .then((route) => expect(route.target).toEqual(target))
       .then(() => r(path, { url: apiUrl, method: "DELETE" }))
-      .then(res => res.text())
+      .then((res) => res.text())
       .then((body) => expect(body).toEqual(""))
       .then(() => proxy._routes.get(path))
       .then((deletedRoute) => expect(deletedRoute).toBe(undefined))
@@ -235,27 +237,29 @@ describe("API Tests", function () {
     var seen = 0;
     var doReq = function (i) {
       var t = tests[i];
-      return r("?inactiveSince=" + t.since.toISOString()).then(res => res.json()).then(function (routes) {
-        var routeKeys = Object.keys(routes);
-        var expectedKeys = Object.keys(t.expected);
+      return r("?inactiveSince=" + t.since.toISOString())
+        .then((res) => res.json())
+        .then(function (routes) {
+          var routeKeys = Object.keys(routes);
+          var expectedKeys = Object.keys(t.expected);
 
-        routeKeys.forEach(function (key) {
-          // check that all routes are expected
-          expect(expectedKeys).toContain(key);
+          routeKeys.forEach(function (key) {
+            // check that all routes are expected
+            expect(expectedKeys).toContain(key);
+          });
+
+          expectedKeys.forEach(function (key) {
+            // check that all expected routes are found
+            expect(routeKeys).toContain(key);
+          });
+
+          seen += 1;
+          if (seen === tests.length) {
+            done();
+          } else {
+            return doReq(seen);
+          }
         });
-
-        expectedKeys.forEach(function (key) {
-          // check that all expected routes are found
-          expect(routeKeys).toContain(key);
-        });
-
-        seen += 1;
-        if (seen === tests.length) {
-          done();
-        } else {
-          return doReq(seen);
-        }
-      });
     };
 
     proxy
