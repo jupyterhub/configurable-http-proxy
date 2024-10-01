@@ -81,16 +81,15 @@ describe("Proxy Tests", function () {
   });
 
   it("keep-alive proxy request", function (done) {
-    var agent = new http.Agent({ keepAlive: true });
-    r(proxyUrl, { agent: agent, resolveWithFullResponse: true }).then((res) => {
-      agent.destroy();
-      var body = JSON.parse(res.body);
+    fetch(proxyUrl).then(res => {
+      expect(res.headers.get("connection")).toEqual("keep-alive");
+      return res.json();
+    }).then((body) => {
       expect(body).toEqual(
         jasmine.objectContaining({
           path: "/",
         })
       );
-      expect(res.headers["connection"]).toEqual("keep-alive");
       done();
     });
   });
@@ -102,18 +101,21 @@ describe("Proxy Tests", function () {
       called.proxyRequest = true;
     });
 
-    r(proxyUrl)
+    fetch(proxyUrl)
+      .then(res => {
+        expect(res.status).toBe(200);
+        return res.json();
+      })
       .then(function (body) {
-        body = JSON.parse(body);
+        expect(body.headers).toEqual(
+          jasmine.objectContaining({
+            testing: "Test Passed",
+          })
+        );
         expect(called.proxyRequest).toBe(true);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/",
-          })
-        );
-        expect(body.headers).toEqual(
-          jasmine.objectContaining({
-            testing: "Test Passed",
           })
         );
       })
@@ -123,9 +125,9 @@ describe("Proxy Tests", function () {
   it("target path is prepended by default", function (done) {
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/bar/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/bar",
@@ -139,9 +141,9 @@ describe("Proxy Tests", function () {
   it("/prefix?query is proxied correctly", function (done) {
     util
       .addTarget(proxy, "/bar", testPort, null, "/foo")
-      .then(() => r(proxyUrl + "/bar?query=foo"))
+      .then(() => fetch(proxyUrl + "/bar?query=foo"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             target: "http://127.0.0.1:" + testPort + "/foo",
@@ -156,9 +158,9 @@ describe("Proxy Tests", function () {
   it("handle URI encoding", function (done) {
     util
       .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/b%40r/b%20r/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/b%40r/b%20r/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/b@r/b r",
@@ -172,9 +174,9 @@ describe("Proxy Tests", function () {
   it("handle @ in URI same as %40", function (done) {
     util
       .addTarget(proxy, "/b@r/b r", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/b@r/b%20r/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/b@r/b%20r/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/b@r/b r",
@@ -189,9 +191,9 @@ describe("Proxy Tests", function () {
     proxy.proxy.options.prependPath = false;
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/bar/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/bar",
@@ -206,9 +208,9 @@ describe("Proxy Tests", function () {
     proxy.includePrefix = false;
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/bar/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/bar",
@@ -258,9 +260,9 @@ describe("Proxy Tests", function () {
     proxy.proxy.options.prependPath = false;
     util
       .addTarget(proxy, "/bar", testPort, false, "/foo")
-      .then(() => r(proxyUrl + "/bar/rest/of/it"))
+      .then(() => fetch(proxyUrl + "/bar/rest/of/it"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             path: "/bar",
@@ -275,9 +277,9 @@ describe("Proxy Tests", function () {
     proxy.hostRouting = true;
     util
       .addTarget(proxy, "/" + hostTest, testPort, false, null)
-      .then(() => r(hostUrl + "/some/path"))
+      .then(() => fetch(hostUrl + "/some/path"))
+      .then(res => res.json())
       .then((body) => {
-        body = JSON.parse(body);
         expect(body).toEqual(
           jasmine.objectContaining({
             target: "http://127.0.0.1:" + testPort,
@@ -308,10 +310,9 @@ describe("Proxy Tests", function () {
         proxy._routes.update("/missing", { last_activity: firstActivity });
       })
       // fail a web request
-      .then(() => r(hostUrl + "/missing/prefix"))
-      .then((body) => done.fail("Expected 503"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(503);
+      .then(() => fetch(hostUrl + "/missing/prefix"))
+      .then((res) => {
+        expect(res.status).toEqual(503);
       })
       // check that activity was not updated
       .then(expectNoActivity)
@@ -336,12 +337,13 @@ describe("Proxy Tests", function () {
     var proxyPort = 55550;
     util
       .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => r("http://127.0.0.1:" + proxyPort + "/foo/bar"))
-      .then((body) => done.fail("Expected 404"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(404);
-        expect(err.response.headers["content-type"]).toEqual("text/plain");
-        expect(err.response.body).toEqual("/foo/bar");
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/foo/bar"))
+      .then((res) => {
+        expect(res.status).toEqual(404);
+        expect(res.headers.get("content-type")).toEqual("text/plain");
+        return res.text();
+      }).then(body => {
+        expect(body).toEqual("/foo/bar");
       })
       .then(done);
   });
@@ -351,19 +353,21 @@ describe("Proxy Tests", function () {
     proxy
       .removeRoute("/")
       .then(() => proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" }))
-      .then(() => r(hostUrl + "/nope"))
-      .then((body) => done.fail("Expected 404"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(404);
-        expect(err.response.headers["content-type"]).toEqual("text/html");
-        expect(err.response.body).toMatch(/404'D/);
+      .then(() => fetch(hostUrl + "/nope"))
+      .then((res) => {
+        expect(res.status).toEqual(404);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      }).then(body => {
+        expect(body).toMatch(/404'D/);
       })
-      .then(() => r(hostUrl + "/missing/prefix"))
-      .then((body) => done.fail("Expected 503"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(503);
-        expect(err.response.headers["content-type"]).toEqual("text/html");
-        expect(err.response.body).toMatch(/UNKNOWN/);
+      .then(() => fetch(hostUrl + "/missing/prefix"))
+      .then((res) => {
+        expect(res.status).toEqual(503);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      }).then(body => {
+        expect(body).toMatch(/UNKNOWN/);
       })
       .then(done);
   });
@@ -372,19 +376,21 @@ describe("Proxy Tests", function () {
     proxy.removeRoute("/");
     proxy
       .addRoute("/missing", { target: "https://127.0.0.1:54321" })
-      .then(() => r(hostUrl + "/nope"))
-      .then((body) => done.fail("Expected 404"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(404);
-        expect(err.response.headers["content-type"]).toEqual("text/html");
-        expect(err.response.body).toMatch(/404:/);
+      .then(() => fetch(hostUrl + "/nope"))
+      .then((res) => {
+        expect(res.status).toEqual(404);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      }).then(body => {
+        expect(body).toMatch(/404:/);
       })
-      .then(() => r(hostUrl + "/missing/prefix"))
-      .then((body) => done.fail("Expected 503"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(503);
-        expect(err.response.headers["content-type"]).toEqual("text/html");
-        expect(err.response.body).toMatch(/503:/);
+      .then(() => fetch(hostUrl + "/missing/prefix"))
+      .then((res) => {
+        expect(res.status).toEqual(503);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      }).then(body => {
+        expect(body).toMatch(/503:/);
       })
       .then(done);
   });
@@ -393,12 +399,13 @@ describe("Proxy Tests", function () {
     var proxyPort = 55550;
     util
       .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => r("http://127.0.0.1:" + proxyPort + "/%"))
-      .then((body) => done.fail("Expected 500"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(500);
-        expect(err.response.headers["content-type"]).toEqual("text/plain");
-        expect(err.response.body).toEqual("/%");
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/%"))
+      .then((res) => {
+        expect(res.status).toEqual(500);
+        expect(res.headers.get("content-type")).toEqual("text/plain");
+        return res.text();
+      }).then(body => {
+        expect(body).toEqual("/%");
       })
       .then(done);
   });
@@ -407,11 +414,10 @@ describe("Proxy Tests", function () {
     var redirectTo = "http://foo.com:12345/whatever";
     util
       .addTargetRedirecting(proxy, "/external/urlpath/", testPort, "/internal/urlpath/", redirectTo)
-      .then(() => r(proxyUrl + "/external/urlpath/rest/of/it"))
-      .then((body) => done.fail("Expected 301"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(301);
-        expect(err.response.headers.location).toEqual(redirectTo);
+      .then(() => fetch(proxyUrl + "/external/urlpath/rest/of/it", { redirect: 'manual'}))
+      .then((res) => {
+        expect(res.status).toEqual(301);
+        expect(res.headers.get('location')).toEqual(redirectTo);
       })
       .then(done);
   });
@@ -439,18 +445,19 @@ describe("Proxy Tests", function () {
           redirectTo
         )
       )
-      .then(() => r("http://127.0.0.1:" + proxyPort + "/external/urlpath/"))
-      .then((body) => done.fail("Expected 301"))
-      .catch((err) => {
-        expect(err.statusCode).toEqual(301);
-        expect(err.response.headers.location).toEqual(expectedRedirect);
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/external/urlpath/", { redirect: 'manual'}))
+      .then((res) => {
+        expect(res.status).toEqual(301);
+        expect(res.headers.get('location')).toEqual(expectedRedirect);
+      })
+      .catch(err => {
+        done.fail(err);
       })
       .then(done);
   });
 
   it("health check request", function (done) {
-    r(proxyUrl + "/_chp_healthz").then((body) => {
-      body = JSON.parse(body);
+    fetch(proxyUrl + "/_chp_healthz").then(res => res.json()).then((body) => {
       expect(body).toEqual({ status: "OK" });
       done();
     });

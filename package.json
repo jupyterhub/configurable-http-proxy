@@ -38,7 +38,7 @@
   "scripts": {
     "lint": "jshint bin/ lib/ test/",
     "fmt": "pre-commit run --all-files",
-    "test": "FORCE_COLOR=3 nyc node test/jasmine.js",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc node test/jasmine.js",
     "coverage-html": "nyc report --reporter=html",
     "codecov": "nyc report --reporter=lcov && codecov"
   }

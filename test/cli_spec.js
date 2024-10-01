@@ -151,6 +151,8 @@ describe("CLI Tests", function () {
           })
         );
         done();
+      }).catch(err => {
+        done.fail(err);
       });
     });
   });
@@ -173,12 +175,12 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      fetch(redirectUrl)
+      fetch(redirectUrl, { redirect: 'manual'})
         .then((res) => {
-          expect(res.statusCode).toEqual(301);
-          expect(res.response.headers.location).toContain(SSLproxyUrl);
+          expect(res.status).toEqual(301);
+          expect(res.headers.get('location')).toContain(SSLproxyUrl);
         });
-      fetch({ url: redirectUrl, redirect: 'follow' }).then(res => res.json()).then((body) => {
+      fetch(redirectUrl, { redirect: 'follow' }).then(res => res.json()).then((body) => {
         expect(body).toEqual(
           jasmine.objectContaining({
             name: "default",
@@ -209,10 +211,10 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      fetch(redirectUrl)
+      fetch(redirectUrl, { redirect: 'manual'})
         .then((res) => {
-          expect(res.statusCode).toEqual(301);
-          expect(res.response.headers.location).toContain(redirectToUrl);
+          expect(res.status).toEqual(301);
+          expect(res.headers.get('location')).toContain(redirectToUrl);
           done();
         });
     });

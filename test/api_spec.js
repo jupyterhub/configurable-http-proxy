@@ -22,22 +22,19 @@ describe("API Tests", function () {
         proxy = newProxy;
       })
       .then(function () {
-        r = (options = {}) => {
-          const path = options.path || '';
-          delete options.path;
-          return fetch({
+        r = (path, options) => {
+          options = options || {};
+          path = path || '';
+          const url = `${options.url || apiUrl}${path}`;
+          delete options.url;
+          const fetchOptions = {
             method: "GET",
             headers: {
               Authorization: `token ${proxy.authToken}`,
             },
-            url: `${apiUrl}${path}`,
             ...options,
-          }).then((res) => {
-            if (!res.ok) {
-              throw res;
-            }
-            return res.text(); // return body
-          });
+          };
+          return fetch(url, fetchOptions);
         };
       })
       .then(function () {
@@ -84,9 +81,7 @@ describe("API Tests", function () {
   });
 
   it("GET /api/routes fetches the routing table", function (done) {
-    r()
-      .then(function (body) {
-        var reply = JSON.parse(body);
+    r().then(res => res.json()).then(function (reply) {
         var keys = Object.keys(reply);
         expect(keys.length).toEqual(1);
         expect(keys).toContain("/");
@@ -100,24 +95,22 @@ describe("API Tests", function () {
     proxy
       .addRoute(path, { target: url })
       .then(function () {
-        return r({ path });
+        return r(path);
       })
-      .then(function (body) {
-        var reply = JSON.parse(body);
+      .then(res => res.json())
+      .then(function (reply) {
         var keys = Object.keys(reply);
         expect(keys).toContain("target");
         expect(reply.target).toEqual(url);
       })
+      .catch(done.fail)
       .then(done);
   });
 
   it("GET /api/routes[/path] fetches a single route (404 if missing)", function (done) {
-    r({ path: "/path" })
-      .then((body) => {
-        done.fail("Expected a 404");
-      })
-      .catch((error) => {
-        expect(error.statusCode).toEqual(404);
+    r("/path")
+      .then((res) => {
+        expect(res.status).toEqual(404);
       })
       .then(done);
   });
@@ -126,11 +119,11 @@ describe("API Tests", function () {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
 
-    r({
+    r("/user/foo", {
       method: 'POST',
-      path: "/user/foo",
       body: JSON.stringify({ target: target }),
     })
+      .then(res => res.text())
       .then((body) => {
         expect(body).toEqual("");
       })
@@ -139,17 +132,18 @@ describe("API Tests", function () {
         expect(route.target).toEqual(target);
         expect(typeof route.last_activity).toEqual("object");
       })
+      .catch(done.fail)
       .then(done);
   });
 
   it("POST /api/routes[/foo%20bar] handles URI escapes", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
-    r({
+    r("/user/foo%40bar", {
       method: "POST",
-      path: "/user/foo%40bar",
       body: JSON.stringify({ target: target }),
     })
+      .then(res => res.text())
       .then((body) => {
         expect(body).toEqual("");
       })
@@ -168,10 +162,11 @@ describe("API Tests", function () {
   it("POST /api/routes creates a new root route", function (done) {
     var port = 8998;
     var target = "http://127.0.0.1:" + port;
-    r({
+    r('', {
       method: "POST",
       body: JSON.stringify({ target: target }),
     })
+      .then(res => res.text())
       .then((body) => {
         expect(body).toEqual("");
         return proxy._routes.get("/");
@@ -192,7 +187,8 @@ describe("API Tests", function () {
       .addTarget(proxy, path, port, null, null)
       .then(() => proxy._routes.get(path))
       .then((route) => expect(route.target).toEqual(target))
-      .then(() => r.del(apiUrl + path))
+      .then(() => r(path, { url: apiUrl, method: "DELETE" }))
+      .then(res => res.text())
       .then((body) => expect(body).toEqual(""))
       .then(() => proxy._routes.get(path))
       .then((deletedRoute) => expect(deletedRoute).toBe(undefined))
@@ -200,9 +196,8 @@ describe("API Tests", function () {
   });
 
   it("GET /api/routes?inactiveSince= with bad value returns a 400", function (done) {
-    r({ path: "?inactiveSince=endoftheuniverse" })
-      .then(() => done.fail("Expected 400"))
-      .catch((err) => expect(err.statusCode).toEqual(400))
+    r("?inactiveSince=endoftheuniverse")
+      .then((res) => expect(res.status).toEqual(400))
       .then(done);
   });
 
@@ -240,8 +235,7 @@ describe("API Tests", function () {
     var seen = 0;
     var doReq = function (i) {
       var t = tests[i];
-      return r({ path: "?inactiveSince=" + t.since.toISOString() }).then(function (body) {
-        var routes = JSON.parse(body);
+      return r("?inactiveSince=" + t.since.toISOString()).then(res => res.json()).then(function (routes) {
         var routeKeys = Object.keys(routes);
         var expectedKeys = Object.keys(t.expected);
 
