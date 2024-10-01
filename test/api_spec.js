@@ -3,6 +3,7 @@
 
 var util = require("../lib/testutil");
 var log = require("winston");
+var fetch = require("node-fetch");
 // disable logging during tests
 log.remove(log.transports.Console);
 
