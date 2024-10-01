@@ -1,9 +1,9 @@
 // jshint jasmine: true
 "use strict";
 
-const http = require("http");
+var http = require("http");
+var fetch = require("node-fetch");
 var spawn = require("child_process").spawn;
-var request = require("request-promise-native");
 
 // utility functions
 function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
@@ -97,13 +97,6 @@ describe("CLI Tests", function () {
   var redirectUrl = "http://127.0.0.1:" + redirectPort;
   var redirectToUrl = "https://127.0.0.1:" + redirectToPort;
 
-  var r = request.defaults({
-    method: "GET",
-    //url: proxyUrl,
-    followRedirect: false,
-    strictSSL: false,
-  });
-
   beforeEach(function (callback) {
     childProcess = null;
     addServer("default", testPort).then(callback);
@@ -125,15 +118,16 @@ describe("CLI Tests", function () {
     var args = ["--ip", "127.0.0.1", "--port", port, "--default-target", testUrl];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(proxyUrl).then((body) => {
-        body = JSON.parse(body);
-        expect(body).toEqual(
-          jasmine.objectContaining({
-            name: "default",
-          })
-        );
-        done();
-      });
+      fetch(proxyUrl)
+        .then((res) => res.json())
+        .then((body) => {
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              name: "default",
+            })
+          );
+          done();
+        });
     });
   });
 
@@ -152,15 +146,19 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(SSLproxyUrl).then((body) => {
-        body = JSON.parse(body);
-        expect(body).toEqual(
-          jasmine.objectContaining({
-            name: "default",
-          })
-        );
-        done();
-      });
+      fetch(SSLproxyUrl)
+        .then((res) => res.json())
+        .then((body) => {
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              name: "default",
+            })
+          );
+          done();
+        })
+        .catch((err) => {
+          done.fail(err);
+        });
     });
   });
 
@@ -182,23 +180,20 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(redirectUrl)
-        .then(() => {
-          fail("A 301 redirect should have been thrown.");
-        })
-        .catch((requestError) => {
-          expect(requestError.statusCode).toEqual(301);
-          expect(requestError.response.headers.location).toContain(SSLproxyUrl);
-        });
-      r({ url: redirectUrl, followRedirect: true }).then((body) => {
-        body = JSON.parse(body);
-        expect(body).toEqual(
-          jasmine.objectContaining({
-            name: "default",
-          })
-        );
-        done();
+      fetch(redirectUrl, { redirect: "manual" }).then((res) => {
+        expect(res.status).toEqual(301);
+        expect(res.headers.get("location")).toContain(SSLproxyUrl);
       });
+      fetch(redirectUrl, { redirect: "follow" })
+        .then((res) => res.json())
+        .then((body) => {
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              name: "default",
+            })
+          );
+          done();
+        });
     });
   });
 
@@ -222,15 +217,11 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(redirectUrl)
-        .then(() => {
-          fail("A 301 redirect should have been thrown.");
-        })
-        .catch((requestError) => {
-          expect(requestError.statusCode).toEqual(301);
-          expect(requestError.response.headers.location).toContain(redirectToUrl);
-          done();
-        });
+      fetch(redirectUrl, { redirect: "manual" }).then((res) => {
+        expect(res.status).toEqual(301);
+        expect(res.headers.get("location")).toContain(redirectToUrl);
+        done();
+      });
     });
   });
 
@@ -253,16 +244,17 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      r(SSLproxyUrl).then((body) => {
-        body = JSON.parse(body);
-        expect(body.headers).toEqual(
-          jasmine.objectContaining({
-            k1: "v1",
-            k2: "host:123",
-          })
-        );
-        done();
-      });
+      fetch(SSLproxyUrl)
+        .then((res) => res.json())
+        .then((body) => {
+          expect(body.headers).toEqual(
+            jasmine.objectContaining({
+              k1: "v1",
+              k2: "host:123",
+            })
+          );
+          done();
+        });
     });
   });
   it("invalid-custom-header", function (done) {
