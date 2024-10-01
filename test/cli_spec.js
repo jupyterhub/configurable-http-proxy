@@ -1,7 +1,8 @@
 // jshint jasmine: true
 "use strict";
 
-const http = require("http");
+var http = require("http");
+var fetch = require("node-fetch");
 var spawn = require("child_process").spawn;
 
 // utility functions

@@ -1,12 +1,12 @@
 // jshint jasmine: true
 "use strict";
 
-var http = require("http");
-var path = require("path");
-var util = require("../lib/testutil");
-var WebSocket = require("ws");
+const fetch = require("node-fetch");
+const path = require("path");
+const util = require("../lib/testutil");
+const WebSocket = require("ws");
 
-var ConfigurableProxy = require("../lib/configproxy").ConfigurableProxy;
+const { ConfigurableProxy } = require("../lib/configproxy");
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 

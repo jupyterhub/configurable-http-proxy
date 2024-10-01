@@ -2,7 +2,6 @@
 "use strict";
 
 var util = require("../lib/testutil");
-var extend = require("util")._extend;
 var log = require("winston");
 // disable logging during tests
 log.remove(log.transports.Console);
