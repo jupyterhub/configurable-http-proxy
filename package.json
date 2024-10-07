@@ -13,7 +13,7 @@
     "http-proxy-node16": "1.0.5",
     "prom-client": "14.2.0",
     "strftime": "~0.10.0",
-    "winston": "~3.14.1"
+    "winston": "~3.15.0"
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
