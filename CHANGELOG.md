@@ -6,7 +6,43 @@ command line for details.
 
 ## [Unreleased]
 
-### 4.6.2 - 2024-06-10
+### [4.6.3] - 2025-01-12
+
+This release just updates some dependencies.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.2...4.6.3))
+
+#### Maintenance and upkeep improvements
+
+- Replace `request` and `request-promise-native` [#559](https://github.com/jupyterhub/configurable-http-proxy/pull/559) ([@mjpsyapse](https://github.com/mjpsyapse), [@minrk](https://github.com/minrk))
+
+#### Continuous integration improvements
+
+- build(deps): bump codecov/codecov-action from 4 to 5 [#564](https://github.com/jupyterhub/configurable-http-proxy/pull/564) ([@minrk](https://github.com/minrk))
+- build(deps): bump docker/build-push-action from 5 to 6 [#546](https://github.com/jupyterhub/configurable-http-proxy/pull/546) ([@manics](https://github.com/manics))
+
+#### Dependency updates
+
+- build(deps): bump winston from 3.14.2 to 3.15.0 [#560](https://github.com/jupyterhub/configurable-http-proxy/pull/560) ([@manics](https://github.com/manics))
+- build(deps): bump winston from 3.14.1 to 3.14.2 [#554](https://github.com/jupyterhub/configurable-http-proxy/pull/554) ([@manics](https://github.com/manics))
+- build(deps): bump winston from 3.13.1 to 3.14.1 [#553](https://github.com/jupyterhub/configurable-http-proxy/pull/553) ([@manics](https://github.com/manics))
+- build(deps): bump http-proxy-node16 from 1.0.3 to 1.0.5 [#551](https://github.com/jupyterhub/configurable-http-proxy/pull/551) ([@manics](https://github.com/manics))
+- build(deps): bump winston from 3.13.0 to 3.13.1 [#550](https://github.com/jupyterhub/configurable-http-proxy/pull/550) ([@manics](https://github.com/manics))
+- build(deps-dev): bump ws from 8.17.1 to 8.18.0 [#549](https://github.com/jupyterhub/configurable-http-proxy/pull/549) ([@manics](https://github.com/manics))
+- build(deps): bump strftime from 0.10.1 to 0.10.3 [#545](https://github.com/jupyterhub/configurable-http-proxy/pull/545) ([@manics](https://github.com/manics))
+- build(deps-dev): bump ws from 8.4.2 to 8.17.1 [#544](https://github.com/jupyterhub/configurable-http-proxy/pull/544) ([@manics](https://github.com/manics))
+- build(deps-dev): bump jshint from 2.13.4 to 2.13.6 [#543](https://github.com/jupyterhub/configurable-http-proxy/pull/543) ([@manics](https://github.com/manics))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2024-06-10&to=2025-01-12&type=c))
+
+@felder ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Afelder+updated%3A2024-06-10..2025-01-12&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2024-06-10..2025-01-12&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2024-06-10..2025-01-12&type=Issues)) | @mjpsyapse ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amjpsyapse+updated%3A2024-06-10..2025-01-12&type=Issues)) | @shaneknapp ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ashaneknapp+updated%3A2024-06-10..2025-01-12&type=Issues))
+
+### [4.6.2] - 2024-06-10
 
 4.6.2 switches the unmaintained `http-proxy` dependency to the `http-proxy-node16` fork,
 which improves behavior around leaking sockets.
@@ -34,7 +70,7 @@ See [our definition of contributors](https://github-activity.readthedocs.io/en/l
 
 @consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2023-11-27..2024-06-10&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2023-11-27..2024-06-10&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2023-11-27..2024-06-10&type=Issues))
 
-### 4.6.1 - 2023-11-27
+### [4.6.1] - 2023-11-27
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...4.6.1))
 
@@ -652,7 +688,10 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...HEAD
+[4.6.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.2...4.6.3
+[4.6.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.1...4.6.2
+[4.6.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...4.6.1
 [4.6.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.6.0
 [4.5.6]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.5...4.5.6
 [4.5.5]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.5.4...4.5.5
