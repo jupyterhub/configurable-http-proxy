@@ -16,7 +16,7 @@
     "winston": "~3.15.0"
   },
   "devDependencies": {
-    "jasmine": "^3.5.0",
+    "jasmine": "^5.6.0",
     "jshint": "^2.10.2",
     "node-fetch": "^2.7.0",
     "nyc": "^15.0.0",
