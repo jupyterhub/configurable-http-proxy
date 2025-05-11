@@ -58,9 +58,8 @@ jobs:
         #            always require at least the oldest version, as well as our
         #            README.md file under the install section.
         node_version:
-          # ubuntu 24.04 LTS has node 18,
-          # so we currently require non-distro nodejs ~everywhere
-          # (e.g. nodesource, containers)
+          # Removing node 18 is dropping support for ubuntu 24.04 LTS, debian 12
+          - "18"
           - "20"
           - "22"
           - current
