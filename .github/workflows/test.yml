@@ -24,7 +24,7 @@ on:
 jobs:
   # Audit dependencies for known vulnerabilities
   audit-dependencies:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -50,7 +50,7 @@ jobs:
           npm audit --production --audit-level=moderate
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:
@@ -58,13 +58,11 @@ jobs:
         #            always require at least the oldest version, as well as our
         #            README.md file under the install section.
         node_version:
-          # Removing node 10 is dropping support for ubuntu 20.04 LTS
-          - "10"
-          - "12"
-          - "14"
-          - "16"
-          - "18"
+          # ubuntu 24.04 LTS has node 18,
+          # so we currently require non-distro nodejs ~everywhere
+          # (e.g. nodesource, containers)
           - "20"
+          - "22"
           - current
 
     steps:
