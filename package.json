@@ -39,8 +39,7 @@
     "configurable-http-proxy": "bin/configurable-http-proxy"
   },
   "scripts": {
-    "lint": "jshint bin/ lib/ test/",
-    "eslint": "eslint",
+    "lint": "eslint",
     "fmt": "pre-commit run --all-files",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc node test/jasmine.js",
     "coverage-html": "nyc report --reporter=html",
