@@ -5,7 +5,7 @@ import js from "@eslint/js";
 export default defineConfig([
   js.configs.recommended,
   {
-    files: ["**/*.js"],
+    files: ["bin/*", "**/*.js"],
     languageOptions: {
       sourceType: "commonjs",
       globals: {
@@ -13,7 +13,7 @@ export default defineConfig([
       },
     },
     rules: {
-      "no-unused-vars": "off",
+      "no-unused-vars": ["error", { args: "none" }],
     },
   },
   {
