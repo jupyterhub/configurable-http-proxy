@@ -16,8 +16,10 @@
     "winston": "~3.15.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
+    "globals": "^16.1.0",
     "jasmine": "^3.5.0",
-    "jshint": "^2.10.2",
     "node-fetch": "^2.7.0",
     "nyc": "^15.0.0",
     "ws": "^8.4.0"
@@ -38,6 +40,7 @@
   },
   "scripts": {
     "lint": "jshint bin/ lib/ test/",
+    "eslint": "eslint",
     "fmt": "pre-commit run --all-files",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc node test/jasmine.js",
     "coverage-html": "nyc report --reporter=html",

@@ -25,10 +25,14 @@ repos:
           - "--print-width=100"
 
   # Lint
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.26.0
+  - repo: local
     hooks:
       - id: eslint
+        name: eslint
+        entry: npm run eslint
+        language: node
+        types_or:
+          - javascript
 
 # pre-commit.ci config reference: https://pre-commit.ci/#configuration
 ci:
