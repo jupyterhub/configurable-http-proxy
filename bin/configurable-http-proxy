@@ -7,12 +7,13 @@
 //
 "use strict";
 
-var fs = require("fs"),
+const fs = require("fs"),
   pkg = require("../package.json"),
-  cli = require("commander"),
+  { Command } = require("commander"),
   tls = require("tls"),
   winston = require("winston");
 
+const cli = new Command();
 cli
   .version(pkg.version)
   .option("--ip <ip-address>", "Public-facing IP of the proxy")
