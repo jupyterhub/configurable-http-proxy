@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "commander": "~7.2",
-    "http-proxy-node16": "1.0.5",
+    "http-proxy-3": "1.20.3",
     "prom-client": "14.2.0",
     "strftime": "~0.10.0",
     "winston": "~3.15.0"
@@ -23,7 +23,7 @@
     "ws": "^8.4.0"
   },
   "engines": {
-    "node": ">= 10.0"
+    "node": ">= 18"
   },
   "engineStrict": true,
   "main": "index.js",
