@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
-    "jshint": "^2.10.2",
     "node-fetch": "^2.7.0",
     "nyc": "^15.0.0",
     "ws": "^8.4.0"
@@ -37,7 +36,6 @@
     "configurable-http-proxy": "bin/configurable-http-proxy"
   },
   "scripts": {
-    "lint": "jshint bin/ lib/ test/",
     "fmt": "pre-commit run --all-files",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc node test/jasmine.js",
     "coverage-html": "nyc report --reporter=html",
