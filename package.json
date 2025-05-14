@@ -9,16 +9,15 @@
     "url": "https://github.com/jupyterhub/configurable-http-proxy.git"
   },
   "dependencies": {
-    "commander": "~7.2",
-    "http-proxy-3": "1.20.3",
-    "prom-client": "14.2.0",
-    "strftime": "~0.10.0",
-    "winston": "~3.15.0"
+    "commander": "~13.1.0",
+    "http-proxy-3": "~1.20.3",
+    "prom-client": "~15.1.3",
+    "winston": "~3.17.0"
   },
   "devDependencies": {
-    "jasmine": "^3.5.0",
+    "jasmine": "^5.6.0",
     "node-fetch": "^2.7.0",
-    "nyc": "^15.0.0",
+    "nyc": "^17.1.0",
     "ws": "^8.4.0"
   },
   "engines": {
@@ -37,7 +36,7 @@
   },
   "scripts": {
     "fmt": "pre-commit run --all-files",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc node test/jasmine.js",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc jasmine --config=test/config/jasmine.mjs",
     "coverage-html": "nyc report --reporter=html",
     "codecov": "nyc report --reporter=lcov && codecov"
   }
