@@ -1,5 +1,5 @@
-FROM node:lts-alpine3.18
-# ref: https://hub.docker.com/_/node?tab=tags&name=lts-alpine
+FROM node:24-alpine3.21
+# ref: https://hub.docker.com/_/node/tags?name=alpine
 
 # Set labels based on the Open Containers Initiative (OCI):
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys
