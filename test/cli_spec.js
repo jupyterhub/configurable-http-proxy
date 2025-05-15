@@ -1,9 +1,9 @@
-// jshint jasmine: true
-"use strict";
+import { spawn } from "node:child_process";
+import http from "node:http";
+import https from "node:https";
+import fetch from "node-fetch";
 
-var http = require("http");
-var fetch = require("node-fetch");
-var spawn = require("child_process").spawn;
+const sslOptions = { agent: new https.Agent({ rejectUnauthorized: false }) };
 
 // utility functions
 function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
@@ -31,6 +31,7 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
         reject(cliProcess);
       }
     });
+
     cliProcess.stdout.on("data", (data) => {
       if (data.includes("Route added /")) {
         defaultRouteAdded = true;
@@ -44,7 +45,11 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
         redirectAdded === redirectRequested
       ) {
         promiseResolved = true;
-        resolve(cliProcess);
+        // seems to be a finite time, even after logs, before socket is actually available
+        // this didn't used to be an issue?
+        setTimeout(function () {
+          resolve(cliProcess);
+        }, 100);
       }
     });
   });
@@ -80,6 +85,9 @@ function teardownServers() {
   };
   for (var i = servers.length - 1; i >= 0; i--) {
     servers[i].close(onclose);
+    // closeAllConnections is implied in close in node >=19
+    // but this avoids waits between all tests with node 18
+    servers[i].closeAllConnections();
   }
 }
 
@@ -146,7 +154,8 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      fetch(SSLproxyUrl)
+
+      fetch(SSLproxyUrl, sslOptions)
         .then((res) => res.json())
         .then((body) => {
           expect(body).toEqual(
@@ -183,17 +192,17 @@ describe("CLI Tests", function () {
       fetch(redirectUrl, { redirect: "manual" }).then((res) => {
         expect(res.status).toEqual(301);
         expect(res.headers.get("location")).toContain(SSLproxyUrl);
+        fetch(res.headers.get("location"), sslOptions)
+          .then((res) => res.json())
+          .then((body) => {
+            expect(body).toEqual(
+              jasmine.objectContaining({
+                name: "default",
+              })
+            );
+            done();
+          });
       });
-      fetch(redirectUrl, { redirect: "follow" })
-        .then((res) => res.json())
-        .then((body) => {
-          expect(body).toEqual(
-            jasmine.objectContaining({
-              name: "default",
-            })
-          );
-          done();
-        });
     });
   });
 
@@ -244,7 +253,7 @@ describe("CLI Tests", function () {
     ];
     executeCLI(execCmd, args).then((cliProcess) => {
       childProcess = cliProcess;
-      fetch(SSLproxyUrl)
+      fetch(SSLproxyUrl, sslOptions)
         .then((res) => res.json())
         .then((body) => {
           expect(body.headers).toEqual(

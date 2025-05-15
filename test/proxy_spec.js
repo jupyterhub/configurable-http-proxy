@@ -1,14 +1,14 @@
-// jshint jasmine: true
-"use strict";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import fetch from "node-fetch";
+import WebSocket from "ws";
 
-const fetch = require("node-fetch");
-const path = require("path");
-const util = require("../lib/testutil");
-const WebSocket = require("ws");
-
-const { ConfigurableProxy } = require("../lib/configproxy");
+import { ConfigurableProxy } from "../lib/configproxy.js";
+import * as util from "../lib/testutil.js";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe("Proxy Tests", function () {
   var port = 8902;
@@ -249,7 +249,7 @@ describe("Proxy Tests", function () {
   });
 
   it("options.storageBackend with an user-defined backend", function (done) {
-    const store = path.resolve(__dirname, "dummy-store.js");
+    const store = path.resolve(__dirname, "dummy-store.cjs");
     const options = {
       storageBackend: store,
     };

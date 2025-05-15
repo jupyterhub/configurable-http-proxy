@@ -5,13 +5,16 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 //
-"use strict";
 
-const fs = require("fs"),
-  pkg = require("../package.json"),
-  { Command } = require("commander"),
-  tls = require("tls"),
-  winston = require("winston");
+import fs from "node:fs";
+import { Command } from "commander";
+
+import ConfigurableProxy from "../lib/configproxy.js";
+import { defaultLogger } from "../lib/log.js";
+
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const pkg = require("../package.json");
 
 const cli = new Command();
 cli
@@ -130,9 +133,7 @@ function collectHeadersIntoObject(value, previous) {
 cli.parse(process.argv);
 var args = cli.opts();
 
-var ConfigurableProxy = require("../lib/configproxy.js").ConfigurableProxy;
-
-var log = require("../lib/log.js").defaultLogger({ level: args.logLevel.toLowerCase() });
+var log = defaultLogger({ level: args.logLevel.toLowerCase() });
 var options = { log: log };
 
 var sslCiphers;

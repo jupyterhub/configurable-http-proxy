@@ -1,9 +1,8 @@
-// jshint jasmine: true
-"use strict";
+import * as util from "../lib/testutil.js";
 
-var util = require("../lib/testutil");
-var log = require("winston");
-var fetch = require("node-fetch");
+import log from "winston";
+import fetch from "node-fetch";
+
 // disable logging during tests
 log.remove(log.transports.Console);
 

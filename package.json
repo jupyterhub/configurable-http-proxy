@@ -15,9 +15,9 @@
     "winston": "~3.17.0"
   },
   "devDependencies": {
+    "c8": "^10.1.3",
     "jasmine": "^5.6.0",
     "node-fetch": "^2.7.0",
-    "nyc": "^17.1.0",
     "ws": "^8.4.0"
   },
   "engines": {
@@ -36,8 +36,10 @@
   },
   "scripts": {
     "fmt": "pre-commit run --all-files",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 FORCE_COLOR=3 nyc jasmine --config=test/config/jasmine.mjs",
-    "coverage-html": "nyc report --reporter=html",
-    "codecov": "nyc report --reporter=lcov && codecov"
-  }
+    "test": "FORCE_COLOR=3 c8 jasmine --config=test/config/jasmine.mjs",
+    "c8": "c8",
+    "coverage-html": "c8 report --reporter=html",
+    "codecov": "c8 report --reporter=lcov && codecov"
+  },
+  "type": "module"
 }

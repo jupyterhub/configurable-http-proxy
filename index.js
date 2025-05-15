@@ -1,1 +1,2 @@
-module.exports = require("./lib/configproxy.js");
+export * from "./lib/configproxy.js";
+export { default } from "./lib/configproxy.js";
