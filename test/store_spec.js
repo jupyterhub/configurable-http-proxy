@@ -1,7 +1,4 @@
-// jshint jasmine: true
-"use strict";
-
-var MemoryStore = require("../lib/store.js").MemoryStore;
+import { MemoryStore } from "../lib/store.js";
 
 describe("MemoryStore", function () {
   beforeEach(function () {

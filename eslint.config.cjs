@@ -5,11 +5,11 @@ const js = require("@eslint/js");
 module.exports = defineConfig([
   js.configs.recommended,
   {
-    files: ["bin/*", "**/*.js"],
+    files: ["bin/configurable-http-proxy", "**/*js"],
     languageOptions: {
-      sourceType: "commonjs",
+      ecmaVersion: 2022,
       globals: {
-        ...globals.node,
+        ...globals.nodeBuiltin,
       },
     },
     rules: {
@@ -17,11 +17,10 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ["test/**/*.js"],
+    files: ["test/**/*js"],
     languageOptions: {
-      sourceType: "commonjs",
       globals: {
-        ...globals.node,
+        ...globals.nodeBuiltin,
         ...globals.jasmine,
       },
     },

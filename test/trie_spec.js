@@ -1,7 +1,4 @@
-// jshint jasmine: true
-"use strict";
-
-var URLTrie = require("../lib/trie").URLTrie;
+import { URLTrie } from "../lib/trie.js";
 
 describe("URLTrie", function () {
   var fullTrie = function () {

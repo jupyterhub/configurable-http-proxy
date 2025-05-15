@@ -1,5 +1,3 @@
-"use strict";
-
 class PlugableDummyStore {
   get(path) {}
   getTarget(path) {}
