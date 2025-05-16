@@ -17,7 +17,7 @@ Major changes:
 
 - The long-abandoned `http-proxy` dependency,
   which implements most of what configurable-http-proxy actually does,
-  has been replaced with `http-proxy-3`, a fully compatible, updated and modern fork.
+  has been replaced with [`http-proxy-3`](https://www.npmjs.com/package/http-proxy-3), a fully compatible, updated and modern fork.
   This should hopefully fix a lot of resource exhaustion and other issues folks have been seeing.
   Thank you @williamstein!
 - The minimum nodejs runtime is now node 18 (up from 10).
