@@ -6,6 +6,51 @@ command line for details.
 
 ## [Unreleased]
 
+## 5.0
+
+### 5.0.0 (prerelease) - 2025-05
+
+5.0.0 is a major revision, though there are no feature changes in this package.
+_Hopefully_ the only change folks should see is improved stability and resource usage.
+
+Major changes:
+
+- The long-abandoned `http-proxy` dependency,
+  which implements most of what configurable-http-proxy actually does,
+  has been replaced with [`http-proxy-3`](https://www.npmjs.com/package/http-proxy-3), a fully compatible, updated and modern fork.
+  This should hopefully fix a lot of resource exhaustion and other issues folks have been seeing.
+  Thank you [@williamstein](https://github.com/williamstein)!
+- The minimum nodejs runtime is now node 18 (up from 10).
+  This won't affect most users, as node 18 has already reached end-of-life at time of release,
+  but folks who get node from their distro package manager (e.g. `apt` or `yum`) often lag behind.
+  Node 18 is in Ubuntu 24.04 LTS and Debian 12/Stable.
+- CHP now uses ESM instead of CommonJS (`import` instead of `require`).
+  This shouldn't have any visible effect,
+  except for anyone calling `require("configurable-http-proxy")` on node 18,
+  which doesn't support CommonJS `require` of an ES Module.
+  `require("configurable-http-proxy")` works as before on node >=20.
+- nodejs runtime in the quay.io/jupyterhub/configurable-http-proxy image is increased to node 24 from node 20.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...5.0.0b1))
+
+#### Maintenance and upkeep improvements
+
+- specify major node version in Dockerfile [#575](https://github.com/jupyterhub/configurable-http-proxy/pull/575) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
+- migrate commonjs to esm [#574](https://github.com/jupyterhub/configurable-http-proxy/pull/574) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
+- consolidated nodejs bump [#573](https://github.com/jupyterhub/configurable-http-proxy/pull/573) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+- switch to http-proxy-3 [#572](https://github.com/jupyterhub/configurable-http-proxy/pull/572) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio), [@williamstein](https://github.com/williamstein))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2025-01-12&to=2025-05-15&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2025-01-12..2025-05-15&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2025-01-12..2025-05-15&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2025-01-12..2025-05-15&type=Issues)) | @shaneknapp ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ashaneknapp+updated%3A2025-01-12..2025-05-15&type=Issues)) | @williamstein ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awilliamstein+updated%3A2025-01-12..2025-05-15&type=Issues)) | @yuvipanda ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayuvipanda+updated%3A2025-01-12..2025-05-15&type=Issues))
+
+## 4.6
+
 ### [4.6.3] - 2025-01-12
 
 This release just updates some dependencies.
