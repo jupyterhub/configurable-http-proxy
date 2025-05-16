@@ -33,11 +33,6 @@ Major changes:
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...5.0.0b1))
 
-#### API and Breaking Changes
-
-- migrate commonjs to esm [#574](https://github.com/jupyterhub/configurable-http-proxy/pull/574) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
-- switch to http-proxy-3 [#572](https://github.com/jupyterhub/configurable-http-proxy/pull/572) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio), [@williamstein](https://github.com/williamstein))
-
 #### Maintenance and upkeep improvements
 
 - specify major node version in Dockerfile [#575](https://github.com/jupyterhub/configurable-http-proxy/pull/575) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
