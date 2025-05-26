@@ -8,7 +8,7 @@ command line for details.
 
 ## 5.0
 
-### 5.0.0 (prerelease) - 2025-05
+### [5.0.0] - 2025-05-27
 
 5.0.0 is a major revision, though there are no feature changes in this package.
 _Hopefully_ the only change folks should see is improved stability and resource usage.
@@ -31,7 +31,7 @@ Major changes:
   `require("configurable-http-proxy")` works as before on node >=20.
 - nodejs runtime in the quay.io/jupyterhub/configurable-http-proxy image is increased to node 24 from node 20.
 
-([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...5.0.0b1))
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...5.0.0))
 
 #### Maintenance and upkeep improvements
 
@@ -733,7 +733,8 @@ Improvements:
 
 ## [0.1.1] - 2014-10-01
 
-[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...HEAD
+[unreleased]: https://github.com/jupyterhub/configurable-http-proxy/compare/5.0.0...HEAD
+[5.0.0]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.3...5.0.0
 [4.6.3]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.2...4.6.3
 [4.6.2]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.1...4.6.2
 [4.6.1]: https://github.com/jupyterhub/configurable-http-proxy/compare/4.6.0...4.6.1
