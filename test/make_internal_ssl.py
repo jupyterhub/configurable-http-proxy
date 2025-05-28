@@ -2,7 +2,7 @@
 Regenerate internal ssl certificates for tests
 """
 
-# PEP 773 dependencies
+# PEP 723 dependencies
 # /// script
 # dependencies = [
 #   "certipy",
