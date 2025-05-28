@@ -23,7 +23,8 @@ port = 12345
 def make_certs():
     """Create certificates for proxy client and ssl backend"""
     # start fresh
-    shutil.rmtree(ssl_dir)
+    if ssl_dir.exists():
+        shutil.rmtree(ssl_dir)
     alt_names = [
         "IP:127.0.0.1",
         "IP:0:0:0:0:0:0:0:1",
