@@ -8,6 +8,25 @@ command line for details.
 
 ## 5.0
 
+### 5.0.1 - 2025-05-28
+
+5.0.1 fixes internal SSL, which was broken in 5.0.0.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.0.0...5.0.1))
+
+#### Bugs fixed
+
+- fix internal ssl, add internal ssl test [#584](https://github.com/jupyterhub/configurable-http-proxy/pull/584) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2025-05-27&to=2025-05-28&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2025-05-27..2025-05-28&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2025-05-27..2025-05-28&type=Issues))
+
 ### [5.0.0] - 2025-05-27
 
 5.0.0 is a major revision, though there are no feature changes in this package.
