@@ -57,7 +57,7 @@ meet the prerequisites:
 1. Push your new tag and commits to GitHub.
 
    ```bash
-   git push --follow-tags $ORIGIN main
+   git push --atomic --follow-tags $ORIGIN main
    ```
 
 1. Verify [the automated
