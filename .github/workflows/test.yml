@@ -79,6 +79,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
+      - name: setup internal ssl
+        run: |
+          pipx run test/make_internal_ssl.py
+
       - name: "Install dependencies (npm ci)"
         run: |
           npm ci
