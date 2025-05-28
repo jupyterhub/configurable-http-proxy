@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fetch from "node-fetch";
@@ -474,5 +475,41 @@ describe("Proxy Tests", function () {
         expect(body).toEqual({ status: "OK" });
         done();
       });
+  });
+
+  it("internal ssl test", function (done) {
+    if (!fs.existsSync(path.resolve(__dirname, "ssl"))) {
+      console.log("skipping ssl test without ssl certs. Run make_internal_ssl.py first.");
+      done();
+      return;
+    }
+    var proxyPort = 55556;
+    var testPort = proxyPort + 20;
+    var options = {
+      clientSsl: {
+        key: fs.readFileSync(path.resolve(__dirname, "ssl/proxy-client/proxy-client.key")),
+        cert: fs.readFileSync(path.resolve(__dirname, "ssl/proxy-client/proxy-client.crt")),
+        ca: fs.readFileSync(path.resolve(__dirname, "ssl/proxy-client-ca_trust.crt")),
+      },
+    };
+
+    util
+      .setupProxy(proxyPort, options, [])
+      .then((proxy) =>
+        util.addTarget(proxy, "/backend/", testPort, false, null, {
+          key: fs.readFileSync(path.resolve(__dirname, "ssl/backend/backend.key")),
+          cert: fs.readFileSync(path.resolve(__dirname, "ssl/backend/backend.crt")),
+          ca: fs.readFileSync(path.resolve(__dirname, "ssl/backend-ca_trust.crt")),
+          requestCert: true,
+        })
+      )
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/backend/urlpath/"))
+      .then((res) => {
+        expect(res.status).toEqual(200);
+      })
+      .catch((err) => {
+        done.fail(err);
+      })
+      .then(done);
   });
 });
