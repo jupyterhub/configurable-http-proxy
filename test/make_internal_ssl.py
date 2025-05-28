@@ -31,15 +31,14 @@ def make_certs():
         "DNS:localhost",
     ]
     certipy = Certipy(store_dir=ssl_dir)
-    _trust_bundles = certipy.trust_from_graph({
-        "backend-ca": ["proxy-client-ca"],
-        "proxy-client-ca": ["backend-ca"],
-    })
+    _trust_bundles = certipy.trust_from_graph(
+        {
+            "backend-ca": ["proxy-client-ca"],
+            "proxy-client-ca": ["backend-ca"],
+        }
+    )
     for name in ("backend", "proxy-client"):
-        certipy.create_signed_pair(
-            name, f"{name}-ca", alt_names=alt_names
-        )
-
+        certipy.create_signed_pair(name, f"{name}-ca", alt_names=alt_names)
 
 
 async def client_connected(reader, writer):
