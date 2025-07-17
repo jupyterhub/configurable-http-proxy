@@ -512,4 +512,21 @@ describe("Proxy Tests", function () {
       })
       .then(done);
   });
+
+  it("proxy to unix socket test", function (done) {
+    var proxyPort = 55557;
+    var unixSocketUri = "%2Ftmp%2Ftest.sock";
+
+    util
+      .setupProxy(proxyPort, {}, [])
+      .then((proxy) => util.addTarget(proxy, "/unix", 0, false, null, null, unixSocketUri))
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/unix"))
+      .then((res) => {
+        expect(res.status).toEqual(200);
+      })
+      .catch((err) => {
+        done.fail(err);
+      })
+      .then(done);
+  });
 });
