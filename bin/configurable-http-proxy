@@ -21,6 +21,7 @@ cli
   .version(pkg.version)
   .option("--ip <ip-address>", "Public-facing IP of the proxy")
   .option("--port <n> (defaults to 8000)", "Public-facing port of the proxy", parseInt)
+  .option("--socket <path>", "Path to a UNIX domain socket for the proxy to listen on. Alternative to specifying IP and port.")
   .option("--ssl-key <keyfile>", "SSL key to use, if any")
   .option("--ssl-cert <certfile>", "SSL certificate to use, if any")
   .option("--ssl-ca <ca-file>", "SSL certificate authority, if any")
@@ -39,6 +40,7 @@ cli
     "Inward-facing port for API requests (defaults to --port=value+1)",
     parseInt
   )
+  .option("--api-socket <path>", "Path to a UNIX domain socket for the API server to listen on. Alternative to specifying API IP and port.")
   .option("--api-ssl-key <keyfile>", "SSL key to use, if any, for API requests")
   .option("--api-ssl-cert <certfile>", "SSL certificate to use, if any, for API requests")
   .option("--api-ssl-ca <ca-file>", "SSL certificate authority, if any, for API requests")
@@ -93,6 +95,7 @@ cli
   .option("--host-routing", "Use host routing (host as first level of path)")
   .option("--metrics-ip <ip>", "IP for metrics server", "")
   .option("--metrics-port <n>", "Port of metrics server. Defaults to no metrics server")
+  .option("--metrics-socket <path>", "Path to a UNIX domain socket for the metrics server to listen on. Alternative to specifying metrics IP and port.")
   .option("--log-level <loglevel>", "Log level (debug, info, warn, error)", "info")
   .option(
     "--timeout <n>",
@@ -321,41 +324,62 @@ options.storageBackend = args.storageBackend;
 var proxy = new ConfigurableProxy(options);
 
 var listen = {};
-listen.port = parseInt(args.port) || 8000;
-if (args.ip === "*") {
-  // handle ip=* alias for all interfaces
-  log.warn(
-    "Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces."
-  );
-  args.ip = "";
-}
-listen.ip = args.ip;
-listen.apiIp = args.apiIp;
-listen.apiPort = args.apiPort || listen.port + 1;
-listen.metricsIp = args.metricsIp;
-listen.metricsPort = args.metricsPort;
 
-proxy.proxyServer.listen(listen.port, listen.ip);
-proxy.apiServer.listen(listen.apiPort, listen.apiIp);
-if (listen.metricsPort) {
-  proxy.metricsServer.listen(listen.metricsPort, listen.metricsIp);
+if (args.socket) {
+  listen.proxyTarget = [args.socket];
+  log.warn(
+    "Proxy will listen on UNIX domain socket, --ip and --port options will be ignored."
+  );
+} else {
+  listen.port = parseInt(args.port) || 8000;
+  if (args.ip === "*") {
+    // handle ip=* alias for all interfaces
+    log.warn(
+      "Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces."
+    );
+    args.ip = "";
+  }
+  listen.ip = args.ip;
+  listen.proxyTarget = [listen.port, listen.ip];
+}
+
+if (args.apiSocket) {
+  listen.apiSocket = [args.apiSocket];
+  log.warn(
+    "API server will listen on UNIX domain socket, --api-ip and --api-port options will be ignored."
+  );
+} else {
+  listen.apiTarget = [args.apiPort || (listen.port ? listen.port + 1 : 8001), args.apiIp];
+}
+
+if (args.metricsSocket) {
+  listen.metricsSocket = [args.metricsSocket];
+  log.warn(
+    "Metrics server will listen on UNIX domain socket, --metrics-ip and --metrics-port options will be ignored."
+  );
+} else {
+  listen.metricsTarget = [args.metricsPort, args.metricsIp];
+}
+
+proxy.proxyServer.listen(...listen.proxyTarget);
+proxy.apiServer.listen(...listen.apiTarget);
+if (listen.metricsTarget) {
+  proxy.metricsServer.listen(...listen.metricsTarget);
 }
 
 log.info(
-  "Proxying %s://%s:%s to %s",
+  "Proxying %s://%s to %s",
   options.ssl ? "https" : "http",
-  listen.ip || "*",
-  listen.port,
+  listen.proxyTarget.join(":"),
   options.defaultTarget || "(no default)"
 );
 log.info(
-  "Proxy API at %s://%s:%s/api/routes",
+  "Proxy API at %s://%s/api/routes",
   options.apiSsl ? "https" : "http",
-  listen.apiIp || "*",
-  listen.apiPort
+  listen.apiTarget.join(":")
 );
 if (listen.metricsPort) {
-  log.info("Serve metrics at %s://%s:%s/metrics", "http", listen.metricsIp, listen.metricsPort);
+  log.info("Serve metrics at %s://%s/metrics", "http", listen.metricsTarget.join(":"));
 }
 
 if (args.pidFile) {
@@ -370,7 +394,7 @@ if (args.pidFile) {
 }
 
 // Redirect HTTP to HTTPS on the proxy's port
-if (options.redirectPort && listen.port !== 80) {
+if (options.redirectPort && listen.port && listen.port !== 80) {
   var http = require("http");
   var redirectPort = options.redirectTo ? options.redirectTo : listen.port;
   var server = http

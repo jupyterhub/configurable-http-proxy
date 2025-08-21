@@ -515,7 +515,7 @@ describe("Proxy Tests", function () {
 
   it("proxy to unix socket test", function (done) {
     var proxyPort = 55557;
-    var unixSocketUri = "%2Ftmp%2Ftest.sock";
+    var unixSocketUri = encodeURIComponent(tmp.tmpNameSync());
 
     util
       .setupProxy(proxyPort, {}, [])
@@ -528,5 +528,86 @@ describe("Proxy Tests", function () {
         done.fail(err);
       })
       .then(done);
+  });
+});
+
+describe("Proxy Tests with Unix socket", function () {
+  var listenOptions = {
+    socket: tmp.tmpNameSync(),
+  };
+  var requestOptions = new URL("http://localhost");
+  requestOptions.socketPath = listenOptions.socket;
+  var proxy;
+
+  beforeEach(function (callback) {
+    util.setupProxy(listenOptions).then(function (newProxy) {
+      proxy = newProxy;
+      callback();
+    });
+  });
+
+  afterEach(function (callback) {
+    util.teardownServers(callback);
+  });
+
+  it("unix socket HTTP request", function (done) {
+    http
+      .request(requestOptions, (res) => {
+        let recvData = [];
+        res.on("data", (chunk) => {
+          recvData.push(chunk);
+        });
+        res.on("end", () => {
+          const body = JSON.parse(Buffer.concat(recvData).toString());
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              path: "/",
+            })
+          );
+        });
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          done();
+        });
+      })
+      .on("error", (err) => {
+        expect("error").toEqual("ok");
+        done();
+      })
+      .end();
+  });
+
+  it("unix socket WebSocket request", function (done) {
+    var ws = new WebSocket("ws+unix:" + listenOptions.socket);
+    ws.on("error", function () {
+      // jasmine fail is only in master
+      expect("error").toEqual("ok");
+      done();
+    });
+    var nmsgs = 0;
+    ws.on("message", function (msg) {
+      msg = msg.toString();
+      if (nmsgs === 0) {
+        expect(msg).toEqual("connected");
+      } else {
+        msg = JSON.parse(msg);
+        expect(msg).toEqual(
+          jasmine.objectContaining({
+            path: "/",
+            message: "hi",
+          })
+        );
+        // check last_activity was updated
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          ws.close();
+          done();
+        });
+      }
+      nmsgs++;
+    });
+    ws.on("open", function () {
+      ws.send("hi");
+    });
   });
 });
