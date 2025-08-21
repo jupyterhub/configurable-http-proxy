@@ -10,6 +10,8 @@ import fs from "node:fs";
 import { Command } from "commander";
 
 import ConfigurableProxy from "../lib/configproxy.js";
+import { parseListenOptions } from "../lib/configproxy.js";
+
 import { defaultLogger } from "../lib/log.js";
 
 import { createRequire } from "node:module";
@@ -282,7 +284,7 @@ options.proxyTimeout = args.proxyTimeout;
 options.keepAliveTimeout = args.keepAliveTimeout;
 
 // metrics options
-options.enableMetrics = !!args.metricsPort;
+options.enableMetrics = !!args.metricsPort || !!args.metricsSocket;
 
 // certs need to be provided for https redirection
 if (!options.ssl && options.redirectPort) {
@@ -323,43 +325,7 @@ options.storageBackend = args.storageBackend;
 
 var proxy = new ConfigurableProxy(options);
 
-var listen = {};
-
-if (args.socket) {
-  listen.proxyTarget = [args.socket];
-  log.warn(
-    "Proxy will listen on UNIX domain socket, --ip and --port options will be ignored."
-  );
-} else {
-  listen.port = parseInt(args.port) || 8000;
-  if (args.ip === "*") {
-    // handle ip=* alias for all interfaces
-    log.warn(
-      "Interpreting ip='*' as all-interfaces. Preferred usage is 0.0.0.0 for all IPv4 or '' for all-interfaces."
-    );
-    args.ip = "";
-  }
-  listen.ip = args.ip;
-  listen.proxyTarget = [listen.port, listen.ip];
-}
-
-if (args.apiSocket) {
-  listen.apiSocket = [args.apiSocket];
-  log.warn(
-    "API server will listen on UNIX domain socket, --api-ip and --api-port options will be ignored."
-  );
-} else {
-  listen.apiTarget = [args.apiPort || (listen.port ? listen.port + 1 : 8001), args.apiIp];
-}
-
-if (args.metricsSocket) {
-  listen.metricsSocket = [args.metricsSocket];
-  log.warn(
-    "Metrics server will listen on UNIX domain socket, --metrics-ip and --metrics-port options will be ignored."
-  );
-} else {
-  listen.metricsTarget = [args.metricsPort, args.metricsIp];
-}
+var listen = parseListenOptions(args);
 
 proxy.proxyServer.listen(...listen.proxyTarget);
 proxy.apiServer.listen(...listen.apiTarget);
@@ -378,7 +344,7 @@ log.info(
   options.apiSsl ? "https" : "http",
   listen.apiTarget.join(":")
 );
-if (listen.metricsPort) {
+if (listen.metricsTarget) {
   log.info("Serve metrics at %s://%s/metrics", "http", listen.metricsTarget.join(":"));
 }
 
