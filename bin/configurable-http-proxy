@@ -325,7 +325,7 @@ options.storageBackend = args.storageBackend;
 
 var proxy = new ConfigurableProxy(options);
 
-var listen = parseListenOptions(args);
+var listen = parseListenOptions(args, log);
 
 proxy.proxyServer.listen(...listen.proxyTarget);
 proxy.apiServer.listen(...listen.apiTarget);

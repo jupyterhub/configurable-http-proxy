@@ -11,7 +11,7 @@ describe("API Tests", function () {
   var listenOptions = {
     port: port,
     apiPort: 8903,
-    ip: '127.0.0.1'
+    ip: "127.0.0.1",
   };
   var proxy;
   var apiUrl = "http://" + listenOptions.ip + ":" + listenOptions.apiPort + "/api/routes";

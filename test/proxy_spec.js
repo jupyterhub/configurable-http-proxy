@@ -1,11 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
+import tmp from "tmp"
 import { fileURLToPath } from "node:url";
 import fetch from "node-fetch";
 import WebSocket from "ws";
 
 import { ConfigurableProxy } from "../lib/configproxy.js";
 import * as util from "../lib/testutil.js";
+import http from "node:http";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
@@ -15,7 +17,7 @@ describe("Proxy Tests", function () {
   var port = 8902;
   var listenOptions = {
     port: port,
-    ip: '127.0.0.1'
+    ip: "127.0.0.1",
   };
   var testPort = port + 10;
   var proxy;
@@ -343,7 +345,7 @@ describe("Proxy Tests", function () {
 
   it("custom error target", function (done) {
     var listenOptions = {
-      port: 55550
+      port: 55550,
     };
     util
       .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
@@ -412,7 +414,7 @@ describe("Proxy Tests", function () {
 
   it("backend error", function (done) {
     var listenOptions = {
-      port: 55550
+      port: 55550,
     };
     util
       .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
@@ -442,7 +444,7 @@ describe("Proxy Tests", function () {
 
   it("Redirect location with rewriting", function (done) {
     var listenOptions = {
-      port: 55556
+      port: 55556,
     };
     var options = {
       protocolRewrite: "https",
@@ -466,7 +468,9 @@ describe("Proxy Tests", function () {
         )
       )
       .then(() =>
-        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", { redirect: "manual" })
+        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", {
+          redirect: "manual",
+        })
       )
       .then((res) => {
         expect(res.status).toEqual(301);
@@ -494,7 +498,7 @@ describe("Proxy Tests", function () {
       return;
     }
     var listenOptions = {
-      port: 55556
+      port: 55556,
     };
     var testPort = listenOptions.port + 20;
     var options = {
