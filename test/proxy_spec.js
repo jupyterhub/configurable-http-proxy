@@ -13,14 +13,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe("Proxy Tests", function () {
   var port = 8902;
+  var listenOptions = {
+    port: port,
+    ip: '127.0.0.1'
+  };
   var testPort = port + 10;
   var proxy;
-  var proxyUrl = "http://127.0.0.1:" + port;
+  var proxyUrl = "http://" + listenOptions.ip + ":" + port;
   var hostTest = "test.localhost.jovyan.org";
   var hostUrl = "http://" + hostTest + ":" + port;
 
   beforeEach(function (callback) {
-    util.setupProxy(port).then(function (newProxy) {
+    util.setupProxy(listenOptions).then(function (newProxy) {
       proxy = newProxy;
       callback();
     });
@@ -338,10 +342,12 @@ describe("Proxy Tests", function () {
   });
 
   it("custom error target", function (done) {
-    var proxyPort = 55550;
+    var listenOptions = {
+      port: 55550
+    };
     util
-      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/foo/bar"))
+      .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/foo/bar"))
       .then((res) => {
         expect(res.status).toEqual(404);
         expect(res.headers.get("content-type")).toEqual("text/plain");
@@ -405,10 +411,12 @@ describe("Proxy Tests", function () {
   });
 
   it("backend error", function (done) {
-    var proxyPort = 55550;
+    var listenOptions = {
+      port: 55550
+    };
     util
-      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/%"))
+      .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/%"))
       .then((res) => {
         expect(res.status).toEqual(500);
         expect(res.headers.get("content-type")).toEqual("text/plain");
@@ -433,7 +441,9 @@ describe("Proxy Tests", function () {
   });
 
   it("Redirect location with rewriting", function (done) {
-    var proxyPort = 55556;
+    var listenOptions = {
+      port: 55556
+    };
     var options = {
       protocolRewrite: "https",
       autoRewrite: true,
@@ -442,10 +452,10 @@ describe("Proxy Tests", function () {
     // where the backend server redirects us.
     // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
     var redirectTo = "https://127.0.0.1:" + testPort + "/whatever";
-    var expectedRedirect = "https://127.0.0.1:" + proxyPort + "/whatever";
+    var expectedRedirect = "https://127.0.0.1:" + listenOptions.port + "/whatever";
 
     util
-      .setupProxy(proxyPort, options, [])
+      .setupProxy(listenOptions, options, [])
       .then((proxy) =>
         util.addTargetRedirecting(
           proxy,
@@ -456,7 +466,7 @@ describe("Proxy Tests", function () {
         )
       )
       .then(() =>
-        fetch("http://127.0.0.1:" + proxyPort + "/external/urlpath/", { redirect: "manual" })
+        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", { redirect: "manual" })
       )
       .then((res) => {
         expect(res.status).toEqual(301);
@@ -483,8 +493,10 @@ describe("Proxy Tests", function () {
       done();
       return;
     }
-    var proxyPort = 55556;
-    var testPort = proxyPort + 20;
+    var listenOptions = {
+      port: 55556
+    };
+    var testPort = listenOptions.port + 20;
     var options = {
       clientSsl: {
         key: fs.readFileSync(path.resolve(__dirname, "ssl/proxy-client/proxy-client.key")),
@@ -494,7 +506,7 @@ describe("Proxy Tests", function () {
     };
 
     util
-      .setupProxy(proxyPort, options, [])
+      .setupProxy(listenOptions, options, [])
       .then((proxy) =>
         util.addTarget(proxy, "/backend/", testPort, false, null, {
           key: fs.readFileSync(path.resolve(__dirname, "ssl/backend/backend.key")),
@@ -503,7 +515,7 @@ describe("Proxy Tests", function () {
           requestCert: true,
         })
       )
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/backend/urlpath/"))
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/backend/urlpath/"))
       .then((res) => {
         expect(res.status).toEqual(200);
       })
@@ -514,13 +526,15 @@ describe("Proxy Tests", function () {
   });
 
   it("proxy to unix socket test", function (done) {
-    var proxyPort = 55557;
+    var listenOptions = {
+      port: 55557,
+    };
     var unixSocketUri = encodeURIComponent(tmp.tmpNameSync());
 
     util
-      .setupProxy(proxyPort, {}, [])
+      .setupProxy(listenOptions, {}, [])
       .then((proxy) => util.addTarget(proxy, "/unix", 0, false, null, null, unixSocketUri))
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/unix"))
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/unix"))
       .then((res) => {
         expect(res.status).toEqual(200);
       })

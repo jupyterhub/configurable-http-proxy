@@ -8,15 +8,19 @@ log.remove(log.transports.Console);
 
 describe("API Tests", function () {
   var port = 8902;
-  var apiPort = port + 1;
+  var listenOptions = {
+    port: port,
+    apiPort: 8903,
+    ip: '127.0.0.1'
+  };
   var proxy;
-  var apiUrl = "http://127.0.0.1:" + apiPort + "/api/routes";
+  var apiUrl = "http://" + listenOptions.ip + ":" + listenOptions.apiPort + "/api/routes";
 
   var r;
 
   beforeEach(function (callback) {
     util
-      .setupProxy(port)
+      .setupProxy(listenOptions)
       .then(function (newProxy) {
         proxy = newProxy;
       })
