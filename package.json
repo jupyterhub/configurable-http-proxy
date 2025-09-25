@@ -1,5 +1,5 @@
 {
-  "version": "5.1.0",
+  "version": "5.1.1-dev.0",
   "name": "configurable-http-proxy",
   "description": "A configurable-on-the-fly HTTP Proxy",
   "author": "Jupyter Developers",
