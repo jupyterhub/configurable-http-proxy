@@ -47,7 +47,7 @@ jobs:
       - name: npm audit
         run: |
           # If this fails, run `npm audit fix`
-          npm audit --production --audit-level=moderate
+          npm audit --omit=dev --audit-level=moderate
 
   test:
     runs-on: ubuntu-24.04

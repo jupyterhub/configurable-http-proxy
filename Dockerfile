@@ -21,8 +21,8 @@ COPY . /srv/configurable-http-proxy/
 WORKDIR /srv/configurable-http-proxy
 
 # Install configurable-http-proxy according to package-lock.json (ci) without
-# devDepdendencies (--production), then uninstall npm which isn't needed.
-RUN npm ci --production \
+# devDepdendencies (--omit=dev), then uninstall npm which isn't needed.
+RUN npm ci --omit=dev \
  && npm uninstall -g npm
 
 # Switch from the root user to the nobody user
