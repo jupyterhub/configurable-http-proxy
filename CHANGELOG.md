@@ -8,6 +8,36 @@ command line for details.
 
 ## 5.0
 
+### 5.1.0 - 2025-09-25
+
+5.1.0 fixes a longstanding bug where stopped servers could cause the proxy to leak sockets in at least two different ways.
+See [#557](https://github.com/jupyterhub/configurable-http-proxy/issues/557) for more details.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.0.1...5.1.0))
+
+#### New features added
+
+- Support proxying to unix sockets [#592](https://github.com/jupyterhub/configurable-http-proxy/pull/592) ([@dometto](https://github.com/dometto), [@minrk](https://github.com/minrk))
+
+#### Bugs fixed
+
+- fix socket leak by updating to http-proxy-3 1.21.1 [#600](https://github.com/jupyterhub/configurable-http-proxy/pull/600) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+- fix errorTarget with websockets [#599](https://github.com/jupyterhub/configurable-http-proxy/pull/599) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### Maintenance and upkeep improvements
+
+- Follow up #592 [#597](https://github.com/jupyterhub/configurable-http-proxy/pull/597) ([@agoose77](https://github.com/agoose77), [@minrk](https://github.com/minrk))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2025-05-28&to=2025-09-25&type=c))
+
+@agoose77 ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aagoose77+updated%3A2025-05-28..2025-09-25&type=Issues)) | @consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2025-05-28..2025-09-25&type=Issues)) | @dometto ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adometto+updated%3A2025-05-28..2025-09-25&type=Issues)) | @felder ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Afelder+updated%3A2025-05-28..2025-09-25&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2025-05-28..2025-09-25&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2025-05-28..2025-09-25&type=Issues)) | @shaneknapp ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ashaneknapp+updated%3A2025-05-28..2025-09-25&type=Issues))
+| @williamstein ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Awilliamstein+updated%3A2025-05-28..2025-09-25&type=Issues)) | @yijunge-ucb ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayijunge-ucb+updated%3A2025-05-28..2025-09-25&type=Issues)) | @yuvipanda ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayuvipanda+updated%3A2025-05-28..2025-09-25&type=Issues))
+
 ### 5.0.1 - 2025-05-28
 
 5.0.1 fixes internal SSL, which was broken in 5.0.0.
