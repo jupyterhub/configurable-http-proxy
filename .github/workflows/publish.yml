@@ -36,8 +36,10 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
+      - name: make sure npm is up-to-date
+        run: npm install --global npm@latest
       - run: npm ci
       - run: npm publish
         if: startsWith(github.ref, 'refs/tags/')
