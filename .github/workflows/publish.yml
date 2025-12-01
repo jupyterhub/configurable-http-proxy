@@ -33,7 +33,7 @@ jobs:
   publish-npm:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
@@ -47,7 +47,7 @@ jobs:
   publish-docker:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       # Setup docker to build for multiple platforms, see:
       # https://github.com/docker/build-push-action/tree/HEAD#usage
