@@ -11,7 +11,7 @@
 repos:
   # Autoformat: Bash scripts
   - repo: https://github.com/lovesegfault/beautysh
-    rev: v6.4.1
+    rev: v6.4.2
     hooks:
       - id: beautysh
         additional_dependencies:
@@ -28,7 +28,7 @@ repos:
 
   # Lint
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.39.0
+    rev: v10.0.0-alpha.1
     hooks:
       - id: eslint
         additional_dependencies:
