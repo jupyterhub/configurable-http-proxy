@@ -513,6 +513,22 @@ describe("Proxy Tests", function () {
       .then(done);
   });
 
+  it("custom error target with unix socket", function (done) {
+    var proxyPort = 55550;
+    util
+      .setupProxy(proxyPort, { errorTarget: "unix+http://%2Ftmp%2Ftest.sock" }, [])
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/foo/bar"))
+      .then((res) => {
+        expect(res.status).toEqual(404);
+        expect(res.headers.get("content-type")).toEqual("text/plain");
+        return res.text();
+      })
+      .then((body) => {
+        expect(body).toEqual("/foo/bar");
+      })
+      .then(done);
+  });
+
   it("proxy to unix socket test", function (done) {
     var proxyPort = 55557;
     var unixSocketUri = "%2Ftmp%2Ftest.sock";
@@ -520,7 +536,7 @@ describe("Proxy Tests", function () {
     util
       .setupProxy(proxyPort, {}, [])
       .then((proxy) => util.addTarget(proxy, "/unix", 0, false, null, null, unixSocketUri))
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/unix"))
+      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/unix/foo"))
       .then((res) => {
         expect(res.status).toEqual(200);
       })
