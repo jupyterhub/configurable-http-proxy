@@ -6,6 +6,7 @@ import WebSocket from "ws";
 
 import { ConfigurableProxy } from "../lib/configproxy.js";
 import * as util from "../lib/testutil.js";
+import http from "node:http";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
@@ -13,14 +14,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe("Proxy Tests", function () {
   var port = 8902;
+  var listenOptions = {
+    port: port,
+    ip: "127.0.0.1",
+  };
   var testPort = port + 10;
   var proxy;
-  var proxyUrl = "http://127.0.0.1:" + port;
+  var proxyUrl = "http://" + listenOptions.ip + ":" + port;
   var hostTest = "test.localhost.jovyan.org";
   var hostUrl = "http://" + hostTest + ":" + port;
 
   beforeEach(function (callback) {
-    util.setupProxy(port).then(function (newProxy) {
+    util.setupProxy(listenOptions).then(function (newProxy) {
       proxy = newProxy;
       callback();
     });
@@ -338,10 +343,12 @@ describe("Proxy Tests", function () {
   });
 
   it("custom error target", function (done) {
-    var proxyPort = 55550;
+    var listenOptions = {
+      port: 55550,
+    };
     util
-      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/foo/bar"))
+      .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/foo/bar"))
       .then((res) => {
         expect(res.status).toEqual(404);
         expect(res.headers.get("content-type")).toEqual("text/plain");
@@ -405,10 +412,12 @@ describe("Proxy Tests", function () {
   });
 
   it("backend error", function (done) {
-    var proxyPort = 55550;
+    var listenOptions = {
+      port: 55550,
+    };
     util
-      .setupProxy(proxyPort, { errorTarget: "http://127.0.0.1:55565" }, [])
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/%"))
+      .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/%"))
       .then((res) => {
         expect(res.status).toEqual(500);
         expect(res.headers.get("content-type")).toEqual("text/plain");
@@ -433,7 +442,9 @@ describe("Proxy Tests", function () {
   });
 
   it("Redirect location with rewriting", function (done) {
-    var proxyPort = 55556;
+    var listenOptions = {
+      port: 55556,
+    };
     var options = {
       protocolRewrite: "https",
       autoRewrite: true,
@@ -442,10 +453,10 @@ describe("Proxy Tests", function () {
     // where the backend server redirects us.
     // Note that http-proxy requires (logically) the redirection to be to the same (internal) host.
     var redirectTo = "https://127.0.0.1:" + testPort + "/whatever";
-    var expectedRedirect = "https://127.0.0.1:" + proxyPort + "/whatever";
+    var expectedRedirect = "https://127.0.0.1:" + listenOptions.port + "/whatever";
 
     util
-      .setupProxy(proxyPort, options, [])
+      .setupProxy(listenOptions, options, [])
       .then((proxy) =>
         util.addTargetRedirecting(
           proxy,
@@ -456,7 +467,9 @@ describe("Proxy Tests", function () {
         )
       )
       .then(() =>
-        fetch("http://127.0.0.1:" + proxyPort + "/external/urlpath/", { redirect: "manual" })
+        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", {
+          redirect: "manual",
+        })
       )
       .then((res) => {
         expect(res.status).toEqual(301);
@@ -483,8 +496,10 @@ describe("Proxy Tests", function () {
       done();
       return;
     }
-    var proxyPort = 55556;
-    var testPort = proxyPort + 20;
+    var listenOptions = {
+      port: 55556,
+    };
+    var testPort = listenOptions.port + 20;
     var options = {
       clientSsl: {
         key: fs.readFileSync(path.resolve(__dirname, "ssl/proxy-client/proxy-client.key")),
@@ -494,7 +509,7 @@ describe("Proxy Tests", function () {
     };
 
     util
-      .setupProxy(proxyPort, options, [])
+      .setupProxy(listenOptions, options, [])
       .then((proxy) =>
         util.addTarget(proxy, "/backend/", testPort, false, null, {
           key: fs.readFileSync(path.resolve(__dirname, "ssl/backend/backend.key")),
@@ -503,7 +518,7 @@ describe("Proxy Tests", function () {
           requestCert: true,
         })
       )
-      .then(() => fetch("http://127.0.0.1:" + proxyPort + "/backend/urlpath/"))
+      .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/backend/urlpath/"))
       .then((res) => {
         expect(res.status).toEqual(200);
       })
@@ -528,5 +543,86 @@ describe("Proxy Tests", function () {
         done.fail(err);
       })
       .then(done);
+  });
+});
+
+describe("Proxy Tests with Unix socket", function () {
+  var listenOptions = {
+    socket: "/tmp/test.sock",
+  };
+  var requestOptions = new URL("http://localhost");
+  requestOptions.socketPath = listenOptions.socket;
+  var proxy;
+
+  beforeEach(function (callback) {
+    util.setupProxy(listenOptions).then(function (newProxy) {
+      proxy = newProxy;
+      callback();
+    });
+  });
+
+  afterEach(function (callback) {
+    util.teardownServers(callback);
+  });
+
+  it("unix socket HTTP request", function (done) {
+    http
+      .request(requestOptions, (res) => {
+        let recvData = [];
+        res.on("data", (chunk) => {
+          recvData.push(chunk);
+        });
+        res.on("end", () => {
+          const body = JSON.parse(Buffer.concat(recvData).toString());
+          expect(body).toEqual(
+            jasmine.objectContaining({
+              path: "/",
+            })
+          );
+        });
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          done();
+        });
+      })
+      .on("error", (err) => {
+        expect("error").toEqual("ok");
+        done();
+      })
+      .end();
+  });
+
+  it("unix socket WebSocket request", function (done) {
+    var ws = new WebSocket("ws+unix:/tmp/test.sock");
+    ws.on("error", function () {
+      // jasmine fail is only in master
+      expect("error").toEqual("ok");
+      done();
+    });
+    var nmsgs = 0;
+    ws.on("message", function (msg) {
+      msg = msg.toString();
+      if (nmsgs === 0) {
+        expect(msg).toEqual("connected");
+      } else {
+        msg = JSON.parse(msg);
+        expect(msg).toEqual(
+          jasmine.objectContaining({
+            path: "/",
+            message: "hi",
+          })
+        );
+        // check last_activity was updated
+        return proxy._routes.get("/").then((route) => {
+          expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
+          ws.close();
+          done();
+        });
+      }
+      nmsgs++;
+    });
+    ws.on("open", function () {
+      ws.send("hi");
+    });
   });
 });
