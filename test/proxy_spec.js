@@ -16,7 +16,7 @@ describe("Proxy Tests", function () {
   var port = 8902;
   var listenOptions = {
     port: port,
-    ip: '127.0.0.1'
+    ip: "127.0.0.1",
   };
   var testPort = port + 10;
   var proxy;
@@ -344,7 +344,7 @@ describe("Proxy Tests", function () {
 
   it("custom error target", function (done) {
     var listenOptions = {
-      port: 55550
+      port: 55550,
     };
     util
       .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
@@ -413,7 +413,7 @@ describe("Proxy Tests", function () {
 
   it("backend error", function (done) {
     var listenOptions = {
-      port: 55550
+      port: 55550,
     };
     util
       .setupProxy(listenOptions, { errorTarget: "http://127.0.0.1:55565" }, [])
@@ -443,7 +443,7 @@ describe("Proxy Tests", function () {
 
   it("Redirect location with rewriting", function (done) {
     var listenOptions = {
-      port: 55556
+      port: 55556,
     };
     var options = {
       protocolRewrite: "https",
@@ -467,7 +467,9 @@ describe("Proxy Tests", function () {
         )
       )
       .then(() =>
-        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", { redirect: "manual" })
+        fetch("http://127.0.0.1:" + listenOptions.port + "/external/urlpath/", {
+          redirect: "manual",
+        })
       )
       .then((res) => {
         expect(res.status).toEqual(301);
@@ -495,7 +497,7 @@ describe("Proxy Tests", function () {
       return;
     }
     var listenOptions = {
-      port: 55556
+      port: 55556,
     };
     var testPort = listenOptions.port + 20;
     var options = {
@@ -527,16 +529,14 @@ describe("Proxy Tests", function () {
   });
 });
 
-
-
 describe("Proxy Tests with Unix socket", function () {
   var listenOptions = {
-    socket: '/tmp/test.sock',
+    socket: "/tmp/test.sock",
   };
-  var requestOptions = new URL('http://localhost')
+  var requestOptions = new URL("http://localhost");
   requestOptions.socketPath = listenOptions.socket;
   var proxy;
-  
+
   beforeEach(function (callback) {
     util.setupProxy(listenOptions).then(function (newProxy) {
       proxy = newProxy;
@@ -547,14 +547,15 @@ describe("Proxy Tests with Unix socket", function () {
   afterEach(function (callback) {
     util.teardownServers(callback);
   });
-    
+
   it("unix socket HTTP request", function (done) {
-      http.request(requestOptions, res => {
+    http
+      .request(requestOptions, (res) => {
         let recvData = [];
-        res.on('data', chunk => {
+        res.on("data", (chunk) => {
           recvData.push(chunk);
         });
-        res.on('end', () => {
+        res.on("end", () => {
           const body = JSON.parse(Buffer.concat(recvData).toString());
           expect(body).toEqual(
             jasmine.objectContaining({
@@ -566,10 +567,12 @@ describe("Proxy Tests with Unix socket", function () {
           expect(route.last_activity).toBeGreaterThan(proxy._setup_timestamp);
           done();
         });
-      }).on('error', err => {
+      })
+      .on("error", (err) => {
         expect("error").toEqual("ok");
         done();
-      }).end();
+      })
+      .end();
   });
 
   it("unix socket WebSocket request", function (done) {
@@ -605,5 +608,4 @@ describe("Proxy Tests with Unix socket", function () {
       ws.send("hi");
     });
   });
-
 });
