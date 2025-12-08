@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import tmp from "tmp"
+import tmp from "tmp";
 import { fileURLToPath } from "node:url";
 import fetch from "node-fetch";
 import WebSocket from "ws";
