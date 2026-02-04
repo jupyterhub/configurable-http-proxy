@@ -8,6 +8,32 @@ command line for details.
 
 ## 5.0
 
+### 5.1.1 - 2026-02-04
+
+This release provides dependency updates. `http-proxy-3` version is bumped from
+1.21.1 to 1.23.2, and the project's container image is now based on alpine 3.23,
+up from 3.21.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.1.0...5.1.1))
+
+#### Maintenance and upkeep improvements
+
+- node version upgrade to node:24-alpine3.23 [#626](https://github.com/jupyterhub/configurable-http-proxy/pull/626) ([@Upanshu11](https://github.com/Upanshu11), [@consideRatio](https://github.com/consideRatio), [@manics](https://github.com/manics), [@ronak-sirwani](https://github.com/ronak-sirwani))
+- npm: update --production to --omit=dev [#602](https://github.com/jupyterhub/configurable-http-proxy/pull/602) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### Continuous integration improvements
+
+- enable trusted publishing [#610](https://github.com/jupyterhub/configurable-http-proxy/pull/610) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2025-09-25&to=2026-02-04&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2025-09-25..2026-02-04&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2025-09-25..2026-02-04&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2025-09-25..2026-02-04&type=Issues)) | @ronak-sirwani ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aronak-sirwani+updated%3A2025-09-25..2026-02-04&type=Issues)) | @Upanshu11 ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AUpanshu11+updated%3A2025-09-25..2026-02-04&type=Issues))
+
 ### 5.1.0 - 2025-09-25
 
 5.1.0 fixes a longstanding bug where stopped servers could cause the proxy to leak sockets in at least two different ways.
