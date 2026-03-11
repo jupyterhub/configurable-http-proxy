@@ -58,8 +58,9 @@ jobs:
         #            always require at least the oldest version, as well as our
         #            README.md file under the install section.
         node_version:
-          # Removing node 18 is dropping support for ubuntu 24.04 LTS, debian 12
-          - "18"
+          # ubuntu 24.04: 18
+          # debian 13: 20
+          # 20 LTS EOL: 2026-06
           - "20"
           - "22"
           - "24"
