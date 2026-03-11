@@ -108,7 +108,7 @@ describe("MemoryStore", function () {
   });
 
   describe("hasRoute", function () {
-    it("returns false when the path is not found", function (done) {
+    it("returns true when the path is found", function (done) {
       this.subject
         .add("/myRoute", { test: "value" })
         .then(() => this.subject.get("/myRoute"))
