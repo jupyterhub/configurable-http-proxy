@@ -572,6 +572,8 @@ describe("Proxy Tests", function () {
 describe("Proxy Tests with Unix socket", function () {
   var listenOptions = {
     socket: tmp.tmpNameSync(),
+    apiSocket: tmp.tmpNameSync(),
+    metricsSocket: tmp.tmpNameSync(),
   };
   var requestOptions = new URL("http://localhost");
   requestOptions.socketPath = listenOptions.socket;
