@@ -6,7 +6,44 @@ command line for details.
 
 ## [Unreleased]
 
-## 5.0
+## 5.2
+
+### 5.2.0 - 2026-03-11
+
+This release adds new `--socket`, `--api-socket`, and `--metrics-socket` arguments for listening on BSD sockets instead of TCP sockets.
+
+CHP 5.2.0 requires node >=20, dropping support for node 18.
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.1.1...5.2.0))
+
+#### API and Breaking Changes
+
+- require node 20 [#633](https://github.com/jupyterhub/configurable-http-proxy/pull/633) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### New features added
+
+- Add --socket to support listening on unix sockets [#618](https://github.com/jupyterhub/configurable-http-proxy/pull/618) ([@dometto](https://github.com/dometto), [@minrk](https://github.com/minrk))
+
+#### Bugs fixed
+
+- Fix proxying to unix socket [#617](https://github.com/jupyterhub/configurable-http-proxy/pull/617) ([@dometto](https://github.com/dometto), [@minrk](https://github.com/minrk))
+
+#### Maintenance and upkeep improvements
+
+- minor fixes in listening on bsd sockets [#634](https://github.com/jupyterhub/configurable-http-proxy/pull/634) ([@minrk](https://github.com/minrk), [@dometto](https://github.com/dometto))
+- npm audit fix [#632](https://github.com/jupyterhub/configurable-http-proxy/pull/632) ([@minrk](https://github.com/minrk))
+- test on node 24 [#631](https://github.com/jupyterhub/configurable-http-proxy/pull/631) ([@minrk](https://github.com/minrk), [@consideRatio](https://github.com/consideRatio))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2026-02-04&to=2026-03-11&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2026-02-04..2026-03-11&type=Issues)) | @dometto ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adometto+updated%3A2026-02-04..2026-03-11&type=Issues)) | @felder ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Afelder+updated%3A2026-02-04..2026-03-11&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2026-02-04..2026-03-11&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2026-02-04..2026-03-11&type=Issues)) | @shaneknapp ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ashaneknapp+updated%3A2026-02-04..2026-03-11&type=Issues)) | @yijunge-ucb ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Ayijunge-ucb+updated%3A2026-02-04..2026-03-11&type=Issues))
+
+## 5.1
 
 ### 5.1.1 - 2026-02-04
 
