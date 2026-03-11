@@ -34,6 +34,8 @@ file_env 'CONFIGPROXY_AUTH_TOKEN'
 case "$@" in
     *"--api-ip"*)
         break ;;
+    *"--api-socket"*)
+        break ;;
     *)
         # Default api-ip to all interfaces in docker,
         # so that it is accessible to other containers
