@@ -123,7 +123,7 @@ Options:
   --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
   --api-ip <ip>                      Inward-facing IP for API requests (default: "localhost")
   --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
-  --api-socket <path>                Path to a UNIX domain socket for the API to listen on. Alternative to specifying API IP and port.
+  --api-socket <path>                Path to a UNIX domain socket for the API server to listen on. Alternative to specifying API IP and port.
   --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
   --api-ssl-cert <certfile>          SSL certificate to use, if any, for API requests
   --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
@@ -156,6 +156,7 @@ Options:
   --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
   --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
   --storage-backend <storage-class>  Define an external storage class. Defaults to in-MemoryStore.
+  --keep-alive-timeout <timeout>     Set timeout (in milliseconds) for Keep-Alive connections
   -h, --help                         display help for command
 ```
 
