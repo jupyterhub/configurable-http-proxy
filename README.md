@@ -111,6 +111,7 @@ Options:
   -V, --version                      output the version number
   --ip <ip-address>                  Public-facing IP of the proxy
   --port <n> (defaults to 8000)      Public-facing port of the proxy
+  --socket <path>                    Path to a UNIX domain socket for the proxy to listen on. Alternative to specifying IP and port.
   --ssl-key <keyfile>                SSL key to use, if any
   --ssl-cert <certfile>              SSL certificate to use, if any
   --ssl-ca <ca-file>                 SSL certificate authority, if any
@@ -122,6 +123,7 @@ Options:
   --ssl-dhparam <dhparam-file>       SSL Diffie-Helman Parameters pem file, if any
   --api-ip <ip>                      Inward-facing IP for API requests (default: "localhost")
   --api-port <n>                     Inward-facing port for API requests (defaults to --port=value+1)
+  --api-socket <path>                Path to a UNIX domain socket for the API to listen on. Alternative to specifying API IP and port.
   --api-ssl-key <keyfile>            SSL key to use, if any, for API requests
   --api-ssl-cert <certfile>          SSL certificate to use, if any, for API requests
   --api-ssl-ca <ca-file>             SSL certificate authority, if any, for API requests
@@ -149,6 +151,7 @@ Options:
   --host-routing                     Use host routing (host as first level of path)
   --metrics-ip <ip>                  IP for metrics server (default: "")
   --metrics-port <n>                 Port of metrics server. Defaults to no metrics server
+  --metrics-socket <path>            Path to a UNIX domain socket for the metrics server to listen on. Alternative to specifying metrics IP and port.
   --log-level <loglevel>             Log level (debug, info, warn, error) (default: "info")
   --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
   --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
