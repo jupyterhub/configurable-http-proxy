@@ -361,6 +361,33 @@ describe("Proxy Tests", function () {
       .then(done);
   });
 
+  it("error-target fetch fails and falls back to error-path files", function (done) {
+    proxy.errorTarget = "http://127.0.0.1:55599/";
+    proxy.errorPath = path.join(__dirname, "error");
+    proxy
+      .removeRoute("/")
+      .then(() => proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" }))
+      .then(() => fetch(hostUrl + "/nope"))
+      .then((res) => {
+        expect(res.status).toEqual(404);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      })
+      .then((body) => {
+        expect(body).toMatch(/404/);
+      })
+      .then(() => fetch(hostUrl + "/missing/prefix"))
+      .then((res) => {
+        expect(res.status).toEqual(503);
+        expect(res.headers.get("content-type")).toEqual("text/html");
+        return res.text();
+      })
+      .then((body) => {
+        expect(body).toMatch(/UNKNOWN/);
+      })
+      .then(done);
+  });
+
   it("custom error path", function (done) {
     proxy.errorPath = path.join(__dirname, "error");
     proxy

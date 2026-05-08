@@ -70,7 +70,10 @@ cli
     "--error-target <host>",
     "Alternate server for handling proxy errors (proto://host[:port])"
   )
-  .option("--error-path <path>", "Alternate server for handling proxy errors (proto://host[:port])")
+  .option(
+    "--error-path <path>",
+    "Directory containing {status}.html (and optional error.html) for proxy errors"
+  )
   .option(
     "--redirect-port <redirect-port>",
     "Redirect HTTP requests on this port to the server on HTTPS"
@@ -293,8 +296,9 @@ if (!options.ssl && options.redirectPort) {
 }
 
 if (options.errorTarget && options.errorPath) {
-  log.error("Cannot specify both error-target and error-path. Pick one.");
-  process.exit(1);
+  log.info(
+    "Both error-target and error-path set: serve from error-target when reachable; otherwise use error-path files."
+  );
 }
 
 // passthrough for http-proxy options
