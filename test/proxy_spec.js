@@ -388,6 +388,39 @@ describe("Proxy Tests", function () {
       .then(done);
   });
 
+  it("error-target times out and falls back to error-path", function (done) {
+    const hang = http.createServer(() => {});
+    hang.listen(0, "127.0.0.1", () => {
+      const port = hang.address().port;
+      proxy.errorTarget = "http://127.0.0.1:" + port + "/";
+      proxy.errorPath = path.join(__dirname, "error");
+      proxy.errorTargetTimeout = 250;
+      proxy
+        .removeRoute("/")
+        .then(() => proxy.addRoute("/missing", { target: "https://127.0.0.1:54321" }))
+        .then(() => fetch(hostUrl + "/missing/prefix"))
+        .then((res) => {
+          expect(res.status).toEqual(503);
+          expect(res.headers.get("content-type")).toEqual("text/html");
+          return res.text();
+        })
+        .then((body) => {
+          expect(body).toMatch(/UNKNOWN/);
+        })
+        .then(
+          () =>
+            new Promise((resolve, reject) => {
+              hang.close((err) => (err ? reject(err) : resolve()));
+            })
+        )
+        .then(done)
+        .catch((e) => {
+          hang.close();
+          done.fail(e);
+        });
+    });
+  });
+
   it("custom error path", function (done) {
     proxy.errorPath = path.join(__dirname, "error");
     proxy

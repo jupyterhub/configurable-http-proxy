@@ -75,6 +75,11 @@ cli
     "Directory containing {status}.html (and optional error.html) for proxy errors"
   )
   .option(
+    "--error-target-timeout <n>",
+    "Timeout in ms when fetching pages from --error-target (default 10000)",
+    parseInt
+  )
+  .option(
     "--redirect-port <redirect-port>",
     "Redirect HTTP requests on this port to the server on HTTPS"
   )
@@ -277,6 +282,9 @@ if (args.clientSslKey || args.clientSslCert || args.clientSslCa) {
 options.defaultTarget = args.defaultTarget;
 options.errorTarget = args.errorTarget;
 options.errorPath = args.errorPath;
+if (args.errorTargetTimeout !== undefined) {
+  options.errorTargetTimeout = args.errorTargetTimeout;
+}
 options.hostRouting = args.hostRouting;
 options.authToken = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
