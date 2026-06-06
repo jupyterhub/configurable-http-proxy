@@ -265,6 +265,19 @@ describe("Proxy Tests", function () {
     done();
   });
 
+  it("options.storageBackend redis selects the built-in RedisStore", async function () {
+    const options = {
+      storageBackend: "redis",
+      redisUrl: "redis://localhost:6379",
+    };
+    const cp = new ConfigurableProxy(options);
+    expect(cp._routes.constructor.name).toEqual("RedisStore");
+    // we only assert wiring here (no live Redis needed); swallow the connect
+    // result and await the disconnect so no client is left dangling
+    cp._routes.ready.catch(() => {});
+    await cp._routes.client.disconnect().catch(() => {});
+  });
+
   it("includePrefix: false + prependPath: false", function (done) {
     proxy.includePrefix = false;
     proxy.proxy.options.prependPath = false;

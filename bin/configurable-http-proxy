@@ -111,7 +111,7 @@ cli
   )
   .option(
     "--storage-backend <storage-class>",
-    "Define an external storage class. Defaults to in-MemoryStore."
+    "Define a route storage backend: the built-in 'redis' store (set the REDIS_URL environment variable) or an external storage class. Defaults to in-MemoryStore."
   )
   .option(
     "--keep-alive-timeout <timeout>",
@@ -320,8 +320,15 @@ if (!options.authToken) {
   log.warn("REST API is not authenticated.");
 }
 
-// external backend class
+// route storage backend (external class, or the built-in 'redis' store)
 options.storageBackend = args.storageBackend;
+if (args.storageBackend === "redis") {
+  options.redisUrl = process.env.REDIS_URL;
+  if (!options.redisUrl) {
+    log.error("--storage-backend redis requires the REDIS_URL environment variable");
+    process.exit(1);
+  }
+}
 
 var proxy = new ConfigurableProxy(options);
 
