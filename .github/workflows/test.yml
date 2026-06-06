@@ -102,10 +102,18 @@ jobs:
         run: |
           npm ci
 
+      # The c8 coverage tool (via its bundled yargs@17) does not yet load on the
+      # bleeding-edge "current" Node release, so run tests without coverage there.
+      # Coverage is still collected on the stable versions.
       - name: "Run tests"
         run: |
-          npm test
+          if [ "${{ matrix.node_version }}" = "current" ]; then
+            npm run test:no-coverage
+          else
+            npm test
+          fi
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
+        if: matrix.node_version != 'current'
         uses: codecov/codecov-action@v6

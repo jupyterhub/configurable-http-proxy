@@ -39,6 +39,7 @@
   "scripts": {
     "fmt": "pre-commit run --all-files",
     "test": "FORCE_COLOR=3 c8 jasmine --config=test/config/jasmine.mjs",
+    "test:no-coverage": "FORCE_COLOR=3 jasmine --config=test/config/jasmine.mjs",
     "c8": "c8",
     "coverage-html": "c8 report --reporter=html",
     "codecov": "c8 report --reporter=lcov && codecov"
