@@ -265,6 +265,20 @@ describe("Proxy Tests", function () {
     done();
   });
 
+  it("options.store redis selects the RedisStore", function (done) {
+    const options = {
+      store: "redis",
+      redisUrl: "redis://localhost:6379",
+    };
+    const cp = new ConfigurableProxy(options);
+    expect(cp._routes.constructor.name).toEqual("RedisStore");
+    // we only assert wiring here (no live Redis needed); avoid a dangling
+    // reconnecting client keeping the test runner alive
+    cp._routes.ready.catch(() => {});
+    cp._routes.client.disconnect().catch(() => {});
+    done();
+  });
+
   it("includePrefix: false + prependPath: false", function (done) {
     proxy.includePrefix = false;
     proxy.proxy.options.prependPath = false;

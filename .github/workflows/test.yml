@@ -51,6 +51,19 @@ jobs:
 
   test:
     runs-on: ubuntu-24.04
+    # Redis service so the RedisStore tests run; REDIS_URL is set below.
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      REDIS_URL: redis://localhost:6379
     strategy:
       fail-fast: false # Do not cancel all jobs if one fails
       matrix:

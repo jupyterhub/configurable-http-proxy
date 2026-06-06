@@ -22,6 +22,7 @@ functionality to [JupyterHub] deployments.
   - [Starting the proxy](#starting-the-proxy)
   - [Setting a default target](#setting-a-default-target)
   - [Command-line options](#command-line-options)
+  - [Persisting routes with Redis](#persisting-routes-with-redis)
 - [Using the REST API](#using-the-rest-api)
   - [REST API Basics](#rest-api-basics)
   - [Authenticating via passing a token](#authenticating-via-passing-a-token)
@@ -156,11 +157,41 @@ Options:
   --timeout <n>                      Timeout (in millis) when proxy drops connection for a request.
   --proxy-timeout <n>                Timeout (in millis) when proxy receives no response from target.
   --storage-backend <storage-class>  Define an external storage class. Defaults to in-MemoryStore.
+  --store <type>                     Route storage backend: 'memory' (default) or 'redis'. With 'redis', set the REDIS_URL environment variable.
   --keep-alive-timeout <timeout>     Set timeout (in milliseconds) for Keep-Alive connections
   -h, --help                         display help for command
 ```
 
 [**Return to top**][]
+
+### Persisting routes with Redis
+
+By default the routing table lives only in the proxy's memory, so it is lost
+whenever the process restarts (for example when a Kubernetes pod is rescheduled).
+To persist routes across restarts, run with `--store redis` and point the proxy
+at a Redis server via the `REDIS_URL` environment variable:
+
+```bash
+export REDIS_URL=redis://localhost:6379   # use rediss:// for TLS
+configurable-http-proxy --store redis
+```
+
+With the Redis store, reads are still served from an in-memory copy (so proxying
+stays fast), while every route add/update/remove is mirrored to Redis. On
+startup the proxy hydrates its in-memory table from Redis, so previously
+registered routes are immediately available again.
+
+Notes:
+
+- `REDIS_URL` is required when `--store redis` is used; the proxy exits with an
+  error if it is unset. Supported URL forms are `redis://` and `rediss://`
+  (TLS).
+- Routes are stored in a single Redis hash (key
+  `configurable-http-proxy:routes`).
+- This is designed for surviving restarts of a single proxy instance. Running
+  multiple proxy replicas against the same Redis works for persistence, but a
+  replica only picks up routes written by another replica after it (re)starts
+  and re-hydrates — live cross-replica synchronization is not yet implemented.
 
 ## Using the REST API
 
