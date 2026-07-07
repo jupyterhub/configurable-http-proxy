@@ -13,12 +13,12 @@ updates:
     labels: [ci]
     schedule:
       interval: monthly
-      time: "05:00"
-      timezone: Etc/UTC
+    groups:
+      actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/" # Location of package[-lock].json
     schedule:
       interval: "weekly"
-      time: "05:00"
-      timezone: "Etc/UTC"
