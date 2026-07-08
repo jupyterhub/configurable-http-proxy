@@ -6,6 +6,29 @@ command line for details.
 
 ## [Unreleased]
 
+## 5.3
+
+### 5.3.0 - 2026-07-08
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.2.0...5.3.0))
+
+#### New features added
+
+- Standardize unix socket protocol to http+unix [#655](https://github.com/jupyterhub/configurable-http-proxy/pull/655) ([@dometto](https://github.com/dometto), [@minrk](https://github.com/minrk))
+
+#### Maintenance and upkeep improvements
+
+- remove actions/cache, update test dependencies [#658](https://github.com/jupyterhub/configurable-http-proxy/pull/658) ([@manics](https://github.com/manics), [@minrk](https://github.com/minrk))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2026-03-11&to=2026-07-08&type=c))
+
+@consideRatio ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3AconsideRatio+updated%3A2026-03-11..2026-07-08&type=Issues)) | @dometto ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Adometto+updated%3A2026-03-11..2026-07-08&type=Issues)) | @manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2026-03-11..2026-07-08&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2026-03-11..2026-07-08&type=Issues))
+
 ## 5.2
 
 ### 5.2.0 - 2026-03-11
