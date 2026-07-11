@@ -26,19 +26,10 @@ jobs:
   audit-dependencies:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
-
-      # Action Repo: https://github.com/actions/cache
-      - name: "Cache node_modules"
-        uses: actions/cache@v5
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
 
       - name: "Install dependencies (npm ci)"
         run: |
@@ -67,19 +58,10 @@ jobs:
           - current
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node_version }}
-
-      # Action Repo: https://github.com/actions/cache
-      - name: "Cache node_modules"
-        uses: actions/cache@v5
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
 
       - name: setup internal ssl
         run: |
@@ -95,4 +77,4 @@ jobs:
 
       # Action Repo: https://github.com/codecov/codecov-action
       - name: "Upload coverage to codecov"
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7

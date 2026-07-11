@@ -596,7 +596,7 @@ describe("Proxy Tests", function () {
     var unixSocketUri = encodeURIComponent(tmp.tmpNameSync());
 
     util
-      .setupProxy(listenOptions, { errorTarget: "unix+http://" + unixSocketUri }, [])
+      .setupProxy(listenOptions, { errorTarget: "http+unix://" + unixSocketUri }, [])
       .then(() => fetch("http://127.0.0.1:" + listenOptions.port + "/foo/bar"))
       .then((res) => {
         expect(res.status).toEqual(404);
