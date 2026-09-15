@@ -2,6 +2,8 @@ import { spawn } from "node:child_process";
 import http from "node:http";
 import https from "node:https";
 import fetch from "node-fetch";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
 
 const sslOptions = { agent: new https.Agent({ rejectUnauthorized: false }) };
 
@@ -286,5 +288,51 @@ describe("CLI Tests", function () {
         expect(cliProcess._failedStderr).toContain("colon was expected");
         done();
       });
+  });
+
+  it("reloadSsl updates SSL options", function (done) {
+    var args = [
+      "--ip",
+      "127.0.0.1",
+      "--ssl-cert",
+      "test/server.crt",
+      "--ssl-key",
+      "test/server.key",
+      "--port",
+      port,
+      "--default-target",
+      testUrl,
+    ];
+    executeCLI(execCmd, args).then((cliProcess) => {
+      childProcess = cliProcess;
+
+      // first request should work
+      fetch(SSLproxyUrl, sslOptions)
+        .then((res) => res.json())
+        .then((body) => {
+          expect(body.name).toEqual("default");
+
+          // send SIGUSR1 to trigger SSL reload
+          cliProcess.kill("SIGUSR1");
+
+          // wait a bit for reload to complete
+          setTimeout(function () {
+            // use a fresh connection (new TLS session) since the old one might have stale state
+            var freshAgent = new https.Agent({ rejectUnauthorized: false });
+            fetch(SSLproxyUrl, { agent: freshAgent })
+              .then((res) => res.json())
+              .then((body2) => {
+                expect(body2.name).toEqual("default");
+                done();
+              })
+              .catch((err) => {
+                done.fail("Request after SIGUSR1 failed: " + err);
+              });
+          }, 500);
+        })
+        .catch((err) => {
+          done.fail("Initial request failed: " + err);
+        });
+    });
   });
 });

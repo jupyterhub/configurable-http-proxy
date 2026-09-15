@@ -110,13 +110,13 @@ cli
     parseInt
   )
   .option(
-    "--storage-backend <storage-class>",
-    "Define an external storage class. Defaults to in-MemoryStore."
-  )
-  .option(
     "--keep-alive-timeout <timeout>",
     "Set timeout (in milliseconds) for Keep-Alive connections",
     parseInt
+  )
+  .option(
+    "--storage-backend <storage-class>",
+    "Define an external storage class. Defaults to in-MemoryStore."
   );
 
 // collects multiple flags to an object
@@ -323,6 +323,28 @@ if (!options.authToken) {
 // external backend class
 options.storageBackend = args.storageBackend;
 
+// store SSL file paths for reload
+options._sslKeyFile = args.sslKey;
+options._sslCertFile = args.sslCert;
+options._sslCaFile = args.sslCa;
+options._sslDhparamFile = args.sslDhparam;
+options._apiSslKeyFile = args.apiSslKey;
+options._apiSslCertFile = args.apiSslCert;
+options._apiSslCaFile = args.apiSslCa;
+options._clientSslKeyFile = args.clientSslKey;
+options._clientSslCertFile = args.clientSslCert;
+options._clientSslCaFile = args.clientSslCa;
+options._sslPassphrase = process.env.CONFIGPROXY_SSL_KEY_PASSPHRASE;
+options._apiSslPassphrase = process.env.CONFIGPROXY_API_SSL_KEY_PASSPHRASE;
+options._sslCiphers = sslCiphers;
+options._sslProtocol = args.sslProtocol;
+options._sslRequestCert = args.sslRequestCert;
+options._sslRejectUnauthorized = args.sslRejectUnauthorized;
+options._apiSslRequestCert = args.apiSslRequestCert;
+options._apiSslRejectUnauthorized = args.apiSslRejectUnauthorized;
+options._clientSslRequestCert = args.clientSslRequestCert;
+options._clientSslRejectUnauthorized = args.clientSslRejectUnauthorized;
+
 var proxy = new ConfigurableProxy(options);
 
 var listen = parseListenOptions(args, log);
@@ -412,4 +434,18 @@ process.on("uncaughtException", function (e) {
   if (e.stack) {
     log.error(e.stack);
   }
+});
+
+// reload SSL certs on SIGUSR1
+// this allows renewing Let's Encrypt certs without restarting the proxy
+process.on("SIGUSR1", function () {
+  log.info("Received SIGUSR1, reloading SSL certificates...");
+  proxy.reloadSsl(function (err) {
+    if (err) {
+      log.error("Failed to reload SSL: " + err.message);
+      if (err.stack) log.error(err.stack);
+    } else {
+      log.info("SSL certificates reloaded successfully.");
+    }
+  });
 });
