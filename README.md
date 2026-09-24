@@ -31,6 +31,7 @@ functionality to [JupyterHub] deployments.
 - [Custom error pages](#custom-error-pages)
   - [Setting the path for custom error pages](#setting-the-path-for-custom-error-pages)
   - [Setting a target for custom error handling](#setting-a-target-for-custom-error-handling)
+  - [Combining error-target with error-path fallback](#combining-error-target-with-error-path-fallback)
 - [Host-based routing](#host-based-routing)
 - [Troubleshooting](#troubleshooting)
 
@@ -136,7 +137,8 @@ Options:
   --client-ssl-reject-unauthorized   Reject unauthorized SSL connections (only meaningful if --client-ssl-request-cert is given)
   --default-target <host>            Default proxy target (proto://host[:port])
   --error-target <host>              Alternate server for handling proxy errors (proto://host[:port])
-  --error-path <path>                Alternate server for handling proxy errors (proto://host[:port])
+  --error-target-timeout <n>         Timeout in ms when fetching pages from --error-target (default 10000)
+  --error-path <path>                Directory containing {status}.html (and optional error.html) for proxy errors
   --redirect-port <redirect-port>    Redirect HTTP requests on this port to the server on HTTPS
   --redirect-to <port>               Redirect HTTP requests from --redirect-port to this port
   --pid-file <pid-file>              Write our PID to a file
@@ -339,6 +341,39 @@ server URL, `http://localhost:1234`, appending the status code
 `/{CODE}`, and passing the failing request's URL escaped in a URL parameter:
 
     GET /404?url=%2Fescaped%2Fpath
+
+By default, CHP will wait up to **10 seconds** for the `error-target` server
+to respond. You can change this with `--error-target-timeout`:
+
+```bash
+configurable-http-proxy --error-target http://localhost:1234 --error-target-timeout 5000
+```
+
+[**Return to top**][]
+
+### Combining error-target with error-path fallback
+
+You can set both `--error-target` and `--error-path` together. In this mode,
+CHP will **first try** the `error-target` server. If that request fails (e.g.
+the server is down, unreachable, or does not respond within
+`--error-target-timeout` ms), CHP will **fall back** to serving static error
+pages from `--error-path`.
+
+```bash
+configurable-http-proxy \
+  --error-target http://localhost:1234 \
+  --error-target-timeout 5000 \
+  --error-path /usr/share/chp-errors
+```
+
+This makes your error handling resilient: users still get a meaningful error
+page even when the dedicated error-handling service is unavailable.
+
+**Fallback priority:**
+
+1. `--error-target` — preferred; fetched with the configured timeout
+2. `--error-path` — used when `error-target` is unreachable or times out
+3. Built-in default error response — used when neither is configured or available
 
 [**Return to top**][]
 
