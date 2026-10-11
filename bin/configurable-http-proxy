@@ -70,7 +70,15 @@ cli
     "--error-target <host>",
     "Alternate server for handling proxy errors (proto://host[:port])"
   )
-  .option("--error-path <path>", "Alternate server for handling proxy errors (proto://host[:port])")
+  .option(
+    "--error-path <path>",
+    "Directory containing {status}.html (and optional error.html) for proxy errors"
+  )
+  .option(
+    "--error-target-timeout <n>",
+    "Timeout in ms when fetching pages from --error-target (default 10000)",
+    parseInt
+  )
   .option(
     "--redirect-port <redirect-port>",
     "Redirect HTTP requests on this port to the server on HTTPS"
@@ -274,6 +282,9 @@ if (args.clientSslKey || args.clientSslCert || args.clientSslCa) {
 options.defaultTarget = args.defaultTarget;
 options.errorTarget = args.errorTarget;
 options.errorPath = args.errorPath;
+if (args.errorTargetTimeout !== undefined) {
+  options.errorTargetTimeout = args.errorTargetTimeout;
+}
 options.hostRouting = args.hostRouting;
 options.authToken = process.env.CONFIGPROXY_AUTH_TOKEN;
 options.redirectPort = args.redirectPort;
@@ -293,8 +304,9 @@ if (!options.ssl && options.redirectPort) {
 }
 
 if (options.errorTarget && options.errorPath) {
-  log.error("Cannot specify both error-target and error-path. Pick one.");
-  process.exit(1);
+  log.info(
+    "Both error-target and error-path set: serve from error-target when reachable; otherwise use error-path files."
+  );
 }
 
 // passthrough for http-proxy options
