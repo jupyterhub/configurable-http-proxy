@@ -21,3 +21,9 @@ updates:
     directory: "/" # Location of package[-lock].json
     schedule:
       interval: "weekly"
+  # Maintain the node base image, pinned to a patch release so a Node
+  # security release reaches the published image as a reviewable bump.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
