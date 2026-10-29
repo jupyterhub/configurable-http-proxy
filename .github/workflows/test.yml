@@ -50,11 +50,12 @@ jobs:
         #            README.md file under the install section.
         node_version:
           # ubuntu 24.04: 18
+          # ubuntu 26.04: 22
           # debian 13: 20
-          # 20 LTS EOL: 2026-06
-          - "20"
+          # 22 LTS EOL: 2027-04
           - "22"
           - "24"
+          - "26"
           - current
 
     steps:
