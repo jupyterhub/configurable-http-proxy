@@ -142,6 +142,7 @@ Options:
   --pid-file <pid-file>              Write our PID to a file
   --no-x-forward                     Don't add 'X-forward-' headers to proxied requests
   --no-prepend-path                  Avoid prepending target paths to proxied requests
+  --color <when>                     Control colored log output (choices: "always", "never"; env: FORCE_COLOR, NO_COLOR)
   --no-include-prefix                Don't include the routing prefix in proxied requests
   --auto-rewrite                     Rewrite the Location header host/port in redirect responses
   --change-origin                    Changes the origin of the host header to the target URL
