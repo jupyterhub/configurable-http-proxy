@@ -6,12 +6,13 @@ import fetch from "node-fetch";
 const sslOptions = { agent: new https.Agent({ rejectUnauthorized: false }) };
 
 // utility functions
-function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
+function executeCLI(execCmd = "bin/configurable-http-proxy", args = [], options = {}) {
   var defaultRouteRequested = args.includes("--default-target");
   var redirectRequested = args.includes("--redirect-port");
   var defaultRouteAdded = false;
   var redirectAdded = false;
-  var cliProcess = spawn(execCmd, args);
+  var cliProcess = spawn(execCmd, args, options);
+  cliProcess._stdout = "";
   // uncomment the below line for debugging of tests
   //cliProcess.stdout.pipe(process.stdout);
   const cliReady = new Promise((resolve, reject) => {
@@ -33,6 +34,7 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
     });
 
     cliProcess.stdout.on("data", (data) => {
+      cliProcess._stdout += data.toString();
       if (data.includes("Route added /")) {
         defaultRouteAdded = true;
       }
@@ -133,6 +135,28 @@ describe("CLI Tests", function () {
           );
           done();
         });
+    });
+  });
+
+  [
+    ["default", [], undefined, true],
+    ["--no-color", ["--no-color"], undefined, false],
+    ["NO_COLOR", [], "1", false],
+    ["empty NO_COLOR", [], "", true],
+    ["NO_COLOR=0", [], "0", false],
+  ].forEach(([name, extraArgs, noColor, colored]) => {
+    it(`log colors (${name})`, function (done) {
+      var args = ["--ip", "127.0.0.1", "--port", port, "--default-target", testUrl, ...extraArgs];
+      var env = { ...process.env };
+      delete env.NO_COLOR;
+      if (noColor !== undefined) {
+        env.NO_COLOR = noColor;
+      }
+      executeCLI(execCmd, args, { env }).then((cliProcess) => {
+        childProcess = cliProcess;
+        expect(cliProcess._stdout.includes("\u001b[")).toEqual(colored);
+        done();
+      });
     });
   });
 

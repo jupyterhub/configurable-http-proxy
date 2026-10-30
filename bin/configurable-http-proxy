@@ -80,6 +80,7 @@ cli
   // passthrough http-proxy options
   .option("--no-x-forward", "Don't add 'X-forward-' headers to proxied requests")
   .option("--no-prepend-path", "Avoid prepending target paths to proxied requests")
+  .option("--no-color", "Disable colored log output")
   .option("--no-include-prefix", "Don't include the routing prefix in proxied requests")
   .option("--auto-rewrite", "Rewrite the Location header host/port in redirect responses")
   .option("--change-origin", "Changes the origin of the host header to the target URL")
@@ -138,7 +139,7 @@ function collectHeadersIntoObject(value, previous) {
 cli.parse(process.argv);
 var args = cli.opts();
 
-var log = defaultLogger({ level: args.logLevel.toLowerCase() });
+var log = defaultLogger({ level: args.logLevel.toLowerCase(), color: args.color });
 var options = { log: log };
 
 var sslCiphers;
