@@ -8,7 +8,7 @@ command line for details.
 
 ## 5.4
 
-### 5.4.0 - 2026-XX-XX
+### 5.4.0 - 2026-10-31
 
 ([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.3.0...5.4.0))
 
