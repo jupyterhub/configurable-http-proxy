@@ -6,6 +6,26 @@ command line for details.
 
 ## [Unreleased]
 
+## 5.4
+
+### 5.4.0 - 2026-10-31
+
+([full changelog](https://github.com/jupyterhub/configurable-http-proxy/compare/5.3.0...5.4.0))
+
+#### Maintenance and upkeep improvements
+
+- require node 22 [#670](https://github.com/jupyterhub/configurable-http-proxy/pull/670) ([@minrk](https://github.com/minrk), [@manics](https://github.com/manics))
+- Remove mentions of Node 18 (not supported) [#666](https://github.com/jupyterhub/configurable-http-proxy/pull/666) ([@manics](https://github.com/manics), [@minrk](https://github.com/minrk))
+
+#### Contributors to this release
+
+The following people contributed discussions, new ideas, code and documentation contributions, and review.
+See [our definition of contributors](https://github-activity.readthedocs.io/en/latest/use/#how-does-this-tool-define-contributions-in-the-reports).
+
+([GitHub contributors page for this release](https://github.com/jupyterhub/configurable-http-proxy/graphs/contributors?from=2026-07-08&to=2026-10-29&type=c))
+
+@manics ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Amanics+updated%3A2026-07-08..2026-10-29&type=Issues)) | @minrk ([activity](https://github.com/search?q=repo%3Ajupyterhub%2Fconfigurable-http-proxy+involves%3Aminrk+updated%3A2026-07-08..2026-10-29&type=Issues))
+
 ## 5.3
 
 ### 5.3.0 - 2026-07-08
