@@ -6,12 +6,13 @@ import fetch from "node-fetch";
 const sslOptions = { agent: new https.Agent({ rejectUnauthorized: false }) };
 
 // utility functions
-function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
+function executeCLI(execCmd = "bin/configurable-http-proxy", args = [], options = {}) {
   var defaultRouteRequested = args.includes("--default-target");
   var redirectRequested = args.includes("--redirect-port");
   var defaultRouteAdded = false;
   var redirectAdded = false;
-  var cliProcess = spawn(execCmd, args);
+  var cliProcess = spawn(execCmd, args, options);
+  cliProcess._stdout = "";
   // uncomment the below line for debugging of tests
   //cliProcess.stdout.pipe(process.stdout);
   const cliReady = new Promise((resolve, reject) => {
@@ -33,6 +34,7 @@ function executeCLI(execCmd = "bin/configurable-http-proxy", args = []) {
     });
 
     cliProcess.stdout.on("data", (data) => {
+      cliProcess._stdout += data.toString();
       if (data.includes("Route added /")) {
         defaultRouteAdded = true;
       }
@@ -133,6 +135,43 @@ describe("CLI Tests", function () {
           );
           done();
         });
+    });
+  });
+
+  [
+    ["non-TTY default", [], {}, false],
+    ["--color=always", ["--color=always"], {}, true],
+    ["--color=never", ["--color=never"], {}, false],
+    ["--color always", ["--color", "always"], {}, true],
+    ["--color never", ["--color", "never"], {}, false],
+    ["NO_COLOR", [], { NO_COLOR: "1" }, false],
+    ["empty NO_COLOR", [], { NO_COLOR: "" }, false],
+    ["NO_COLOR=0", [], { NO_COLOR: "0" }, false],
+    ["FORCE_COLOR", [], { FORCE_COLOR: "1" }, true],
+    ["FORCE_COLOR=3", [], { FORCE_COLOR: "3" }, true],
+    ["FORCE_COLOR=0", [], { FORCE_COLOR: "0" }, false],
+    ["empty FORCE_COLOR", [], { FORCE_COLOR: "" }, false],
+    ["FORCE_COLOR overrides NO_COLOR", [], { FORCE_COLOR: "1", NO_COLOR: "1" }, true],
+    ["empty FORCE_COLOR respects NO_COLOR", [], { FORCE_COLOR: "", NO_COLOR: "1" }, false],
+    ["--color=always overrides NO_COLOR", ["--color=always"], { NO_COLOR: "1" }, true],
+    ["--color=always overrides FORCE_COLOR=0", ["--color=always"], { FORCE_COLOR: "0" }, true],
+    ["--color=never overrides FORCE_COLOR", ["--color=never"], { FORCE_COLOR: "1" }, false],
+    ["last --color=always wins", ["--color=never", "--color=always"], {}, true],
+    ["last --color=never wins", ["--color=always", "--color=never"], {}, false],
+  ].forEach(([name, extraArgs, colorEnv, colored]) => {
+    it(`log colors (${name})`, function (done) {
+      var args = ["--ip", "127.0.0.1", "--port", port, "--default-target", testUrl, ...extraArgs];
+      var env = { ...process.env };
+      delete env.NO_COLOR;
+      delete env.FORCE_COLOR;
+      Object.assign(env, colorEnv);
+      executeCLI(execCmd, args, { env })
+        .then((cliProcess) => {
+          childProcess = cliProcess;
+          expect(cliProcess._stdout.includes("\u001b[")).toEqual(colored);
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
